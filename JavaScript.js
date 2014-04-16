@@ -225,7 +225,7 @@ ASSET_MANAGER.downloadAll(function () {
         ctx.drawImage(sprite, x, y);
     }
 
-    //asd 
+    //asd  test
 
 
 

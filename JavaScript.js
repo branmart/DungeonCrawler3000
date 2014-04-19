@@ -212,7 +212,7 @@ GameBoard.prototype.draw = function (ctx) {
 
 var ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload('Penguins.jpg');
+//ASSET_MANAGER.queueDownload('Penguins.jpg');
 
 ASSET_MANAGER.downloadAll(function () {
     var x = 0, y = 0;
@@ -221,11 +221,9 @@ ASSET_MANAGER.downloadAll(function () {
 
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
-        var sprite = ASSET_MANAGER.getAsset('Penguins.jpg');
+        //var sprite = ASSET_MANAGER.getAsset('Penguins.jpg');
         ctx.drawImage(sprite, x, y);
     }
-
-    //asd  test
 
 
 
@@ -240,3 +238,22 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
+
+function menu() {
+    alert("MENU");
+}
+
+function createButton() {
+    var buttonnode = document.createElement('input');
+    buttonnode.setAttribute('type', button);
+    buttonnode.setAttribute('name', 'sal');
+    buttonnode.setAttribute('value', 'sal');
+    buttonnode.attachEvent('onclick', menu);
+    context.appendChild(buttonnode);
+}
+
+window.onload = function () {
+    createButton(document.body, function () {
+        highlight(this.parentNode.childNodes[1]);
+    });
+}

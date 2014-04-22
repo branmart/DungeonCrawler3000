@@ -47,10 +47,23 @@ AssetManager.prototype.downloadAll = function (callback) {
 }
 
 AssetManager.prototype.getAsset = function (path) {
-    //console.log(path.toString());
     return this.cache[path];
 }
 
+/*
+function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
+    this.spriteSheet = spriteSheet;
+    this.startX = startX;
+    this.startY = startY;
+    this.frameWidth = frameWidth;
+    this.frameDuration = frameDuration;
+    this.frameHeight = frameHeight;
+    this.frames = frames;
+    this.totalTime = frameDuration*frames;
+    this.elapsedTime = 0;
+    this.loop = loop;
+    this.reverse = reverse;
+} */
 
 function GameEngine() {
     this.entities = [];
@@ -208,6 +221,25 @@ GameBoard.prototype.update = function () {
 GameBoard.prototype.draw = function (ctx) {
 }
 
+function BoundingBox(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+
+    this.left = x;
+    this.top = y;
+    this.right = this.left + width;
+    this.bottom = this.top + height;
+}
+
+function menuButton(game, x, y, width, height, color) {
+    this.width = width;
+    this.height = height;
+    this.boundingbox = new BoundingBox(x, y, width, height);
+    Entity.call(this, game, x, y);
+}
+
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();
@@ -229,9 +261,15 @@ ASSET_MANAGER.downloadAll(function () {
 
 
     var gameEngine = new GameEngine();
+    var menubutton = new menuButton(gameEngine, 0, 500, 250, 250);
+    gameEngine.addEntity(menubutton);
+    
+    
+
     var gameboard = new GameBoard();
 
     gameEngine.addEntity(gameboard);
+    gameEngine.addEntity(start)
 
     gameEngine.addEntity(sprite);
 
@@ -239,21 +277,11 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 });
 
-function menu() {
-    alert("MENU");
-}
+GameEngine.prototype.startInput = function () {
+    console.log('starting input');
 
-function createButton() {
-    var buttonnode = document.createElement('input');
-    buttonnode.setAttribute('type', button);
-    buttonnode.setAttribute('name', 'sal');
-    buttonnode.setAttribute('value', 'sal');
-    buttonnode.attachEvent('onclick', menu);
-    context.appendChild(buttonnode);
-}
-
-window.onload = function () {
-    createButton(document.body, function () {
-        highlight(this.parentNode.childNodes[1]);
-    });
-}
+    this.ctx.canvas.addEventListener("click", hello())
+    function hello() {
+        console.log("hello world!");
+    }
+}, false)

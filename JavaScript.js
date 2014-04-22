@@ -443,10 +443,27 @@ Unicorn.prototype.draw = function (ctx) {
     }
 }
 
+function background(game) {
+    Entity.call(this, game, 0, 0);
+    this.sprite = ASSET_MANAGER.getAsset('./DungeonCrawler3000/green_map.png');
+}
+
+background.prototype = new Entity();
+background.prototype.constructor = background;
+
+background.prototype.draw = function (ctx) {
+    ctx.drawImage(this.sprite, this.x - this.sprite.width / 2, this.y - this.sprite.height / 2);
+}
+
+
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./img/RobotUnicorn.png");
+ASSET_MANAGER.queueDownload("./DungeonCrawler3000/green_map.png");
+var img = new Image();
+img.src = 'green_map.png';
+
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");

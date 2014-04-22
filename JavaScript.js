@@ -65,6 +65,13 @@ function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDu
     this.reverse = reverse;
 } */
 
+/*
+function Timer() {
+    this.gameTime = 0;
+    this.maxStep = 0.05;
+    this.wallLastTimestamp = 0;
+} */
+
 function GameEngine() {
     this.entities = [];
     this.ctx = null;
@@ -112,6 +119,12 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("click", function (e) {
         that.click = getXandY(e);
+    }, false);
+
+
+    //testing out something
+    this.ctx.canvas.addEventListener("keyup", function (e) {
+        console.log("keyup");
     }, false);
 
     this.ctx.canvas.addEventListener("mousemove", function (e) {
@@ -167,6 +180,12 @@ GameEngine.prototype.loop = function () {
     this.wheel = null;
 }
 
+GameEngine.prototype.reset = function () {
+    for (var i = 0; i < this.entities.length; i++) {
+        this.entities[i].reset();
+    }
+}
+
 function Entity(game, x, y) {
     this.game = game;
     this.x = x;
@@ -199,8 +218,6 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     offscreenCtx.translate(0, 0);
     offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
     offscreenCtx.restore();
-    //offscreenCtx.strokeStyle = "red";
-    //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
 }
 
@@ -219,6 +236,33 @@ GameBoard.prototype.update = function () {
 }
 
 GameBoard.prototype.draw = function (ctx) {
+}
+
+function PlayGame(game, x, y) {
+    Entity.call(this, game, x, y);
+}
+
+PlayGame.prototype = new Entity();
+
+PlayGame.prototype.constructor = PlayGame;
+
+PlayGame.prototype.reset = function () {
+    this.game.running = false;
+}
+
+
+PlayGame.prototype.draw = function (ctx) {
+    if (!this.game.running) {
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        if (this.game.mouse) { ctx.fillStyle = "pink"; }
+        if (this.game.unicorn.lives > 0) {
+            ctx.fillText("Click to Play!", this.x, this.y);
+        }
+        else {
+            ctx.fillText("Game Over Man!", this.x - 30, this.y);
+        }
+    }
 }
 
 function BoundingBox(x, y, width, height) {
@@ -276,12 +320,3 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
-
-GameEngine.prototype.startInput = function () {
-    console.log('starting input');
-
-    this.ctx.canvas.addEventListener("click", hello())
-    function hello() {
-        console.log("hello world!");
-    }
-}, false)

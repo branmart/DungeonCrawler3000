@@ -51,75 +51,6 @@ AssetManager.prototype.getAsset = function (path) {
     return this.cache[path];
 }
 
-function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
-    this.spriteSheet = spriteSheet;
-    this.startX = startX;
-    this.startY = startY;
-    this.frameWidth = frameWidth;
-    this.frameDuration = frameDuration;
-    this.frameHeight = frameHeight;
-    this.frames = frames;
-    this.totalTime = frameDuration * frames;
-    this.elapsedTime = 0;
-    this.loop = loop;
-    this.reverse = reverse;
-}
-
-Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
-    var scaleBy = scaleBy || 1;
-    this.elapsedTime += tick;
-    if (this.loop) {
-        if (this.isDone()) {
-            this.elapsedTime = 0;
-        }
-    } else if (this.isDone()) {
-        return;
-    }
-    var index = this.reverse ? this.frames - this.currentFrame() - 1 : this.currentFrame();
-    var vindex = 0;
-    if ((index + 1) * this.frameWidth + this.startX > this.spriteSheet.width) {
-        index -= Math.floor((this.spriteSheet.width - this.startX) / this.frameWidth);
-        vindex++;
-    }
-    while ((index + 1) * this.frameWidth > this.spriteSheet.width) {
-        index -= Math.floor(this.spriteSheet.width / this.frameWidth);
-        vindex++;
-    }
-
-    var locX = x;
-    var locY = y;
-    var offset = vindex === 0 ? this.startX : 0;
-    ctx.drawImage(this.spriteSheet,
-                  index * this.frameWidth + offset, vindex * this.frameHeight + this.startY, // source from sheet
-                  this.frameWidth, this.frameHeight,
-                  locX, locY,
-                  this.frameWidth * scaleBy,
-                  this.frameHeight * scaleBy);
-}
-
-Animation.prototype.currentFrame = function () {
-    return Math.floor(this.elapsedTime / this.frameDuration);
-}
-
-Animation.prototype.isDone = function () {
-    return (this.elapsedTime >= this.totalTime);
-}
-
-function Timer() {
-    this.gameTime = 0;
-    this.maxStep = 0.05;
-    this.wallLastTimestamp = 0;
-}
-
-Timer.prototype.tick = function () {
-    var wallCurrent = Date.now();
-    var wallDelta = (wallCurrent - this.wallLastTimestamp) / 1000;
-    this.wallLastTimestamp = wallCurrent;
-
-    var gameDelta = Math.min(wallDelta, this.maxStep);
-    this.gameTime += gameDelta;
-    return gameDelta;
-}
 
 function GameEngine() {
     this.entities = [];
@@ -136,6 +67,7 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
+
     this.timer = new Timer();
     console.log('game initialized');
 }
@@ -166,6 +98,28 @@ GameEngine.prototype.startInput = function () {
 
     var that = this;
 
+    this.ctx.canvas.addEventListener("keypress", function (e) {
+                if (String.fromCharCode(e.which) === 'w') that.w = true;
+                e.preventDefault();
+    }, false);
+
+    this.ctx.canvas.addEventListener("keypress", function (e) {
+        if (String.fromCharCode(e.which) === 'a') that.a = true;
+        e.preventDefault();
+    }, false);
+
+    this.ctx.canvas.addEventListener("keypress", function (e) {
+        if (String.fromCharCode(e.which) === 's') that.s = true;
+        e.preventDefault();
+    }, false);
+
+    this.ctx.canvas.addEventListener("keypress", function (e) {
+        if (String.fromCharCode(e.which) === 'd') that.d = true;
+        e.preventDefault();
+    }, false);
+
+
+
     this.ctx.canvas.addEventListener("click", function (e) {
         that.click = getXandY(e);
     }, false);
@@ -174,23 +128,17 @@ GameEngine.prototype.startInput = function () {
         that.mouse = getXandY(e);
     }, false);
 
-    this.ctx.canvas.addEventListener("mouseleave", function (e) {
-        that.mouse = null;
-    }, false);
-
     this.ctx.canvas.addEventListener("mousewheel", function (e) {
         that.wheel = e;
-        e.preventDefault();
-    }, false);
-
-    this.ctx.canvas.addEventListener("keydown", function (e) {
-        if (String.fromCharCode(e.which) === ' ') that.space = true;
-        e.preventDefault();
     }, false);
 
     console.log('Input started');
 }
 
+GameEngine.prototype.addEntity = function (entity) {
+    console.log('added entity');
+    this.entities.push(entity);
+}
 
 GameEngine.prototype.draw = function (drawCallback) {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -211,7 +159,7 @@ GameEngine.prototype.update = function () {
         var entity = this.entities[i];
 
         if (!entity.removeFromWorld) {
-            //entity.update();
+            entity.update();
         }
     }
 
@@ -226,16 +174,12 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    this.space = null;
     this.click = null;
     this.wheel = null;
-    this.over = null;
-}
-
-GameEngine.prototype.reset = function () {
-    for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].reset();
-    }
+    this.w = null;
+    this.a = null;
+    this.s = null;
+    this.d = null;
 }
 
 function Entity(game, x, y) {
@@ -246,9 +190,6 @@ function Entity(game, x, y) {
 }
 
 Entity.prototype.update = function () {
-}
-
-Entity.prototype.reset = function () {
 }
 
 Entity.prototype.draw = function (ctx) {
@@ -280,221 +221,198 @@ Entity.prototype.rotateAndCache = function (image, angle) {
 
 // GameBoard code below
 
-function BoundingBox(x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+function GameBoard() {
 
-    this.left = x;
-    this.top = y;
-    this.right = this.left + width;
-    this.bottom = this.top + height;
+    Entity.call(this, null, 0, 0);
 }
 
-BoundingBox.prototype.collide = function (oth) {
-    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
-    return false;
+GameBoard.prototype = new Entity();
+GameBoard.prototype.constructor = GameBoard;
+
+GameBoard.prototype.update = function () {
+    Entity.prototype.update.call(this);
 }
 
-function PlayGame(game, x, y) {
-    Entity.call(this, game, x, y);
+GameBoard.prototype.draw = function (ctx) {
 }
 
-PlayGame.prototype = new Entity();
-PlayGame.prototype.constructor = PlayGame;
-
-PlayGame.prototype.reset = function () {
-    this.game.running = false;
-}
-PlayGame.prototype.update = function () {
-    if (this.game.click && this.game.unicorn.lives > 0) this.game.running = true;
+AssetManager.prototype.getAsset = function (path) {
+    //console.log(path.toString());
+    return this.cache[path];
 }
 
-PlayGame.prototype.draw = function (ctx) {
-    if (!this.game.running) {
-        ctx.font = "24pt Impact";
-        //ctx.fillStyle = "red";
-        //if (this.game.mouse) { ctx.fillStyle = "black"; }
-        //ctx.fillText("Menu", 700, 700);
+function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, loop, reverse, rowStart) {
+    this.spriteSheet = spriteSheet;
+    this.frameWidth = frameWidth;
+    this.frameDuration = frameDuration;
+    this.frameHeight = frameHeight;
+    this.frames = frames;
+    this.totalTime = frameDuration * frames;
+    this.elapsedTime = 0;
+    this.loop = loop;
+    this.reverse = reverse;
+    this.rowStart = rowStart;
+}
 
+Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
+    var scaleBy = scaleBy || 1;
+    this.elapsedTime += tick;
+    if (this.loop) {
+        if (this.isDone()) {
+            this.elapsedTime = 0;
+        }
+    } else if (this.isDone()) {
+        return;
     }
+    var index = this.reverse ? this.frames - this.currentFrame() - 1 : this.currentFrame();
+    var vindex = 0;
+    while ((index + 1) * this.frameWidth > this.spriteSheet.width) {
+        index -= Math.floor(this.spriteSheet.width / this.frameWidth);
+        vindex++;
+    }
+    var locX = x;
+    var locY = y;
+    ctx.drawImage(this.spriteSheet,
+                  index * this.frameWidth, vindex * this.frameHeight + this.rowStart * this.frameHeight,  // source from sheet
+                  this.frameWidth, this.frameHeight,
+                  locX, locY,
+                  this.frameWidth * scaleBy,
+                  this.frameHeight * scaleBy);
 }
 
-function Platform(game, x, y, width, height) {
-    this.width = width;
-    this.height = height;
-    this.startX = x;
-    this.startY = y;
-    this.boundingbox = new BoundingBox(x, y, width, height);
-    Entity.call(this, game, x, y);
+Animation.prototype.currentFrame = function () {
+    return Math.floor(this.elapsedTime / this.frameDuration);
 }
 
-Platform.prototype = new Entity();
-Platform.prototype.constructor = Platform;
+Animation.prototype.isDone = function () {
+    return (this.elapsedTime >= this.totalTime);
+}
 
+function Timer() {
+    this.gameTime = 0;
+    this.maxStep = 0.05;
+    this.wallLastTimestamp = 0;
+}
 
+Timer.prototype.tick = function () {
+    var wallCurrent = Date.now();
+    var wallDelta = (wallCurrent - this.wallLastTimestamp) / 1000;
+    this.wallLastTimestamp = wallCurrent;
 
-function Unicorn(game) {
+    var gameDelta = Math.min(wallDelta, this.maxStep);
+    this.gameTime += gameDelta;
+    return gameDelta;
+}
+
+function Background(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./Penguins.jpg"), 206, 110, 0.05, 30, true, true);
 
     Entity.call(this, game, 0, 400);
 }
 
-Unicorn.prototype = new Entity();
-Unicorn.prototype.constructor = Unicorn;
+Background.prototype = new Entity();
+Background.prototype.constructor = Background;
 
+Background.prototype.update = function () {
+    Entity.prototype.update.call(this);
+}
 
-Unicorn.prototype.update = function () {
-    if (this.game.running) {
-        if (this.dead) {
-            this.game.reset();
-            return;
-        }
-        if (this.game.space && !this.jumping && !this.falling) {
-            this.jumping = true;
-            this.base = this.y;
-        }
-        if (this.jumping) {
-            var height = 0;
-            var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
-            if (duration > this.jumpAnimation.totalTime / 2) duration = this.jumpAnimation.totalTime - duration;
-            duration = duration / this.jumpAnimation.totalTime;
+Background.prototype.draw = function (ctx) {
+    //ctx.fillStyle = "SaddleBrown";
+    //ctx.fillRect(0, 500, 800, 300);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./Penguins.jpg"), 0, 0);
+}
 
-            // quadratic jump
-            height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
-            this.lastBottom = this.boundingbox.bottom;
-            this.y = this.base - height;
-            this.boundingbox = new BoundingBox(this.x + 32, this.y - 32, this.jumpAnimation.frameWidth - 20, this.jumpAnimation.frameHeight - 5);
+function Hero(game) {
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3);
+    Entity.call(this, game, 0, 400);
+    this.direction = "down";
+}
 
-            for (var i = 0; i < this.game.platforms.length; i++) {
-                var pf = this.game.platforms[i];
-                if (this.boundingbox.collide(pf.boundingbox) && this.lastBottom < pf.boundingbox.top) {
-                    this.jumping = false;
-                    this.y = pf.boundingbox.top - this.animation.frameHeight + 10;
-                    this.platform = pf;
-                    this.jumpAnimation.elapsedTime = 0;
-                }
-            }
-        }
-        if (this.falling) {
-            this.lastBottom = this.boundingbox.bottom;
-            this.y += this.game.clockTick / this.jumpAnimation.totalTime * 4 * this.jumpHeight;
-            this.boundingbox = new BoundingBox(this.x + 32, this.y - 32, this.jumpAnimation.frameWidth - 20, this.jumpAnimation.frameHeight - 5);
+Hero.prototype = new Entity();
+Hero.prototype.constructor = Hero;
 
-            for (var i = 0; i < this.game.platforms.length; i++) {
-                var pf = this.game.platforms[i];
-                if (this.boundingbox.collide(pf.boundingbox) && this.lastBottom < pf.boundingbox.top) {
-                    this.falling = false;
-                    this.y = pf.boundingbox.top - this.animation.frameHeight + 10;
-                    this.platform = pf;
-                    this.fallAnimation.elapsedTime = 0;
-                }
-            }
-
-        }
-        if (!this.jumping && !this.falling) {
-            this.boundingbox = new BoundingBox(this.x + 25, this.y + 10, this.animation.frameWidth - 40, this.animation.frameHeight - 20);
-            if (this.boundingbox.left > this.platform.boundingbox.right) this.falling = true;
-        }
-        for (var i = 0; i < this.game.platforms.length; i++) {
-            var pf = this.game.platforms[i];
-            if (this.boundingbox.collide(pf.boundingbox)) {
-                this.dead = true;
-            }
-        }
-        if (this.y > this.game.ctx.canvas.height) this.dead = true;
+Hero.prototype.update = function () {
+    if (this.game.w) {
+        this.direction = "up";
+    } else if (this.game.a) {
+        this.direction = "left";
+    } else if (this.game.s) {
+        this.direction = "down";
+    } else if (this.game.d) {
+        this.direction = "right";
     }
     Entity.prototype.update.call(this);
 }
 
-Unicorn.prototype.draw = function (ctx) {
-    if (this.dead || !this.game.running) return;
-    if (this.jumping) {
-        if (this.boxes) {
-            ctx.strokeStyle = "red";
-            ctx.strokeRect(this.x + 32, this.y - 32, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
-            ctx.strokeStyle = "green";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
-        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x + 32, this.y - 32);
-        if (this.jumpAnimation.isDone()) {
-            this.jumpAnimation.elapsedTime = 0;
-            this.jumping = false;
-            this.falling = true;
-        }
-    }
-    else if (this.falling) {
-        if (this.boxes) {
-            ctx.strokeStyle = "red";
-            ctx.strokeRect(this.x + 32, this.y - 32, this.fallAnimation.frameWidth, this.fallAnimation.frameHeight);
-            ctx.strokeStyle = "green";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
-        this.fallAnimation.drawFrame(this.game.clockTick, ctx, this.x + 32, this.y - 32);
-    }
-    else {
-        if (this.boxes) {
-            ctx.strokeStyle = "red";
-            ctx.strokeRect(this.x, this.y, this.animation.frameWidth, this.animation.frameHeight);
-            ctx.strokeStyle = "green";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+Hero.prototype.draw = function (ctx) {
+    if (this.direction == "down") {
+        this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    } else if (this.direction == "up") {
+        this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    } else if (this.direction == "left") {
+        this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    } else if (this.direction == "right") {
+        this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
     }
 }
-
-function background(game) {
-    Entity.call(this, game, 0, 0);
-    this.sprite = ASSET_MANAGER.getAsset('./DungeonCrawler3000/green_map.png');
-}
-
-background.prototype = new Entity();
-background.prototype.constructor = background;
-
-background.prototype.draw = function (ctx) {
-    ctx.drawImage(this.sprite, this.x - this.sprite.width / 2, this.y - this.sprite.height / 2);
-}
-
 
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();
-ASSET_MANAGER.queueDownload("./img/RobotUnicorn.png");
-ASSET_MANAGER.queueDownload("./DungeonCrawler3000/green_map.png");
-var img = new Image();
-img.src = 'green_map.png';
 
+ASSET_MANAGER.queueDownload("./Penguins.jpg");
+ASSET_MANAGER.queueDownload("./GoldenSun.png");
 
 ASSET_MANAGER.downloadAll(function () {
+    var x = 0, y = 0;
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
-    var lives = document.getElementById('lives');
+
     var ctx = canvas.getContext('2d');
+    //var sprite = ASSET_MANAGER.getAsset('Penguins.jpg');
+    //ctx.drawImage(sprite, x, y);
+    
 
     var gameEngine = new GameEngine();
-    var platforms = [];
-    var pf = new Platform(gameEngine, 0, 500, 1800, 100);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new Platform(gameEngine, 1200, 350, 600, 100);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new Platform(gameEngine, 2050, 250, 1800, 100);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
+    var gameboard = new GameBoard();
 
-    gameEngine.lives = lives;
-    gameEngine.platforms = platforms;
-    gameEngine.running = false;
+    var bg = new Background(gameEngine);
+    var hero = new Hero(gameEngine);
 
-    var unicorn = new Unicorn(gameEngine);
-    var pg = new PlayGame(gameEngine, 320, 350);
+    gameEngine.addEntity(bg);
+    gameEngine.addEntity(hero);
 
-    gameEngine.addEntity(unicorn);
-    gameEngine.addEntity(pg);
+    gameEngine.addEntity(gameboard);
 
-    gameEngine.unicorn = unicorn;
+   // gameEngine.addEntity(sprite);
 
     gameEngine.init(ctx);
     gameEngine.start();
 });
+
+function menu() {
+    alert("MENU");
+}
+
+//function createButton() {
+  //  var buttonnode = document.createElement('input');
+   // buttonnode.setAttribute('type', button);
+    //buttonnode.setAttribute('name', 'sal');
+   // buttonnode.setAttribute('value', 'sal');
+   // buttonnode.attachEvent('onclick', menu);
+   // context.appendChild(buttonnode);
+//}
+
+window.onload = function () {
+  //  createButton(document.body, function () {
+    //    highlight(this.parentNode.childNodes[1]);
+    //});
+    //var protag = ASSET_MANAGER.getAsset("goldensunfj0.png");
+    //ctx.drawImage(protag, 0, 0);
+
+
+}

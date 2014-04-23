@@ -121,6 +121,7 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.running = null;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -174,35 +175,34 @@ GameEngine.prototype.startInput = function () {
         var i = String.fromCharCode(e.which);
         console.log(i);
         if (String.fromCharCode(e.which) === 'W') {
-            console.log("Moving North");
             that.up = true;
             that.down = false;
             that.left = false;
             that.right = false;
         }
         if (String.fromCharCode(e.which) === 'A') {
-            console.log("Moving North");
             that.up = false;
             that.down = false;
             that.left = true;
             that.right = false;
         }
         if (String.fromCharCode(e.which) === 'S') {
-            console.log("Moving North");
             that.up = false;
             that.down = true;
             that.left = false;
             that.right = false;
         }
         if (String.fromCharCode(e.which) === 'D') {
-            console.log("Moving North");
             that.up = false;
             that.down = false;
             that.left = false;
             that.right = true;
         }
         if (String.fromCharCode(e.which) === 'M') {
-            that.menu = true;
+            that.running = false;
+        }
+        if (String.fromCharCode(e.which) === 'E') {
+            that.running = true;
         }
         e.preventDefault();
     }, false);
@@ -255,7 +255,7 @@ GameEngine.prototype.loop = function () {
     this.left = null;
     this.down = null;
     this.right = null;
-    this.menu = null;
+    this.menuIsUp = null;
 }
 
 function Entity(game, x, y) {
@@ -294,12 +294,50 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
 }
+function BoundingBox(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+
+    this.left = x;
+    this.top = y;
+    this.right = this.left + width;
+    this.bottom = this.top + height;
+}
+
+BoundingBox.prototype.collide = function (oth) {
+    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+    return false;
+}
+
+function PlayGame(game, x, y) {
+    Entity.call(this, game, x, y);
+}
+
+PlayGame.prototype = new Entity();
+PlayGame.prototype.constructor = PlayGame;
+
+PlayGame.prototype.reset = function () {
+    this.game.running = false;
+}
+PlayGame.prototype.update = function () {
+    if (this.game.click) this.game.running = true;
+}
+
+PlayGame.prototype.draw = function (ctx) {
+    if (!this.game.running) {
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/menu.png"), this.x, this.y, 750, 750);
+    }
+}
 
 //Game Objects
-
 function TileZero(game, hero) {
-    this.HeroX = hero.x;
-    this.HeroY = hero.y;
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    //this.boundingbox = new BoundingBox(x, y, width, height);
     Entity.call(this, game, 20, 20);
 }
 
@@ -307,6 +345,8 @@ TileZero.prototype = new Entity();
 TileZero.prototype.constructor = TileZero;
 
 TileZero.prototype.update = function () {
+    if (!this.game.running) return;
+    //this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
     Entity.prototype.update.call(this);
 }
 
@@ -314,7 +354,175 @@ TileZero.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
 
-function Hero(game) {
+function TileOne(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileOne.prototype = new Entity();
+TileOne.prototype.constructor = TileZero;
+
+TileOne.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileOne.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileTwo(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileTwo.prototype = new Entity();
+TileTwo.prototype.constructor = TileZero;
+
+TileTwo.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileTwo.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileThree(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileThree.prototype = new Entity();
+TileThree.prototype.constructor = TileZero;
+
+TileThree.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileThree.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileFour(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileFour.prototype = new Entity();
+TileFour.prototype.constructor = TileZero;
+
+TileFour.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileFour.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileFive(game, hero) {
+        this.NorthTile = null;
+        this.EastTile = null;
+        this.SouthTile = null;
+        this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileFive.prototype = new Entity();
+TileFive.prototype.constructor = TileZero;
+
+TileFive.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileFive.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileSix(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileSix.prototype = new Entity();
+TileSix.prototype.constructor = TileZero;
+
+TileSix.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileSix.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileSeven(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileSeven.prototype = new Entity();
+TileSeven.prototype.constructor = TileZero;
+
+TileSeven.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileSeven.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+}
+
+function TileEight(game, hero) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.call(this, game, 20, 20);
+}
+
+TileEight.prototype = new Entity();
+TileEight.prototype.constructor = TileZero;
+
+TileEight.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+
+TileEight.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+}
+
+function Hero(game, tile) {
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2);
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0);
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1);
@@ -324,7 +532,7 @@ function Hero(game) {
     this.movingSouth = true;
     this.movingWest = false;
     this.movingEast = false;
-
+    this.CurrentTile = tile;
     Entity.call(this, game, 380, 380);
 
 
@@ -334,90 +542,63 @@ Hero.prototype = new Entity();
 Hero.prototype.constructor = Hero;
 
 Hero.prototype.update = function () {
-    console.log(this.game.up);
-    if (this.game.up) {
-        console.log("To the North");
-        this.movingNorth = true;
-        this.movingSouth = false;
-        this.movingWest = false;
-        this.movingEast = false;
-    } else if (this.game.left) {
-        console.log("To the West");
-        this.movingNorth = false;
-        this.movingSouth = false;
-        this.movingWest = true;
-        this.movingEast = false;
-    } else if (this.game.down) {
-        console.log("To the South");
-        this.movingNorth = false;
-        this.movingSouth = true;
-        this.movingWest = false;
-        this.movingEast = false;
-    } else if (this.game.right) {
-        console.log("To the East");
-        this.movingNorth = false;
-        this.movingSouth = false;
-        this.movingWest = false;
-        this.movingEast = true;
+    if (this.game.running) {
+        if (this.game.up) {
+            this.movingNorth = true;
+            this.movingSouth = false;
+            this.movingWest = false;
+            this.movingEast = false;
+        } else if (this.game.left) {
+            this.movingNorth = false;
+            this.movingSouth = false;
+            this.movingWest = true;
+            this.movingEast = false;
+        } else if (this.game.down) {
+            this.movingNorth = false;
+            this.movingSouth = true;
+            this.movingWest = false;
+            this.movingEast = false;
+        } else if (this.game.right) {
+            this.movingNorth = false;
+            this.movingSouth = false;
+            this.movingWest = false;
+            this.movingEast = true;
+        }
     }
-    console.log("Hero is at(" + this.x + "," + this.y + ")");
+    //console.log("Hero is at(" + this.x + "," + this.y + ")");
     Entity.prototype.update.call(this);
 }
 
 Hero.prototype.draw = function (ctx) {
-    if(!this.game.menu) {
+    if (!this.game.running) return;
     if (this.movingSouth && this.game.down) {
-        //console.log("To the South");
-        this.game.down = false;
-        this.y = this.y + 32.2;
-        
-        this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-        this.animation = this.Danimation;
-    } else if (this.movingNorth && this.game.up) {
-        // console.log("To the North");
-        this.game.up = false;
-        this.y = this.y - 32.2;
+            this.game.down = false;
+            this.y = this.y + 32.2;
 
-        this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-        this.animation = this.Uanimation;
-    } else if (this.movingWest && this.game.left) {
-        //console.log("To the West");
-        this.game.left = false;
-        this.x = this.x - 32.2;
+            this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+            this.animation = this.Danimation;
+        } else if (this.movingNorth && this.game.up) {
+            this.game.up = false;
+            this.y = this.y - 32.2;
 
-        this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-        this.animation = this.Lanimation;
-    } else if (this.movingEast && this.game.right) {
-        //console.log("To the East");
-        this.game.left = false;
-        this.x = this.x + 32.2;
-        this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-        this.animation = this.Ranimation;
+            this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+            this.animation = this.Uanimation;
+        } else if (this.movingWest && this.game.left) {
+            this.game.left = false;
+            this.x = this.x - 32.2;
 
-    } else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    }
-    }
-}
-function Menu(game) {
-    this.menuIsUp = false;
-    Entity.call(this, game, 20, 20);
-}
-Menu.prototype = new Entity();
-Menu.prototype.constructor = Menu;
+            this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+            this.animation = this.Lanimation;
+        } else if (this.movingEast && this.game.right) {
+            this.game.left = false;
+            this.x = this.x + 32.2;
+            this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+            this.animation = this.Ranimation;
 
-Menu.prototype.update = function () {
-    Entity.prototype.update.call(this);
-}
+        } else {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        }
 
-Menu.prototype.draw = function (ctx) {
-    console.log(this.game.menu);
-    if (this.game.menu) {
-        console.log("Menu is Up");
-        var menu_img = new Image();
-        menu_img.src = "./img/menu.png";
-        ctx.drawImage("./img/menu.png", 150, 250);
-    }
 }
 // the "main" code begins here
 
@@ -433,16 +614,55 @@ ASSET_MANAGER.downloadAll(function () {
     var ctx = canvas.getContext('2d');
     //Game Engine
     var gameEngine = new GameEngine();
-
     //Components
+    gameEngine.running = true;
 
-    var menu = new Menu(gameEngine);
+    /*var platforms = [];
+    var pf = new TileZero(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileOne(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileTwo(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileThree(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileFour(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileFive(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileSix(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileSeven(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+    pf = new TileEight(gameEngine);
+    gameEngine.addEntity(pf);
+    platforms.push(pf);
+        gameEngine.platforms = platforms;*/
+    var tileZero = new TileZero(gameEngine);
+    var tileOne = new TileOne(gameEngine);
+    var tileTwo = new TileTwo(gameEngine);
+    var tileThree = new TileThree(gameEngine);
+    var tileFour = new TileFour(gameEngine);
+    var tileFive = new TileFive(gameEngine);
+    var tileSix = new TileSix(gameEngine);
+    var tileSeven = new TileSeven(gameEngine);
+    var tileEight = new TileEight(gameEngine);
+
+    var pg = new PlayGame(gameEngine, 25, 25);
     var hero = new Hero(gameEngine);
-    var tileZero = new TileZero(gameEngine, hero);
     //Adding components to Game Engine
     gameEngine.addEntity(tileZero);
+
     gameEngine.addEntity(hero);
-    gameEngine.addEntity(menu);
+    gameEngine.addEntity(pg);
 
     gameEngine.init(ctx);
     gameEngine.start();

@@ -311,21 +311,21 @@ BoundingBox.prototype.collide = function (oth) {
     return false;
 }
 
-function PlayGame(game, x, y) {
+function Menu(game, x, y) {
     Entity.call(this, game, x, y);
 }
 
-PlayGame.prototype = new Entity();
-PlayGame.prototype.constructor = PlayGame;
+Menu.prototype = new Entity();
+Menu.prototype.constructor = Menu;
 
-PlayGame.prototype.reset = function () {
+Menu.prototype.reset = function () {
     this.game.running = false;
 }
-PlayGame.prototype.update = function () {
+Menu.prototype.update = function () {
     if (this.game.click) this.game.running = true;
 }
 
-PlayGame.prototype.draw = function (ctx) {
+Menu.prototype.draw = function (ctx) {
     if (!this.game.running) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/menu.png"), this.x, this.y, 750, 750);
     }
@@ -337,7 +337,7 @@ function TileZero(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
-    //this.boundingbox = new BoundingBox(x, y, width, height);
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -346,12 +346,15 @@ TileZero.prototype.constructor = TileZero;
 
 TileZero.prototype.update = function () {
     if (!this.game.running) return;
-    //this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.prototype.update.call(this);
 }
 
 TileZero.prototype.draw = function (ctx) {
+
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function TileOne(game, hero) {
@@ -414,7 +417,7 @@ TileThree.prototype.update = function () {
 
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileFour(game, hero) {
@@ -435,7 +438,7 @@ TileFour.prototype.update = function () {
 
 TileFour.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileFive(game, hero) {
@@ -456,7 +459,7 @@ TileFive.prototype.update = function () {
 
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileSix(game, hero) {
@@ -522,7 +525,7 @@ TileEight.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
 
-function Hero(game, tile) {
+function Hero(game) {
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2);
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0);
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1);
@@ -532,7 +535,8 @@ function Hero(game, tile) {
     this.movingSouth = true;
     this.movingWest = false;
     this.movingEast = false;
-    this.CurrentTile = tile;
+    this.boxes = true;
+    this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth, this.animation.frameHeight);
     Entity.call(this, game, 380, 380);
 
 
@@ -543,6 +547,7 @@ Hero.prototype.constructor = Hero;
 
 Hero.prototype.update = function () {
     if (this.game.running) {
+        this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth, this.animation.frameHeight);
         if (this.game.up) {
             this.movingNorth = true;
             this.movingSouth = false;
@@ -574,28 +579,45 @@ Hero.prototype.draw = function (ctx) {
     if (this.movingSouth && this.game.down) {
             this.game.down = false;
             this.y = this.y + 32.2;
-
+            if (this.boxes) {
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            }
             this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
             this.animation = this.Danimation;
         } else if (this.movingNorth && this.game.up) {
             this.game.up = false;
             this.y = this.y - 32.2;
-
+            if (this.boxes) {
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            }
             this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
             this.animation = this.Uanimation;
         } else if (this.movingWest && this.game.left) {
             this.game.left = false;
             this.x = this.x - 32.2;
-
+            if (this.boxes) {
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            }
             this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
             this.animation = this.Lanimation;
         } else if (this.movingEast && this.game.right) {
             this.game.left = false;
             this.x = this.x + 32.2;
+            if (this.boxes) {
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            }
             this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
             this.animation = this.Ranimation;
 
         } else {
+            if (this.boxes) {
+                ctx.strokeStyle = "blue";
+                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            }
             this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         }
 
@@ -604,7 +626,9 @@ Hero.prototype.draw = function (ctx) {
 
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./img/desert.jpg");
+ASSET_MANAGER.queueDownload("./img/desert_battle.jpg");
 ASSET_MANAGER.queueDownload("./img/grassland.jpg");
+ASSET_MANAGER.queueDownload("./img/snow.jpg");
 ASSET_MANAGER.queueDownload("./img/GoldenSun.png");
 ASSET_MANAGER.queueDownload("./img/menu.png");
 
@@ -656,13 +680,13 @@ ASSET_MANAGER.downloadAll(function () {
     var tileSeven = new TileSeven(gameEngine);
     var tileEight = new TileEight(gameEngine);
 
-    var pg = new PlayGame(gameEngine, 25, 25);
+    var menu = new Menu(gameEngine, 25, 25);
     var hero = new Hero(gameEngine);
     //Adding components to Game Engine
     gameEngine.addEntity(tileZero);
 
     gameEngine.addEntity(hero);
-    gameEngine.addEntity(pg);
+    gameEngine.addEntity(menu);
 
     gameEngine.init(ctx);
     gameEngine.start();

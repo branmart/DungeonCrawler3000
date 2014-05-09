@@ -51,7 +51,7 @@ AssetManager.prototype.getAsset = function (path) {
     return this.cache[path];
 }
 
-function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, loop, reverse, rowStart, columnStart) {
+function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, loop, reverse, rowStart, center, columnStart) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
     this.frameDuration = frameDuration;
@@ -62,6 +62,7 @@ function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, 
     this.loop = loop;
     this.reverse = reverse;
     this.rowStart = rowStart;
+    this.center = center;
     this.columnStart = columnStart;
 }
 
@@ -75,8 +76,8 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
     } else if (this.isDone()) {
         return;
     }
-    var index = this.frames - this.currentFrame() - 1;
-    var vindex = 0;
+    var index = this.frames - this.currentFrame() + this.center;
+    var vindex = this.columnStart;
     while ((index + 1) * this.frameWidth > this.spriteSheet.width) {
         index -= Math.floor(this.spriteSheet.width / this.frameWidth);
         vindex++;
@@ -575,12 +576,14 @@ TileEight.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
 
-function Hero(game) {
-    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2);
-    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0);
-    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1);
-    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3);
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0);
+function Hero(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
     this.movingNorth = false;
     this.movingSouth = true;
     this.movingWest = false;
@@ -752,14 +755,20 @@ ASSET_MANAGER.downloadAll(function () {
     platforms.push(pf);
     gameEngine.platforms = platforms;
 
-    var hero1 = new Hero(gameEngine, gameEngine.platforms[0]);
+    var hero1 = new Hero(gameEngine, -1, 0);
+    var hero2 = new Hero(gameEngine, 2, 0);
+    var hero3 = new Hero(gameEngine, 5, 0);
+    var hero4 = new Hero(gameEngine, 8, 0);
+    var hero5 = new Hero(gameEngine, -1, 4);
+    var hero6 = new Hero(gameEngine, 2, 4);
+
     var menu = new Menu(gameEngine, 25, 25);
     var battle = new Battle(gameEngine, 20, 20, hero1, gameEngine.platforms[0]);
 
     //Adding components to Game Engine
     gameEngine.addEntity(gameEngine.platforms[0]);
 
-    gameEngine.addEntity(hero1);
+    gameEngine.addEntity(hero4);
     gameEngine.addEntity(menu);
     gameEngine.addEntity(battle);
 

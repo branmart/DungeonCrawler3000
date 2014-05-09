@@ -347,9 +347,12 @@ Menu.prototype.draw = function (ctx) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/menu.png"), this.x, this.y, 750, 750);
     }
 }
-function Battle(game, x, y,one) {
+function Battle(game, x, y,one, enemy) {
     this.battleTime = 0;
     this.heroOne = one;
+    this.firstEnemy = enemy;
+    this.heroOneX = one.x;
+    this.heroOneY = one.y;
     Entity.call(this, game, x, y);
 }
 
@@ -361,21 +364,44 @@ Battle.prototype.reset = function () {
 }
 Battle.prototype.update = function () {
     if (this.game.running) {
-        //this.battleTime += this.game.clockTick;
+        this.heroOneX = this.game.hero.currentX;
+        this.heroOneY = this.game.hero.currentY;
+
+        this.battleTime += this.game.clockTick;
     }
 }
 
 Battle.prototype.draw = function (ctx) {
-    if (this.battleTime > 5) {
+    var that = this;
+    if (this.battleTime > 3) {
         this.game.battleRunning = true;
     }
-    if (this.battleTime > 10) {
+    /*if (this.battleTime > 10) {
         this.battleTime = 0;
         this.game.battleRunning = false;
+    }*/
+    if (this.game.click && this.game.battleRunning) {
+        console.log(that.heroOne.hp);
+        this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.phystr - this.firstEnemy.phydef);
+        this.heroOne.hp = this.heroOne.hp - Math.abs((this.firstEnemy.phystr - this.heroOne.phydef));
+        if (this.heroOne.hp < 0 && this.firstEnemy.hp > 0) {
+            this.game.battleRunning = false;
+            this.game.running = false;
+        } else if (this.firstEnemy.hp < 0 && this.heroOne.hp > 0) {
+            this.game.battleRunning = false;
+            this.battleTime = 0;
+            this.heroOne.x = this.heroOneX;
+            this.heroOne.y = this.heroOneY;
+            this.firstEnemy.reset();
+        }
     }
-    console.log(this.heroOne.currentClass);
+    //console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert_battle.jpg"), this.x, this.y, 760, 760);
+        this.firstEnemy.draw(ctx);
+        that.heroOne.x = 50;
+        that.heroOne.y = 700;
+        that.heroOne.draw(ctx);
     }
 }
 //Game Objects
@@ -564,7 +590,7 @@ function TileEight(game, hero) {
 }
 
 TileEight.prototype = new Entity();
-TileEight.prototype.constructor = TileZero;
+TileEight.prototype.constructor = TileEight;
 
 TileEight.prototype.update = function () {
 
@@ -575,10 +601,15 @@ TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
-
-function Hero(game, cen, col) {
+function EnemyType1(game, cen, col) {
     var center = cen;
     var column = col;
+    this.hp = 1;
+    this.mp = 0;
+    this.phystr = 1;
+    this.phydef = 0;
+    this.magstr = 1;
+    this.magdef = 0;
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);
@@ -591,6 +622,50 @@ function Hero(game, cen, col) {
     this.boxes = true;
     this.x = 380;
     this.y = 380;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, 700, 50);
+
+}
+EnemyType1.prototype = new Entity();
+EnemyType1.prototype.constructor = EnemyType1;
+
+EnemyType1.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+EnemyType1.prototype.reset = function () {
+    this.hp = 1;
+    this.mp = 0;
+    Entity.prototype.update.call(this);
+}
+EnemyType1.prototype.draw = function (ctx) {
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+}
+function Hero(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 100;
+    this.mp = 10;
+    this.phystr = 2;
+    this.phydef = 3;
+    this.magstr = 1;
+    this.magdef = 0;
+
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 380;
+    this.y = 380;
+    this.currentX = 380;
+    this.currentY = 380;
     this.currentClass = "Warrior";
     this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth+20, this.animation.frameHeight+25);
     Entity.call(this, game, 380, 380);
@@ -651,16 +726,21 @@ Hero.prototype.update = function () {
         }
     }
     this.currentClass = "Warrior";
-
     //console.log("Hero is at(" + this.x + "," + this.y + ")");
+
     Entity.prototype.update.call(this);
 }
 
 Hero.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
+    if (!this.game.running) return;
+    if (this.game.battleRunning) {
+        this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        return;
+    }
     if (this.movingSouth && this.game.down) {
             this.game.down = false;
             this.y = this.y + 32.2;
+            this.currentY = this.y;
             if (this.boxes) {
                 ctx.strokeStyle = "blue";
                 ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -670,6 +750,7 @@ Hero.prototype.draw = function (ctx) {
         } else if (this.movingNorth && this.game.up) {
             this.game.up = false;
             this.y = this.y - 32.2;
+            this.currentY = this.y;
             if (this.boxes) {
                 ctx.strokeStyle = "blue";
                 ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -679,6 +760,7 @@ Hero.prototype.draw = function (ctx) {
         } else if (this.movingWest && this.game.left) {
             this.game.left = false;
             this.x = this.x - 32.2;
+            this.currentX = this.x;
             if (this.boxes) {
                 ctx.strokeStyle = "blue";
                 ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -688,6 +770,7 @@ Hero.prototype.draw = function (ctx) {
         } else if (this.movingEast && this.game.right) {
             this.game.left = false;
             this.x = this.x + 32.2;
+            this.currentX = this.x;
             if (this.boxes) {
                 ctx.strokeStyle = "blue";
                 ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -754,18 +837,21 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(pf);
     platforms.push(pf);
     gameEngine.platforms = platforms;
-
+    var heroes = [];
     var hero1 = new Hero(gameEngine, -1, 0);
     var hero2 = new Hero(gameEngine, 2, 0);
     var hero3 = new Hero(gameEngine, 5, 0);
     var hero4 = new Hero(gameEngine, 8, 0);
     var hero5 = new Hero(gameEngine, -1, 4);
     var hero6 = new Hero(gameEngine, 2, 4);
-
+    gameEngine.hero = hero4;
     var menu = new Menu(gameEngine, 25, 25);
-    var battle = new Battle(gameEngine, 20, 20, hero1, gameEngine.platforms[0]);
+    var enemy1 = new EnemyType1(gameEngine, 2, 4);
+    gameEngine.firstEnemy = enemy1;
+    var battle = new Battle(gameEngine, 20, 20, gameEngine.hero, gameEngine.firstEnemy);
 
     //Adding components to Game Engine
+
     gameEngine.addEntity(gameEngine.platforms[0]);
 
     gameEngine.addEntity(hero4);

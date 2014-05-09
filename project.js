@@ -51,7 +51,7 @@ AssetManager.prototype.getAsset = function (path) {
     return this.cache[path];
 }
 
-function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, loop, reverse, rowStart) {
+function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, loop, reverse, rowStart, columnStart) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
     this.frameDuration = frameDuration;
@@ -62,6 +62,7 @@ function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, 
     this.loop = loop;
     this.reverse = reverse;
     this.rowStart = rowStart;
+    this.columnStart = columnStart;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
@@ -74,7 +75,7 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
     } else if (this.isDone()) {
         return;
     }
-    var index = this.reverse ? this.frames - this.currentFrame() - 1 : this.currentFrame();
+    var index = this.frames - this.currentFrame() - 1;
     var vindex = 0;
     while ((index + 1) * this.frameWidth > this.spriteSheet.width) {
         index -= Math.floor(this.spriteSheet.width / this.frameWidth);
@@ -359,7 +360,7 @@ Battle.prototype.reset = function () {
 }
 Battle.prototype.update = function () {
     if (this.game.running) {
-        this.battleTime += this.game.clockTick;
+        //this.battleTime += this.game.clockTick;
     }
 }
 
@@ -753,7 +754,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var hero1 = new Hero(gameEngine, gameEngine.platforms[0]);
     var menu = new Menu(gameEngine, 25, 25);
-    var battle = new Battle(gameEngine, 20, 20, hero1);
+    var battle = new Battle(gameEngine, 20, 20, hero1, gameEngine.platforms[0]);
 
     //Adding components to Game Engine
     gameEngine.addEntity(gameEngine.platforms[0]);

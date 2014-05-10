@@ -396,8 +396,9 @@ Battle.prototype.draw = function (ctx) {
         }
         //ability 2 //temp healing ability.
         if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
-            if (this.heroOne.hp !== 100) {
+            if (this.heroOne.hp < 100) {
                 this.heroOne.hp = this.heroOne.hp + 10;
+                if (this.heroOne.hp > 100) this.heroOne.hp = 100;
             }
         }
         //ability 3 //temp run ability
@@ -454,11 +455,21 @@ Battle.prototype.draw = function (ctx) {
         that.heroOne.y = 550;
         that.heroOne.draw(ctx);
         ctx.font = "24pt Impact";
+        ctx.fillStyle = "blue";
+        ctx.fillText("Ability 1", 100, 675);
+        ctx.fillText("Ability 2", 100, 750);
+        ctx.fillText("Ability 3", 360, 675);
+        ctx.fillText("Ability 4", 360, 750);
+        ctx.fillText("Ability 5", 600, 675);
+        ctx.fillText("Ability 6", 600, 750);
+
         ctx.fillStyle = "purple";
         if (this.game.mouse) { ctx.fillStyle = "purple"; }
         if (this.heroOne.hp > 0) {
             ctx.fillText(this.heroOne.hp, 50, 50);
 
+        } else {
+            ctx.fillText("Game Over Man!", 380, 380);
         }
         ctx.fillStyle = "red";
         if (this.game.mouse) { ctx.fillStyle = "red"; }
@@ -466,9 +477,7 @@ Battle.prototype.draw = function (ctx) {
             ctx.fillText(this.firstEnemy.hp, 75, 75);
 
         }
-        else {
-            ctx.fillText("Game Over Man!", 380, 380);
-        }
+
 
     }
 }

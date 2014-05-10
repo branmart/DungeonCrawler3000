@@ -150,12 +150,6 @@ GameEngine.prototype.startInput = function () {
     var getXandY = function (e) {
         var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
         var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
-
-        if (x < 1024) {
-            x = Math.floor(x / 32);
-            y = Math.floor(y / 32);
-        }
-
         return { x: x, y: y };
     }
 
@@ -353,6 +347,14 @@ function Battle(game, x, y,one, enemy) {
     this.firstEnemy = enemy;
     this.heroOneX = one.x;
     this.heroOneY = one.y;
+    this.board = [];
+    for (var i = 0; i < 3; i++) {
+        this.board.push([]);
+        for (var j = 0; j < 10; j++) {
+            this.board[i].push(0);
+        }
+    }
+    this.grid = true;
     Entity.call(this, game, x, y);
 }
 
@@ -366,7 +368,10 @@ Battle.prototype.update = function () {
     if (this.game.running) {
         this.heroOneX = this.game.hero.currentX;
         this.heroOneY = this.game.hero.currentY;
-
+        if (this.game.click) {
+            var x = this.game.click.x;
+            var y = this.game.click.y;
+        }
         this.battleTime += this.game.clockTick;
     }
 }
@@ -380,28 +385,91 @@ Battle.prototype.draw = function (ctx) {
         this.battleTime = 0;
         this.game.battleRunning = false;
     }*/
+    if (this.game.mouse) {
+        console.log("(" + this.game.mouse.x + ", " + this.game.mouse.y + ")")
+    }
     if (this.game.click && this.game.battleRunning) {
-        console.log(that.heroOne.hp);
-        this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.phystr - this.firstEnemy.phydef);
-        this.heroOne.hp = this.heroOne.hp - Math.abs((this.firstEnemy.phystr - this.heroOne.phydef));
-        if (this.heroOne.hp < 0 && this.firstEnemy.hp > 0) {
-            this.game.battleRunning = false;
-            this.game.running = false;
-        } else if (this.firstEnemy.hp < 0 && this.heroOne.hp > 0) {
+        console.log("(" + this.game.click.x + ", " + this.game.click.y + ")");
+        //ability 1 //temp attack ability
+        if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697) {
+            this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.phystr - this.firstEnemy.phydef);
+        }
+        //ability 2 //temp healing ability.
+        if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
+            if (this.heroOne.hp !== 100) {
+                this.heroOne.hp = this.heroOne.hp + 10;
+            }
+        }
+        //ability 3 //temp run ability
+        if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697) {
             this.game.battleRunning = false;
             this.battleTime = 0;
             this.heroOne.x = this.heroOneX;
             this.heroOne.y = this.heroOneY;
             this.firstEnemy.reset();
         }
+        //ability 4 //temp heal enemy
+        if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775) {
+            this.firstEnemy.hp = this.firstEnemy.hp + 1;
+        }
+        //ability 5 //temp black magic poison
+        if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697) {
+            this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.magstr - this.firstEnemy.magdef);
+        }
+        //ability 6 temp kill all
+        if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 698 && this.game.click.y < 775) {
+            this.heroOne.hp = this.heroOne.hp - this.heroOne.hp;
+            this.firstEnemy.hp = this.firstEnemy.hp - this.firstEnemy.hp;
+        }
+        if (this.heroOne.hp <= 0 && this.firstEnemy.hp >= 0) {
+            this.game.battleRunning = false;
+            this.game.running = false;
+        } else if (this.firstEnemy.hp <= 0 && this.heroOne.hp >= 0) {
+            this.game.battleRunning = false;
+            this.battleTime = 0;
+            this.heroOne.x = this.heroOneX;
+            this.heroOne.y = this.heroOneY;
+            this.firstEnemy.reset();
+        } else if (this.heroOne.hp <= 0 && this.firstEnemy.hp <= 0) {
+            this.game.battleRunning = false;
+            this.game.running = false;
+        }
+        if ((this.firstEnemy.phystr - this.heroOne.phydef) > 0) {
+            this.heroOne.hp = this.heroOne.hp - (this.firstEnemy.phystr - this.heroOne.phydef);
+        }
     }
     //console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert_battle.jpg"), this.x, this.y, 760, 760);
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 10; j++) {
+                if (this.grid) {
+                    ctx.strokeStyle = "green";
+                    ctx.strokeRect(23.5 + i * 252.5, 23.5 + j * 75, 251, 75);
+                }
+            }
+        }
         this.firstEnemy.draw(ctx);
         that.heroOne.x = 50;
-        that.heroOne.y = 700;
+        that.heroOne.y = 550;
         that.heroOne.draw(ctx);
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        if (this.game.mouse) { ctx.fillStyle = "purple"; }
+        if (this.heroOne.hp > 0) {
+            ctx.fillText(this.heroOne.hp, 50, 50);
+
+        }
+        ctx.fillStyle = "red";
+        if (this.game.mouse) { ctx.fillStyle = "red"; }
+        if (this.firstEnemy.hp > 0) {
+            ctx.fillText(this.firstEnemy.hp, 75, 75);
+
+        }
+        else {
+            ctx.fillText("Game Over Man!", 380, 380);
+        }
+
     }
 }
 //Game Objects
@@ -604,9 +672,9 @@ TileEight.prototype.draw = function (ctx) {
 function EnemyType1(game, cen, col) {
     var center = cen;
     var column = col;
-    this.hp = 1;
+    this.hp = 56;
     this.mp = 0;
-    this.phystr = 1;
+    this.phystr = 4;
     this.phydef = 0;
     this.magstr = 1;
     this.magdef = 0;
@@ -635,7 +703,7 @@ EnemyType1.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 EnemyType1.prototype.reset = function () {
-    this.hp = 1;
+    this.hp = 56;
     this.mp = 0;
     Entity.prototype.update.call(this);
 }

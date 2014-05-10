@@ -377,8 +377,7 @@ Battle.prototype.update = function () {
 }
 
 Battle.prototype.draw = function (ctx) {
-    var that = this;
-    if (this.battleTime > 3) {
+    if (this.battleTime > 30) {
         this.game.battleRunning = true;
     }
     /*if (this.battleTime > 10) {
@@ -451,34 +450,48 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         this.firstEnemy.draw(ctx);
-        that.heroOne.x = 50;
-        that.heroOne.y = 550;
-        that.heroOne.draw(ctx);
+        this.heroOne.x = 50;
+        this.heroOne.y = 550;
+        this.heroOne.draw(ctx);
         ctx.font = "24pt Impact";
         ctx.fillStyle = "blue";
-        ctx.fillText("Ability 1", 100, 675);
-        ctx.fillText("Ability 2", 100, 750);
-        ctx.fillText("Ability 3", 360, 675);
-        ctx.fillText("Ability 4", 360, 750);
-        ctx.fillText("Ability 5", 600, 675);
-        ctx.fillText("Ability 6", 600, 750);
+        if (this.game.mouse.x > 100 && this.game.mouse.x < 150 && this.game.mouse.y > 675 && this.game.mouse.y < 700) { ctx.fillStyle = "red"; }
+        ctx.fillText("Attack", 100, 675);
+        ctx.fillStyle = "blue";
+        ctx.fillText("Heal", 100, 750);
+        ctx.fillStyle = "blue";
+
+        ctx.fillText("Flee", 360, 675);
+        ctx.fillStyle = "blue";
+
+        ctx.fillText("Heal Enemy", 360, 750);
+        ctx.fillStyle = "blue";
+
+        ctx.fillText("Poison", 600, 675);
+        ctx.fillStyle = "blue";
+
+        ctx.fillText("!!!!Obilivion!!!!", 575, 750);
 
         ctx.fillStyle = "purple";
-        if (this.game.mouse) { ctx.fillStyle = "purple"; }
-        if (this.heroOne.hp > 0) {
-            ctx.fillText(this.heroOne.hp, 50, 50);
 
+        if (this.heroOne.hp > 0) {
+            if (this.game.mouse) {
+                if (this.game.mouse.x > this.heroOne.x && this.game.mouse.x < this.heroOne.x + 50 && this.game.mouse.y > this.heroOne.y && this.game.mouse.y < this.heroOne.y + 50) {
+                    ctx.fillText(this.heroOne.hp, 50, 50);
+
+                }
+            }
         } else {
+
             ctx.fillText("Game Over Man!", 380, 380);
         }
         ctx.fillStyle = "red";
-        if (this.game.mouse) { ctx.fillStyle = "red"; }
-        if (this.firstEnemy.hp > 0) {
-            ctx.fillText(this.firstEnemy.hp, 75, 75);
+        if (this.game.mouse) {
+            if (this.game.mouse.x > this.firstEnemy.x && this.game.mouse.x < this.firstEnemy.x + 50 && this.game.mouse.y > this.firstEnemy.y && this.game.mouse.y < this.firstEnemy.y + 50) {
+                ctx.fillText(this.firstEnemy.hp, 50, 50);
 
+            }
         }
-
-
     }
 }
 //Game Objects
@@ -596,10 +609,10 @@ TileFour.prototype.draw = function (ctx) {
 }
 
 function TileFive(game, hero) {
-        this.NorthTile = null;
-        this.EastTile = null;
-        this.SouthTile = null;
-        this.WestTile = null;
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
     Entity.call(this, game, 20, 20);
 }
 
@@ -815,53 +828,53 @@ Hero.prototype.draw = function (ctx) {
         return;
     }
     if (this.movingSouth && this.game.down) {
-            this.game.down = false;
-            this.y = this.y + 32.2;
-            this.currentY = this.y;
-            if (this.boxes) {
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-            }
-            this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-            this.animation = this.Danimation;
-        } else if (this.movingNorth && this.game.up) {
-            this.game.up = false;
-            this.y = this.y - 32.2;
-            this.currentY = this.y;
-            if (this.boxes) {
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-            }
-            this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-            this.animation = this.Uanimation;
-        } else if (this.movingWest && this.game.left) {
-            this.game.left = false;
-            this.x = this.x - 32.2;
-            this.currentX = this.x;
-            if (this.boxes) {
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-            }
-            this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-            this.animation = this.Lanimation;
-        } else if (this.movingEast && this.game.right) {
-            this.game.left = false;
-            this.x = this.x + 32.2;
-            this.currentX = this.x;
-            if (this.boxes) {
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-            }
-            this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-            this.animation = this.Ranimation;
-
-        } else {
-            if (this.boxes) {
-                ctx.strokeStyle = "blue";
-                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-            }
-            this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        this.game.down = false;
+        this.y = this.y + 32.2;
+        this.currentY = this.y;
+        if (this.boxes) {
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
+        this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        this.animation = this.Danimation;
+    } else if (this.movingNorth && this.game.up) {
+        this.game.up = false;
+        this.y = this.y - 32.2;
+        this.currentY = this.y;
+        if (this.boxes) {
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        }
+        this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        this.animation = this.Uanimation;
+    } else if (this.movingWest && this.game.left) {
+        this.game.left = false;
+        this.x = this.x - 32.2;
+        this.currentX = this.x;
+        if (this.boxes) {
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        }
+        this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        this.animation = this.Lanimation;
+    } else if (this.movingEast && this.game.right) {
+        this.game.left = false;
+        this.x = this.x + 32.2;
+        this.currentX = this.x;
+        if (this.boxes) {
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        }
+        this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+        this.animation = this.Ranimation;
+
+    } else {
+        if (this.boxes) {
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        }
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    }
 
 }
 // the "main" code begins here

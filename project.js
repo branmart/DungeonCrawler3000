@@ -365,6 +365,9 @@ Battle.prototype.reset = function () {
     this.game.battleRunning = false;
 }
 Battle.prototype.update = function () {
+    if (this.battleTime > 10) {
+        this.game.battleRunning = true;
+    }
     if (this.game.running) {
         this.heroOneX = this.game.hero.currentX;
         this.heroOneY = this.game.hero.currentY;
@@ -372,72 +375,76 @@ Battle.prototype.update = function () {
             var x = this.game.click.x;
             var y = this.game.click.y;
         }
+        if (this.game.mouse) {
+            console.log("(" + this.game.mouse.x + ", " + this.game.mouse.y + ")")
+        }
+        if (this.game.click && this.game.battleRunning) {
+            console.log("(" + this.game.click.x + ", " + this.game.click.y + ")");
+            //ability 1 //temp attack ability
+            if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697) {
+                this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.phystr - this.firstEnemy.phydef);
+            }
+            //ability 2 //temp healing ability.
+            if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
+
+                if (this.heroOne.hp < 100) {
+                    this.heroOne.hp = this.heroOne.hp + 10;
+                    if (this.heroOne.hp > 100) this.heroOne.hp = 100;
+                }
+            }
+            //ability 3 //temp run ability
+            if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697) {
+                this.game.battleRunning = false;
+                this.battleTime = 0;
+                this.heroOne.x = this.heroOneX;
+                this.heroOne.y = this.heroOneY;
+                this.firstEnemy.reset();
+
+            }
+            //ability 4 //temp heal enemy
+            if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775) {
+                this.firstEnemy.hp = this.firstEnemy.hp + 1;
+
+            }
+            //ability 5 //temp black magic poison
+            if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697) {
+                this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.magstr - this.firstEnemy.magdef);
+                this.heroOne.mp -= 1;
+
+            }
+            //ability 6 temp kill all
+            if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 698 && this.game.click.y < 775) {
+                this.heroOne.hp = this.heroOne.hp - this.heroOne.hp;
+                this.firstEnemy.hp = this.firstEnemy.hp - this.firstEnemy.hp;
+
+            }
+            if (this.heroOne.hp <= 0 && this.firstEnemy.hp >= 0) {
+                this.game.battleRunning = false;
+                this.game.running = false;
+            } else if (this.firstEnemy.hp <= 0 && this.heroOne.hp >= 0) {
+                this.game.battleRunning = false;
+                this.battleTime = 0;
+                this.heroOne.x = this.heroOneX;
+                this.heroOne.y = this.heroOneY;
+                this.heroOne.exp += this.firstEnemy.exp;
+                this.heroOne.ap += this.firstEnemy.ap;
+
+                this.firstEnemy.reset();
+            } else if (this.heroOne.hp <= 0 && this.firstEnemy.hp <= 0) {
+                this.game.battleRunning = false;
+                this.game.running = false;
+            }
+            if ((this.firstEnemy.phystr - this.heroOne.phydef) > 0) {
+                this.heroOne.hp = this.heroOne.hp - (this.firstEnemy.phystr - this.heroOne.phydef);
+            }
+        }
         this.battleTime += this.game.clockTick;
     }
 }
 
 Battle.prototype.draw = function (ctx) {
-    if (this.battleTime > 30) {
-        this.game.battleRunning = true;
-    }
-    /*if (this.battleTime > 10) {
-        this.battleTime = 0;
-        this.game.battleRunning = false;
-    }*/
-    if (this.game.mouse) {
-        console.log("(" + this.game.mouse.x + ", " + this.game.mouse.y + ")")
-    }
-    if (this.game.click && this.game.battleRunning) {
-        console.log("(" + this.game.click.x + ", " + this.game.click.y + ")");
-        //ability 1 //temp attack ability
-        if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697) {
-            this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.phystr - this.firstEnemy.phydef);
-        }
-        //ability 2 //temp healing ability.
-        if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
-            if (this.heroOne.hp < 100) {
-                this.heroOne.hp = this.heroOne.hp + 10;
-                if (this.heroOne.hp > 100) this.heroOne.hp = 100;
-            }
-        }
-        //ability 3 //temp run ability
-        if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697) {
-            this.game.battleRunning = false;
-            this.battleTime = 0;
-            this.heroOne.x = this.heroOneX;
-            this.heroOne.y = this.heroOneY;
-            this.firstEnemy.reset();
-        }
-        //ability 4 //temp heal enemy
-        if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775) {
-            this.firstEnemy.hp = this.firstEnemy.hp + 1;
-        }
-        //ability 5 //temp black magic poison
-        if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697) {
-            this.firstEnemy.hp = this.firstEnemy.hp - (this.heroOne.magstr - this.firstEnemy.magdef);
-        }
-        //ability 6 temp kill all
-        if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 698 && this.game.click.y < 775) {
-            this.heroOne.hp = this.heroOne.hp - this.heroOne.hp;
-            this.firstEnemy.hp = this.firstEnemy.hp - this.firstEnemy.hp;
-        }
-        if (this.heroOne.hp <= 0 && this.firstEnemy.hp >= 0) {
-            this.game.battleRunning = false;
-            this.game.running = false;
-        } else if (this.firstEnemy.hp <= 0 && this.heroOne.hp >= 0) {
-            this.game.battleRunning = false;
-            this.battleTime = 0;
-            this.heroOne.x = this.heroOneX;
-            this.heroOne.y = this.heroOneY;
-            this.firstEnemy.reset();
-        } else if (this.heroOne.hp <= 0 && this.firstEnemy.hp <= 0) {
-            this.game.battleRunning = false;
-            this.game.running = false;
-        }
-        if ((this.firstEnemy.phystr - this.heroOne.phydef) > 0) {
-            this.heroOne.hp = this.heroOne.hp - (this.firstEnemy.phystr - this.heroOne.phydef);
-        }
-    }
+
+
     //console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert_battle.jpg"), this.x, this.y, 760, 760);
@@ -445,7 +452,7 @@ Battle.prototype.draw = function (ctx) {
             for (var j = 0; j < 10; j++) {
                 if (this.grid) {
                     ctx.strokeStyle = "green";
-                    ctx.strokeRect(23.5 + i * 252.5, 23.5 + j * 75, 251, 75);
+                    //ctx.strokeRect(23.5 + i * 252.5, 23.5 + j * 75, 251, 75);
                 }
             }
         }
@@ -454,22 +461,35 @@ Battle.prototype.draw = function (ctx) {
         this.heroOne.y = 550;
         this.heroOne.draw(ctx);
         ctx.font = "24pt Impact";
+
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 100 && this.game.mouse.x < 150 && this.game.mouse.y > 675 && this.game.mouse.y < 700) { ctx.fillStyle = "red"; }
+        if (this.game.mouse.x > 23 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        ctx.strokeRect(23, 623, 251, 75);
         ctx.fillText("Attack", 100, 675);
+
         ctx.fillStyle = "blue";
+        if (this.game.mouse.x > 23 && this.game.mouse.x < 273 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        ctx.strokeRect(23, 623 + 75, 251, 75);
         ctx.fillText("Heal", 100, 750);
-        ctx.fillStyle = "blue";
 
+        ctx.fillStyle = "blue";
+        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        ctx.strokeRect(274, 623, 252, 75);
         ctx.fillText("Flee", 360, 675);
-        ctx.fillStyle = "blue";
 
+        ctx.fillStyle = "blue";
+        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+         ctx.strokeRect(274, 623 + 75, 252, 75);
         ctx.fillText("Heal Enemy", 360, 750);
-        ctx.fillStyle = "blue";
 
+        ctx.fillStyle = "blue";
+        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        ctx.strokeRect(528, 623, 251, 75);
         ctx.fillText("Poison", 600, 675);
-        ctx.fillStyle = "blue";
 
+        ctx.fillStyle = "blue";
+        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        ctx.strokeRect(528, 623+75, 251, 75);
         ctx.fillText("!!!!Obilivion!!!!", 575, 750);
 
         ctx.fillStyle = "purple";
@@ -477,7 +497,8 @@ Battle.prototype.draw = function (ctx) {
         if (this.heroOne.hp > 0) {
             if (this.game.mouse) {
                 if (this.game.mouse.x > this.heroOne.x && this.game.mouse.x < this.heroOne.x + 50 && this.game.mouse.y > this.heroOne.y && this.game.mouse.y < this.heroOne.y + 50) {
-                    ctx.fillText(this.heroOne.hp, 50, 50);
+                    ctx.fillText("HP: "+this.heroOne.hp, 50, 50);
+                    ctx.fillText("MP: "+this.heroOne.mp, 50, 100);
 
                 }
             }
@@ -700,6 +721,8 @@ function EnemyType1(game, cen, col) {
     this.phydef = 0;
     this.magstr = 1;
     this.magdef = 0;
+    this.exp = 1;
+    this.ap = 1;
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);
@@ -741,7 +764,8 @@ function Hero(game, cen, col) {
     this.phydef = 3;
     this.magstr = 1;
     this.magdef = 0;
-
+    this.exp = 0;
+    this.ap = 0;
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);

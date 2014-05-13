@@ -4,27 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>Game Project Shell</title>
-    <script type="text/javascript" src="./game.js"></script>
+    <script type="text/javascript" src="./project.js"></script>
 </head>
 <body>
-    <canvas id="gameWorld" tabindex="1" width="800" height="800" style="border: 0px solid brown; background: gray"></canvas>
-    <div id="menu" style="position: absolute; left: 700px; top: 30px; width: 100px; height: 30px; background-color: rgba(0,0,0,0); font-family: Impact, Charcoal, sans-serif; font-size: 24pt; color: purple; ">
-        <button onclick="menu(); return true;">Menu</button>
-        <button onclick="closeMenu(); return true;">Close Menu</button>
-        <script>
-            var gameWorld = document.getElementById("gameWorld");
-            var gameWorld_context = gameWorld.getContext("2d");
-
-            function menu() {
-
-                var menu_img = new Image();
-                menu_img.src = "./img/menu.png";
-                gameWorld_context.drawImage(menu_img, 150, 250);
-            }
-            function closeMenu() {
-                gameWorld_context.clearRect(150, 250, 550, 370);
-            }
-        </script>
-    </div>
+    <canvas id="gameWorld" tabindex="1" width="800" height="800" style="border: 0px solid brown; background: silver"></canvas>
 </body>
 </html>

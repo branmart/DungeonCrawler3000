@@ -326,6 +326,10 @@ BoundingBox.prototype.collideBottom = function (oth) {
 
 function Menu(game, x, y) {
     Entity.call(this, game, x, y);
+
+    this.playerhero = this.game.hero;
+    this.playerheroX = 250;
+    this.playerheroY = 250;
 }
 
 Menu.prototype = new Entity();
@@ -339,9 +343,62 @@ Menu.prototype.update = function () {
 }
 
 Menu.prototype.draw = function (ctx) {
+    
     if (!this.game.running) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/menu.png"), this.x, this.y, 750, 750);
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/hell4.jpg"), this.x, this.y, 750, 750);
+
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "white";
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "white";
+        
+        ctx.strokeRect(25, 25, 400, 150); //character area
+
+        ctx.fillText("Display Character", 125, 125);
+
+        //ability boxes
+        ctx.strokeRect(25, 175, 400, 300); //main box 
+        ctx.strokeRect(25, 175, 190, 100); // 1
+        ctx.fillText("Ability 1", 25, 225);
+        ctx.strokeRect(25, 275, 190, 100); // 3
+        ctx.fillText("Ability 3", 25, 325);
+        ctx.strokeRect(25, 375, 190, 100); // 5
+        ctx.fillText("Ability 5", 25, 425);
+        ctx.strokeRect(210, 175, 200, 100); // 2
+        ctx.fillText("Ability 2", 225, 225);
+        ctx.strokeRect(210, 275, 200, 100); // 4
+        ctx.fillText("Ability 4", 225, 325);
+        ctx.strokeRect(210, 375, 200, 100); // 6
+        ctx.fillText("Ability 6", 225, 425);
+
+
+        ctx.strokeRect(25, 475, 400, 300); //stats area
+
+        ctx.fillText("Level: ", 225, 525);
+        ctx.fillText("Class: ", 225, 560);
+
+        ctx.fillText("HP: ", 25, 525);
+        ctx.fillText("MP: ", 25, 560);
+
+        ctx.fillText("Strength:", 25, 600);
+        ctx.fillText("Defense:", 25, 635);
+        ctx.fillText("Magic:", 25, 670);
+        ctx.fillText("Magic Defense:", 25, 705);
+
+        //list of abilities can learn bassed on class
+        ctx.fillText("List of abilities", 430, 90);
+
+        for (var i = 25; i < 750;) {
+            ctx.strokeRect(415, i, 365, 75);
+            i = i + 75;
+        }
+
+        this.playerhero.x = 75;
+        this.playerhero.y = 75;
+        this.playerhero.draw(ctx);
     }
+
+
 }
 
 function Battle(game, x, y,one, enemy) {
@@ -912,7 +969,7 @@ ASSET_MANAGER.queueDownload("./img/desert_battle.jpg");
 ASSET_MANAGER.queueDownload("./img/grassland.jpg");
 ASSET_MANAGER.queueDownload("./img/snow.jpg");
 ASSET_MANAGER.queueDownload("./img/GoldenSun.png");
-ASSET_MANAGER.queueDownload("./img/menu.png");
+ASSET_MANAGER.queueDownload("./img/hell4.jpg");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");

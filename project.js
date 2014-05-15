@@ -641,42 +641,40 @@ Battle.prototype.update = function () {
             var x = this.game.click.x;
             var y = this.game.click.y;
         }
-        if (this.game.mouse) {
-            console.log("(" + this.game.mouse.x + ", " + this.game.mouse.y + ")")
-        }
         if (this.game.click && this.game.battleRunning) {
             console.log("(" + this.game.click.x + ", " + this.game.click.y + ")");
-            //ability 1 //temp attack ability
+            //ability 1
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697) {
                 this.heroOne.abilityOne(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
             }
-            //ability 2 //temp healing ability.
+            //ability 2
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
                 this.heroOne.abilityTwo(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
 
             }
-            //ability 3 //temp run ability
+            //ability 3
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697) {
                 this.heroOne.abilityThree(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
             }
-            //ability 4 //temp heal enemy
+            //ability 4
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775) {
                 this.heroOne.abilityFour(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
             }
-            //ability 5 //temp black magic poison
+            //ability 5
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697) {
                 this.heroOne.abilityFive(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
             }
-            //ability 6 temp kill all
+            //ability 6
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 698 && this.game.click.y < 775) {
                 this.heroOne.abilitySix(this.heroOne, this.firstEnemy, this.actionTime);
                 this.actionTime = 0;
             }
+            this.firstEnemy.abilityOne(this.heroOne, this.firstEnemy);
             if (this.heroOne.hp <= 0 && this.firstEnemy.hp >= 0) {
                 this.game.battleRunning = false;
                 this.game.running = false;
@@ -693,10 +691,7 @@ Battle.prototype.update = function () {
                 this.game.battleRunning = false;
                 this.game.running = false;
             }
-            if ((this.firstEnemy.phystr - this.heroOne.phydef) > 0) {
-                this.heroOne.hp = this.heroOne.hp - (this.firstEnemy.phystr - this.heroOne.phydef);
 
-            }
             this.clickX = this.game.click.x;
             this.clickY = this.game.click.y;
         }
@@ -856,8 +851,10 @@ EnemyType1.prototype.reset = function () {
     this.mp = 0;
     Entity.prototype.update.call(this);
 }
-EnemyType1.prototype.battle = function (hero1) {
-
+EnemyType1.prototype.abilityOne = function (hero, enemy) {
+            if ((enemy.phystr - hero.phydef) > 0) {
+                hero.hp = hero.hp - (enemy.phystr - hero.phydef);
+            }
 }
 EnemyType1.prototype.ability1Display = function (hero, enemy, time, ctx) {
     if (time < 0.75) {

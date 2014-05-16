@@ -986,8 +986,8 @@ EnemyType1.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
 }
 function Hero(game, cen, col, job) {
-    var center = cen;
-    var column = col;
+    this.cen = cen;
+    this.col = col;
     this.isPoisoned = false;
     this.abilityOneDescription = job.abilityOneDescription;
     this.abilityTwoDescription = job.abilityTwoDescription;
@@ -995,11 +995,11 @@ function Hero(game, cen, col, job) {
     this.abilityFourDescription = job.abilityFourDescription;
     this.abilityFiveDescription = job.abilityFiveDescription;
     this.abilitySixDescription = job.abilitySixDescription;
-    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, center, column);
-    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
-    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, center, column);
-    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3, center, column);
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, center, column);
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, this.cen, this.col);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, this.cen, this.col);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3, this.cen, this.col);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
     this.movingNorth = false;
     this.movingSouth = true;
     this.movingWest = false;
@@ -1122,6 +1122,13 @@ Hero.prototype.changeClass = function () {
     this.abilityFourDescription = this.currentClass.abilityFourDescription;
     this.abilityFiveDescription = this.currentClass.abilityFiveDescription;
     this.abilitySixDescription = this.currentClass.abilitySixDescription;
+    this.cen = this.currentClass.cen;
+    this.col = this.currentClass.col;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 2, this.cen, this.col);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 1, this.cen, this.col);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 3, this.cen, this.col);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/GoldenSun.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
 }
 Hero.prototype.abilityOne = function (hero, enemy, time) {
     this.currentClass.abilityOne(hero, enemy, time);
@@ -1408,7 +1415,7 @@ Warrior.prototype.draw = function (ctx) {
 }
 function Rogue(game) {
     this.level = 1;
-    this.cen = -1;
+    this.cen = 2;
     this.col = 0;
     this.hp = 75;
     this.hpMax = 75;

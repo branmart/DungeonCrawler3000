@@ -324,7 +324,7 @@ BoundingBox.prototype.collideBottom = function (oth) {
     return false;
 }
 //Game Objects
-function TileZero(game, hero) {
+function TileZero(game, hero, north, south, east, west) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
@@ -358,6 +358,7 @@ function TileOne(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -365,13 +366,18 @@ TileOne.prototype = new Entity();
 TileOne.prototype.constructor = TileZero;
 
 TileOne.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[2];
+    this.SouthTile = this.game.platforms[4];
+    this.WestTile = this.game.platforms[0];
     Entity.prototype.update.call(this);
 }
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileTwo(game, hero) {
@@ -379,6 +385,7 @@ function TileTwo(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -386,13 +393,18 @@ TileTwo.prototype = new Entity();
 TileTwo.prototype.constructor = TileZero;
 
 TileTwo.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[5];
+    this.WestTile = this.game.platforms[1];
     Entity.prototype.update.call(this);
 }
 
 TileTwo.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileThree(game, hero) {
@@ -400,6 +412,7 @@ function TileThree(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -407,13 +420,18 @@ TileThree.prototype = new Entity();
 TileThree.prototype.constructor = TileZero;
 
 TileThree.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[0];
+    this.EastTile = this.game.platforms[4];
+    this.SouthTile = this.game.platforms[6];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileFour(game, hero) {
@@ -421,6 +439,7 @@ function TileFour(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -428,13 +447,18 @@ TileFour.prototype = new Entity();
 TileFour.prototype.constructor = TileZero;
 
 TileFour.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[5];
+    this.SouthTile = this.game.platforms[7];
+    this.WestTile = this.game.platforms[3];
     Entity.prototype.update.call(this);
 }
 
 TileFour.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileFive(game, hero) {
@@ -442,6 +466,7 @@ function TileFive(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -449,7 +474,12 @@ TileFive.prototype = new Entity();
 TileFive.prototype.constructor = TileZero;
 
 TileFive.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[2];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[8];
+    this.WestTile = this.game.platforms[4];
     Entity.prototype.update.call(this);
 }
 
@@ -463,6 +493,7 @@ function TileSix(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -470,13 +501,18 @@ TileSix.prototype = new Entity();
 TileSix.prototype.constructor = TileZero;
 
 TileSix.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[3];
+    this.EastTile = this.game.platforms[7];
+    this.SouthTile = null;
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileSix.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
 function TileSeven(game, hero) {
@@ -484,6 +520,7 @@ function TileSeven(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -491,7 +528,12 @@ TileSeven.prototype = new Entity();
 TileSeven.prototype.constructor = TileZero;
 
 TileSeven.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[4];
+    this.EastTile = this.game.platforms[8];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[6];
     Entity.prototype.update.call(this);
 }
 
@@ -505,6 +547,7 @@ function TileEight(game, hero) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
 
@@ -512,13 +555,18 @@ TileEight.prototype = new Entity();
 TileEight.prototype.constructor = TileEight;
 
 TileEight.prototype.update = function () {
-
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.NorthTile = this.game.platforms[5];
+    this.EastTile = null
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[7];
     Entity.prototype.update.call(this);
 }
 
 TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
 function Menu(game, x, y, hero) {
     Entity.call(this, game, x, y);
@@ -645,7 +693,7 @@ Battle.prototype.update = function () {
         this.battleTime = 0;
         this.game.fledSuccessfully = false;
     }
-    if (this.battleTime > 10) {
+    if (this.battleTime > 6000) {
         this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
@@ -810,7 +858,7 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.save();
         ctx.fillStyle = "blue";
-        
+
         if (this.game.mouse.x > 23 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
         ctx.strokeStyle = "red";
 
@@ -951,7 +999,7 @@ EnemyType1.prototype = new Entity();
 EnemyType1.prototype.constructor = EnemyType1;
 
 EnemyType1.prototype.update = function () {
-    
+
     Entity.prototype.update.call(this);
 }
 EnemyType1.prototype.reset = function () {
@@ -985,7 +1033,7 @@ EnemyType1.prototype.ability1Display = function (hero, enemy, time, ctx) {
 EnemyType1.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
 }
-function Hero(game, cen, col, job) {
+function Hero(game, cen, col, job, tile) {
     this.cen = cen;
     this.col = col;
     this.isPoisoned = false;
@@ -1010,6 +1058,7 @@ function Hero(game, cen, col, job) {
     this.currentX = 380;
     this.currentY = 380;
     this.currentClass = job;
+    this.currentTile = tile;
     this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth + 20, this.animation.frameHeight + 25);
     Entity.call(this, game, 380, 380);
     this.abilityTime = 0;
@@ -1039,13 +1088,19 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = false;
-            if (!this.boundingbox.collideTop(this.game.platforms[0].boundingbox)) {
+            if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
-                if (this.game.platforms[0].NorthTile !== null) {
-                    //this.game.addEntity(this.game.platforms[0].NorthTile);
+                if (this.currentTile.NorthTile != null) {
+                    this.currentTile = this.currentTile.NorthTile;
+                    this.currentY = 760;
+                    this.y = 760;
                 }
+            } else {
+                this.currentY = this.currentY - 32.2;
+                this.y = this.y - 32.2;
             }
         } else if (this.game.left) {
+
             if (this.currentClass.hp < this.currentClass.hpMax) {
                 this.currentClass.hp += this.currentClass.hpRegen;
             } else if (this.currentClass.hp > this.currentClass.hpMax) {
@@ -1062,10 +1117,16 @@ Hero.prototype.update = function () {
             this.movingEast = false;
             if (!this.boundingbox.collideLeft(this.game.platforms[0].boundingbox)) {
                 this.movingWest = false;
-                if (this.game.platforms[0].WestTile !== null) {
-                    //this.game.addEntity(this.game.platforms[0].NorthTile);
+                if (this.currentTile.WestTile != null) {
+                    this.currentTile = this.currentTile.WestTile;
+                    this.currentX = 760;
+                    this.x = 760;
                 }
+            } else {
+                this.currentX = this.currentX - 32.2;
+                this.x = this.x - 32.2;
             }
+
         } else if (this.game.down) {
             if (this.currentClass.hp < this.currentClass.hpMax) {
                 this.currentClass.hp += this.currentClass.hpRegen;
@@ -1083,10 +1144,18 @@ Hero.prototype.update = function () {
             this.movingEast = false;
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
                 this.movingSouth = false;
-                if (this.game.platforms[0].SouthTile !== null) {
-                    //this.game.addEntity(this.game.platforms[0].NorthTile);
+                if (this.currentTile.SouthTile != null) {
+                    this.currentTile = this.currentTile.SouthTile;
+                    this.currentY = 0;
+                    this.y = 0;
                 }
+                console.log("Hero is at(" + this.x + "," + this.y + ")");
+
+            } else {
+                this.currentY = this.currentY + 32.2;
+                this.y = this.y + 32.2;
             }
+
         } else if (this.game.right) {
             if (this.currentClass.hp < this.currentClass.hpMax) {
                 this.currentClass.hp += this.currentClass.hpRegen;
@@ -1104,13 +1173,18 @@ Hero.prototype.update = function () {
             this.movingEast = true;
             if (!this.boundingbox.collideRight(this.game.platforms[0].boundingbox)) {
                 this.movingEast = false;
-                if (this.game.platforms[0].EastTile !== null) {
-                    //this.game.addEntity(this.game.platforms[0].NorthTile);
+                if (this.currentTile.EastTile != null) {
+                    this.currentTile = this.currentTile.EastTile;
+                    this.currentX = 20;
+                    this.x = 20;
                 }
+            } else {
+                this.currentX = this.currentX + 32.2;
+                this.x = this.x + 32.2;
             }
+
         }
     }
-    //console.log("Hero is at(" + this.x + "," + this.y + ")");
 
     Entity.prototype.update.call(this);
 }
@@ -1182,10 +1256,9 @@ Hero.prototype.draw = function (ctx) {
         this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         return;
     }
+    this.currentTile.draw(ctx);
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
-        this.currentY = this.currentY + 32.2;
-        this.y = this.y + 32.2;
         if (this.boxes) {
             ctx.strokeStyle = "blue";
             ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -1194,8 +1267,6 @@ Hero.prototype.draw = function (ctx) {
         this.animation = this.Danimation;
     } else if (this.movingNorth && this.game.up) {
         this.game.up = false;
-        this.currentY = this.currentY - 32.2;
-        this.y = this.y - 32.2;
         if (this.boxes) {
             ctx.strokeStyle = "blue";
             ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -1204,8 +1275,6 @@ Hero.prototype.draw = function (ctx) {
         this.animation = this.Uanimation;
     } else if (this.movingWest && this.game.left) {
         this.game.left = false;
-        this.currentX = this.currentX - 32.2;
-        this.x = this.x - 32.2;
         if (this.boxes) {
             ctx.strokeStyle = "blue";
             ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -1214,8 +1283,6 @@ Hero.prototype.draw = function (ctx) {
         this.animation = this.Lanimation;
     } else if (this.movingEast && this.game.right) {
         this.game.left = false;
-        this.currentX = this.currentX + 32.2;
-        this.x = this.x + 32.2;
         if (this.boxes) {
             ctx.strokeStyle = "blue";
             ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -1514,44 +1581,46 @@ ASSET_MANAGER.downloadAll(function () {
 
 
     var platforms = [];
-    var pf = new TileZero(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileOne(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileTwo(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileThree(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileFour(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileFive(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileSix(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileSeven(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
-    pf = new TileEight(gameEngine);
-    gameEngine.addEntity(pf);
-    platforms.push(pf);
+    var t0 = new TileZero(gameEngine);
+
+    platforms.push(t0);
+    gameEngine.addEntity(t0);
+    var t1 = new TileOne(gameEngine);
+
+    platforms.push(t1);
+    gameEngine.addEntity(t1);
+    var t2 = new TileTwo(gameEngine);
+    platforms.push(t2);
+    gameEngine.addEntity(t2);
+    var t3 = new TileThree(gameEngine);
+    platforms.push(t3);
+    gameEngine.addEntity(t3);
+    var t4 = new TileFour(gameEngine);
+    platforms.push(t4);
+    gameEngine.addEntity(t4);
+    var t5 = new TileFive(gameEngine);
+    platforms.push(t5);
+    gameEngine.addEntity(t5);
+    var t6 = new TileSix(gameEngine);
+    platforms.push(t6);
+    gameEngine.addEntity(t6);
+    var t7 = new TileSeven(gameEngine);
+    platforms.push(t7);
+    gameEngine.addEntity(t7);
+    var t8 = new TileEight(gameEngine);
+    platforms.push(t8);
+    gameEngine.addEntity(t8);
     gameEngine.platforms = platforms;
+
+
     var classes = [];
     var warrior = new Warrior(gameEngine);
     classes.push(warrior);
     var rogue = new Rogue(gameEngine);
     classes.push(rogue);
     gameEngine.classSystem = classes;
-    gameEngine.addEntity(rogue);
 
-
-    var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0]);
+    var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
 
     var enemy1 = new EnemyType1(gameEngine, 2, 4);
     gameEngine.firstEnemy = enemy1;
@@ -1559,8 +1628,6 @@ ASSET_MANAGER.downloadAll(function () {
     var battle = new Battle(gameEngine, 20, 20, hero1, gameEngine.firstEnemy);
 
     //Adding components to Game Engine
-
-    gameEngine.addEntity(gameEngine.platforms[0]);
 
     gameEngine.addEntity(hero1);
     gameEngine.addEntity(menu);

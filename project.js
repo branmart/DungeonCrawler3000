@@ -323,6 +323,39 @@ BoundingBox.prototype.collideBottom = function (oth) {
     if (this.bottom + 20 < oth.bottom) return true;
     return false;
 }
+BoundingBox.prototype.collide = function (oth) {
+    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+    return false;
+}
+function Circle(x, y, radius) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+}
+Circle.prototype.collideNorth = function (oth) {
+    var distX = this.x - oth.x;
+    var distY = this.y - oth.y;
+     squaredist = (distX * distX) + (distY * distY)
+     return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
+}
+Circle.prototype.collideSouth = function (oth) {
+    var distX = this.x - oth.x;
+    var distY = this.y - oth.y;
+    squaredist = (distX * distX) + (distY * distY)
+    return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
+}
+Circle.prototype.collideEast = function (oth) {
+    var distX = this.x - oth.x;
+    var distY = this.y - oth.y;
+    squaredist = (distX * distX) + (distY * distY)
+    return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
+}
+Circle.prototype.collideWest = function (oth) {
+    var distX = this.x - oth.x;
+    var distY = this.y - oth.y;
+    squaredist = (distX * distX) + (distY * distY)
+    return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
+}
 //Game Objects
 function TileZero(game, hero, north, south, east, west) {
     this.NorthTile = null;
@@ -330,6 +363,8 @@ function TileZero(game, hero, north, south, east, west) {
     this.SouthTile = null;
     this.WestTile = null;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingbox1 = new BoundingBox(50, 50, 100, 100);
+    this.circle1 = new Circle(100, 100, 50);
     Entity.call(this, game, 20, 20);
 }
 
@@ -339,6 +374,8 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingbox1 = new BoundingBox(100, 100, 66, 70);
+
     this.NorthTile = null;
     this.EastTile = this.game.platforms[1];
     this.SouthTile = this.game.platforms[3];
@@ -351,6 +388,12 @@ TileZero.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
+    ctx.beginPath();
+    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
+    ctx.stroke();
+
 }
 
 function TileOne(game, hero) {
@@ -359,6 +402,7 @@ function TileOne(game, hero) {
     this.SouthTile = null;
     this.WestTile = null;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
     Entity.call(this, game, 20, 20);
 }
 
@@ -1059,7 +1103,13 @@ function Hero(game, cen, col, job, tile) {
     this.currentY = 380;
     this.currentClass = job;
     this.currentTile = tile;
+    this.collidedWithLeftSide = false;
+    this.collidedWithRightSide = false;
+    this.collidedWithBottom = false;
+    this.collidedWithTop = false;
     this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth + 20, this.animation.frameHeight + 25);
+    this.circle1 = new Circle(this.x, this.y, 50);
+
     Entity.call(this, game, 380, 380);
     this.abilityTime = 0;
 
@@ -1072,6 +1122,7 @@ Hero.prototype.constructor = Hero;
 Hero.prototype.update = function () {
     if (!this.game.menuRunning && !this.game.battleRunning) {
         this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth + 20, this.animation.frameHeight + 25);
+        this.circle1 = new Circle(this.x+26, this.y+27, 27);
 
         if (this.game.up) {
             if (this.currentClass.hp < this.currentClass.hpMax) {
@@ -1088,6 +1139,10 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = false;
+            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
+                this.movingNorth = false;
+
+            }
             if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
                 if (this.currentTile.NorthTile != null) {
@@ -1095,7 +1150,7 @@ Hero.prototype.update = function () {
                     this.currentY = 760;
                     this.y = 760;
                 }
-            } else {
+            } else if (this.movingNorth) {
                 this.currentY = this.currentY - 32.2;
                 this.y = this.y - 32.2;
             }
@@ -1115,6 +1170,10 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = true;
             this.movingEast = false;
+            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
+                this.movingWest = false;
+
+            }
             if (!this.boundingbox.collideLeft(this.game.platforms[0].boundingbox)) {
                 this.movingWest = false;
                 if (this.currentTile.WestTile != null) {
@@ -1122,7 +1181,7 @@ Hero.prototype.update = function () {
                     this.currentX = 760;
                     this.x = 760;
                 }
-            } else {
+            } else if (this.movingWest) {
                 this.currentX = this.currentX - 32.2;
                 this.x = this.x - 32.2;
             }
@@ -1142,6 +1201,10 @@ Hero.prototype.update = function () {
             this.movingSouth = true;
             this.movingWest = false;
             this.movingEast = false;
+            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
+                this.movingSouth = false;
+
+            }
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
                 this.movingSouth = false;
                 if (this.currentTile.SouthTile != null) {
@@ -1149,9 +1212,7 @@ Hero.prototype.update = function () {
                     this.currentY = 0;
                     this.y = 0;
                 }
-                console.log("Hero is at(" + this.x + "," + this.y + ")");
-
-            } else {
+            } else if (this.movingSouth) {
                 this.currentY = this.currentY + 32.2;
                 this.y = this.y + 32.2;
             }
@@ -1171,14 +1232,19 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = true;
+            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
+                this.movingEast = false;
+
+            }
             if (!this.boundingbox.collideRight(this.game.platforms[0].boundingbox)) {
                 this.movingEast = false;
+
                 if (this.currentTile.EastTile != null) {
                     this.currentTile = this.currentTile.EastTile;
                     this.currentX = 20;
                     this.x = 20;
                 }
-            } else {
+            } else if (this.movingEast) {
                 this.currentX = this.currentX + 32.2;
                 this.x = this.x + 32.2;
             }
@@ -1297,7 +1363,9 @@ Hero.prototype.draw = function (ctx) {
         }
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
     }
-
+    ctx.beginPath();
+    ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
+    ctx.stroke();
 }
 function Warrior(game) {
     this.level = 1;
@@ -1568,6 +1636,7 @@ ASSET_MANAGER.queueDownload("./img/grassland.jpg");
 ASSET_MANAGER.queueDownload("./img/snow.jpg");
 ASSET_MANAGER.queueDownload("./img/GoldenSun.png");
 ASSET_MANAGER.queueDownload("./img/hell4.jpg");
+ASSET_MANAGER.queueDownload("./img/tree.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");

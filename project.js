@@ -301,7 +301,7 @@ function BoundingBox(x, y, width, height) {
     this.y = y;
     this.width = width;
     this.height = height;
-
+    this.collision = null;
     this.left = x;
     this.top = y;
     this.right = this.left + width;
@@ -323,8 +323,57 @@ BoundingBox.prototype.collideBottom = function (oth) {
     if (this.bottom + 20 < oth.bottom) return true;
     return false;
 }
-BoundingBox.prototype.collide = function (oth) {
-    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) return true;
+
+BoundingBox.prototype.collideLeftObject = function (oth, direction) {
+    if (this.collision === null) {
+        this.collision = direction;
+    }
+    if (this.right + 10 < oth.left && this.top < oth.bottom && this.bottom > oth.top && this.left < oth.left) {
+        this.collision = direction;
+        return true;
+    }
+    return false;
+}
+BoundingBox.prototype.collideTopObject = function (oth, direction) {
+    if (this.collision === null) {
+        this.collision = direction;
+    }
+    if (this.bottom > oth.top && this.right > oth.left && this.left < oth.right && this.top < oth.top) {
+        this.collision = direction;
+        return true;
+    }
+    return false;
+}
+BoundingBox.prototype.collideRightObject = function (oth, direction) {
+    if (this.collision === null) {
+        this.collision = direction;
+    }
+    if (this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top && this.right > oth.right) {
+        this.collision = direction;
+        return true;
+    }
+    return false;
+}
+BoundingBox.prototype.collideBottomObject = function (oth, direction) {
+    if (this.collision === null) {
+        this.collision = direction;
+    }
+    if (this.top < oth.bottom && this.left < oth.right && this.right > oth.left && this.bottom > oth.bottom) {
+        this.collision = direction;
+        return true;
+    }
+    return false;
+}
+
+
+BoundingBox.prototype.collide = function (oth, direction) {
+    if(this.collision === null) {
+        this.collision = direction;
+    }
+    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top && this.collision === direction) {
+        this.collision = direction;
+        return true;
+    }
     return false;
 }
 function Circle(x, y, radius) {
@@ -363,8 +412,8 @@ function TileZero(game, hero, north, south, east, west) {
     this.SouthTile = null;
     this.WestTile = null;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(50, 50, 100, 100);
-    this.circle1 = new Circle(100, 100, 50);
+    this.boundingbox1 = new BoundingBox(20, 20, 50, 760);
+    this.circle1 = new Circle(100, 120, 50);
     Entity.call(this, game, 20, 20);
 }
 
@@ -374,7 +423,7 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(100, 100, 66, 70);
+    this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[1];
@@ -389,7 +438,13 @@ TileZero.prototype.draw = function (ctx) {
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
+    var i;
+    var j;
+    for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
+        for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
+    }
+
     ctx.beginPath();
     //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
     ctx.stroke();
@@ -737,7 +792,7 @@ Battle.prototype.update = function () {
         this.battleTime = 0;
         this.game.fledSuccessfully = false;
     }
-    if (this.battleTime > 6000) {
+    if (this.battleTime > 30) {
         this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
@@ -1121,8 +1176,16 @@ Hero.prototype.constructor = Hero;
 
 Hero.prototype.update = function () {
     if (!this.game.menuRunning && !this.game.battleRunning) {
-        this.boundingbox = new BoundingBox(this.x, this.y, this.animation.frameWidth + 20, this.animation.frameHeight + 25);
         this.circle1 = new Circle(this.x+26, this.y+27, 27);
+
+        this.boundingbox.x = this.x;
+        this.boundingbox.y = this.y;
+        this.boundingbox.width = this.animation.frameWidth + 20;
+        this.boundingbox.height = this.animation.frameHeight + 25;
+        this.boundingbox.left = this.boundingbox.x;
+        this.boundingbox.top = this.boundingbox.y;
+        this.boundingbox.right = this.boundingbox.left + this.boundingbox.width;
+        this.boundingbox.bottom = this.boundingbox.top + this.boundingbox.height;
 
         if (this.game.up) {
             if (this.currentClass.hp < this.currentClass.hpMax) {
@@ -1139,10 +1202,12 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
-                this.movingNorth = false;
-
+            if (this.currentTile.boundingbox1 != null) {
+                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox1, "up")) {
+                    this.movingNorth = false;
+                }
             }
+
             if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
                 if (this.currentTile.NorthTile != null) {
@@ -1170,9 +1235,11 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = true;
             this.movingEast = false;
-            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
-                this.movingWest = false;
+            if (this.currentTile.boundingbox1 != null) {
+                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox1, "left")) {
+                    this.movingWest = false;
 
+                }
             }
             if (!this.boundingbox.collideLeft(this.game.platforms[0].boundingbox)) {
                 this.movingWest = false;
@@ -1201,9 +1268,10 @@ Hero.prototype.update = function () {
             this.movingSouth = true;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
-                this.movingSouth = false;
-
+            if (this.currentTile.boundingbox1 != null) {
+                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox1, "down")) {
+                    this.movingSouth = false;
+                }
             }
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
                 this.movingSouth = false;
@@ -1232,9 +1300,11 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = true;
-            if (this.boundingbox.collide(this.currentTile.boundingbox1)) {
-                this.movingEast = false;
+            if (this.currentTile.boundingbox1 != null) {
+                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox1, "right")) {
+                    this.movingEast = false;
 
+                }
             }
             if (!this.boundingbox.collideRight(this.game.platforms[0].boundingbox)) {
                 this.movingEast = false;
@@ -2377,6 +2447,7 @@ ASSET_MANAGER.downloadAll(function () {
     //Components
     gameEngine.running = true;
     gameEngine.battleRunning = false;
+    gameEngine.menuRunning = false;
 
 
     var platforms = [];
@@ -2428,7 +2499,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.classSystem = classes;
 
-    var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
+    var hero1 = new Hero(gameEngine, gameEngine.classSystem[4].cen, gameEngine.classSystem[4].col, gameEngine.classSystem[4], gameEngine.platforms[0]);
 
     var enemy1 = new EnemyType1(gameEngine, 2, 4);
     gameEngine.firstEnemy = enemy1;

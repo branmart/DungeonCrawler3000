@@ -1627,6 +1627,736 @@ Rogue.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
+function BattleMage(game) {
+    this.level = 1;
+    this.cen = -1;
+    this.col = 0;
+    this.hp = 60;
+    this.hpMax = 60;
+    this.hpRegen = 2;
+    this.mp = 100;
+    this.mpMax = 100;
+    this.mpRegen = 4;
+    this.phystr = 2;
+    this.phydef = 4;
+    this.magstr = 10;
+    this.magdef = 10;
+    this.poisonTime = 1;
+    this.poisonDamage = 3;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Battle Mage";
+    this.abilityOneDescription = "Attack";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "Fireball";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "Forcefield Push";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "Storm of Swords";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "Poison";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "Cleave";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "Cleave";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "Cleave";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+BattleMage.prototype = new Entity();
+BattleMage.prototype.constructor = BattleMage;
+BattleMage.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+BattleMage.prototype.abilityOne = function (hero, enemy, time) {
+    if ((this.phystr - enemy.phydef) > 0) {
+        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
+    }
+}
+BattleMage.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((this.phystr - enemy.phydef) > 0) {
+            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
+        } else {
+            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+
+        }
+    }
+}
+BattleMage.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magstr;
+        this.mp -= cost;
+    }
+}
+BattleMage.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magstr, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+BattleMage.prototype.abilityThree = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magdef;
+        this.mp -= cost;
+    }
+}
+BattleMage.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magdef, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+BattleMage.prototype.abilityFour = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magstr * 3;
+        this.mp -= cost;
+    }
+}
+BattleMage.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magstr * 3, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+    }
+}
+BattleMage.prototype.abilityFive = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (this.mp >= cost) {
+        enemy.hp -= enemy.phydef + enemy.magdef;
+        this.mp -= cost;
+    }
+}
+BattleMage.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        var damage = enemy.phydef + enemy.magdef;
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+BattleMage.prototype.abilitySix = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.poisonDamage;
+        enemy.isPoisoned = true;
+        this.mp -= cost;
+    }
+}
+BattleMage.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+BattleMage.prototype.draw = function (ctx) {
+}
+
+function Ranger(game) {
+    this.level = 1;
+    this.cen = -1;
+    this.col = 0;
+    this.hp = 70;
+    this.hpMax = 70;
+    this.hpRegen = 2;
+    this.mp = 100;
+    this.mpMax = 100;
+    this.mpRegen = 4;
+    this.phystr = 6;
+    this.phydef = 5;
+    this.magstr = 3;
+    this.magdef = 5;
+    this.poisonTime = 1;
+    this.poisonDamage = 4;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Ranger";
+    this.abilityOneDescription = "Attack";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "Arrow";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "Kingsfoil Field Dressing";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "Flame of the North";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "Poison";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "Cleave";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "Cleave";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "Cleave";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+Ranger.prototype = new Entity();
+Ranger.prototype.constructor = Ranger;
+Ranger.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Ranger.prototype.abilityOne = function (hero, enemy, time) {
+    if ((this.phystr - enemy.phydef) > 0) {
+        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
+    }
+}
+Ranger.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((this.phystr - enemy.phydef) > 0) {
+            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
+        } else {
+            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+
+        }
+    }
+}
+Ranger.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.phystr;
+        this.mp -= cost;
+    }
+}
+Ranger.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.phystr, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Ranger.prototype.abilityThree = function (hero, enemy, time, ctx) {
+    var cost = 2;
+    if (this.mp >= cost) {
+        this.hp += this.magstr;
+        if (this.hp > this.hpMax) {
+            this.hp = this.hpMax;
+        }
+        this.mp -= cost;
+    }
+}
+Ranger.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+
+    if (time < 0.75) {
+        ctx.fillStyle = "Green";
+        ctx.fillText("+" + this.magstr, hero.x + 50, hero.y + 50);
+    }
+}
+Ranger.prototype.abilityFour = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.phystr * 3;
+        this.mp -= cost;
+    }
+}
+Ranger.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.phystr * 3, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+    }
+}
+Ranger.prototype.abilityFive = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (this.mp >= cost) {
+        enemy.hp -= enemy.phydef + enemy.magdef;
+        this.mp -= cost;
+    }
+}
+Ranger.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        var damage = enemy.phydef + enemy.magdef;
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Ranger.prototype.abilitySix = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.poisonDamage;
+        enemy.isPoisoned = true;
+        this.mp -= cost;
+    }
+}
+Ranger.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Ranger.prototype.draw = function (ctx) {
+}
+
+function Fedaykin(game) {
+    this.level = 1;
+    this.cen = -1;
+    this.col = 0;
+    this.hp = 60;
+    this.hpMax = 50;
+    this.hpRegen = 2;
+    this.mp = 100;
+    this.mpMax = 100;
+    this.mpRegen = 2;
+    this.phystr = 14;
+    this.phydef = 8;
+    this.magstr = 2;
+    this.magdef = 2;
+    this.poisonTime = 3;
+    this.poisonDamage = 6;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Fedaykin";
+    this.abilityOneDescription = "Crysknife";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "Maula Pistol";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "Shield Belt Overload";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "Whirlwind";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "Gom Jabbar";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "Cleave";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "Cleave";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "Cleave";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+Fedaykin.prototype = new Entity();
+Fedaykin.prototype.constructor = Fedaykin;
+Fedaykin.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Fedaykin.prototype.abilityOne = function (hero, enemy, time) {
+    if ((this.phystr - enemy.phydef) > 0) {
+        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
+    }
+}
+Fedaykin.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((this.phystr - enemy.phydef) > 0) {
+            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
+        } else {
+            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+
+        }
+    }
+}
+Fedaykin.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.phystr;
+        this.mp -= cost;
+    }
+}
+Fedaykin.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.phystr, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Fedaykin.prototype.abilityThree = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.phydef;
+        this.hp = this.hp - (this.phydef / 2);
+        this.mp -= cost;
+    }
+}
+Fedaykin.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.phydef, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Fedaykin.prototype.abilityFour = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.phystr * 3;
+        this.mp -= cost;
+    }
+}
+Fedaykin.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.phystr * 3, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+    }
+}
+Fedaykin.prototype.abilityFive = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (this.mp >= cost) {
+        enemy.hp -= enemy.phydef + enemy.magdef;
+        this.mp -= cost;
+    }
+}
+Fedaykin.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        var damage = enemy.phydef + enemy.magdef;
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Fedaykin.prototype.abilitySix = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.poisonDamage;
+        enemy.isPoisoned = true;
+        this.mp -= cost;
+    }
+}
+Fedaykin.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Fedaykin.prototype.draw = function (ctx) {
+}
+
+function Necromancer(game) {
+    this.level = 1;
+    this.cen = -1;
+    this.col = 0;
+    this.hp = 50;
+    this.hpMax = 50;
+    this.hpRegen = 3;
+    this.mp = 150;
+    this.mpMax = 150;
+    this.mpRegen = 4;
+    this.phystr = 2;
+    this.phydef = 4;
+    this.magstr = 8;
+    this.magdef = 10;
+    this.poisonTime = 2;
+    this.poisonDamage = 1;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Necromancer";
+    this.abilityOneDescription = "Shovel";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "Fireball";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "Forcefield Push";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "Army of Darkness";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "Poison";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "Cleave";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "Cleave";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "Cleave";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+Necromancer.prototype = new Entity();
+Necromancer.prototype.constructor = Necromancer;
+Necromancer.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Necromancer.prototype.abilityOne = function (hero, enemy, time) {
+    if ((this.phystr - enemy.phydef) > 0) {
+        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
+    }
+}
+Necromancer.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((this.phystr - enemy.phydef) > 0) {
+            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
+        } else {
+            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+
+        }
+    }
+}
+Necromancer.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magstr;
+        this.mp -= cost;
+    }
+}
+Necromancer.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magstr, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Necromancer.prototype.abilityThree = function (hero, enemy, time, ctx) {
+    var cost = 1;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magdef;
+        this.mp -= cost;
+    }
+}
+Necromancer.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+    var cost = 1;
+
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magdef, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Necromancer.prototype.abilityFour = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.magstr * 3;
+        this.mp -= cost;
+    }
+}
+Necromancer.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + this.magstr * 3, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+    }
+}
+Necromancer.prototype.abilityFive = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (this.mp >= cost) {
+        enemy.hp -= enemy.phydef + enemy.magdef;
+        this.mp -= cost;
+    }
+}
+Necromancer.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        var damage = enemy.phydef + enemy.magdef;
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Necromancer.prototype.abilitySix = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (this.mp >= cost) {
+        enemy.hp = enemy.hp - this.poisonDamage;
+        enemy.isPoisoned = true;
+        this.mp -= cost;
+    }
+}
+Necromancer.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+    var cost = 4;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Necromancer.prototype.draw = function (ctx) {
+}
+
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();
@@ -1687,6 +2417,15 @@ ASSET_MANAGER.downloadAll(function () {
     classes.push(warrior);
     var rogue = new Rogue(gameEngine);
     classes.push(rogue);
+    var battleMage = new BattleMage(gameEngine);
+    classes.push(battleMage);
+    var ranger = new Ranger(gameEngine);
+    classes.push(ranger);
+    var fedaykin = new Fedaykin(gameEngine);
+    classes.push(fedaykin);
+    var necromancer = new Necromancer(gameEngine);
+    classes.push(necromancer);
+
     gameEngine.classSystem = classes;
 
     var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);

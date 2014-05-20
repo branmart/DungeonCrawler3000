@@ -328,7 +328,7 @@ BoundingBox.prototype.collideLeftObject = function (oth, direction) {
     if (this.collision === null) {
         this.collision = direction;
     }
-    if (this.right + 10 < oth.left && this.top < oth.bottom && this.bottom > oth.top && this.left < oth.left) {
+    if (this.right + 20  > oth.left && this.top < oth.bottom && this.bottom > oth.top && this.left < oth.left) {
         this.collision = direction;
         return true;
     }

@@ -411,8 +411,13 @@ function TileZero(game, hero, north, south, east, west) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.boundingbox1 = new BoundingBox(20, 20, 50, 760);
+    this.boundingbox2 = new BoundingBox(20, 740, 760, 20);
+    this.boundingbox3 = new BoundingBox(20, 710, 330, 70);
+    this.boundingbox4 = new BoundingBox(20, 740, 100, 70);
+
     this.circle1 = new Circle(100, 120, 50);
     Entity.call(this, game, 20, 20);
 }
@@ -424,6 +429,9 @@ TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox2 = new BoundingBox(20, 710, 330, 70);
+    this.boundingbox3 = new BoundingBox(500, 20, 280, 280);
+    this.boundingbox4 = new BoundingBox(500, 710, 280, 70);
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[1];
@@ -438,12 +446,32 @@ TileZero.prototype.draw = function (ctx) {
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
+    ctx.strokeRect(this.boundingbox2.x, this.boundingbox2.y, this.boundingbox2.width, this.boundingbox2.height);
+    ctx.strokeRect(this.boundingbox3.x, this.boundingbox3.y, this.boundingbox3.width, this.boundingbox3.height);
+    ctx.strokeRect(this.boundingbox4.x, this.boundingbox4.y, this.boundingbox4.width, this.boundingbox4.height);
     var i;
     var j;
+    //left side
     for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
         for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
             ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
     }
+    var k;
+    //bottom first portion
+    for (k = 0; k < 4; k++) {
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 120+k*60, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    }
+    //second portion
+    for (k = 0; k < 5; k++) {
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    }
+
+    //right corner
+    for (k = 0; k < 5; k++) {
+        for (j = 0; j < 4; j++)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    }
+
 
     ctx.beginPath();
     //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
@@ -1207,7 +1235,22 @@ Hero.prototype.update = function () {
                     this.movingNorth = false;
                 }
             }
+            if (this.currentTile.boundingbox2 != null) {
+                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox2, "up")) {
+                    this.movingNorth = false;
+                }
+            }
 
+            if (this.currentTile.boundingbox3 != null) {
+                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox3, "up")) {
+                    this.movingNorth = false;
+                }
+            }
+            if (this.currentTile.boundingbox4 != null) {
+                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox4, "up")) {
+                    this.movingNorth = false;
+                }
+            }
             if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
                 if (this.currentTile.NorthTile != null) {
@@ -1237,6 +1280,24 @@ Hero.prototype.update = function () {
             this.movingEast = false;
             if (this.currentTile.boundingbox1 != null) {
                 if (this.boundingbox.collideRightObject(this.currentTile.boundingbox1, "left")) {
+                    this.movingWest = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox2 != null) {
+                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox2, "left")) {
+                    this.movingWest = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox3 != null) {
+                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox3, "left")) {
+                    this.movingWest = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox4 != null) {
+                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox4, "left")) {
                     this.movingWest = false;
 
                 }
@@ -1273,6 +1334,21 @@ Hero.prototype.update = function () {
                     this.movingSouth = false;
                 }
             }
+            if (this.currentTile.boundingbox2 != null) {
+                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox2, "down")) {
+                    this.movingSouth = false;
+                }
+            }
+            if (this.currentTile.boundingbox3 != null) {
+                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox3, "down")) {
+                    this.movingSouth = false;
+                }
+            }
+            if (this.currentTile.boundingbox4 != null) {
+                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox4, "down")) {
+                    this.movingSouth = false;
+                }
+            }
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
                 this.movingSouth = false;
                 if (this.currentTile.SouthTile != null) {
@@ -1302,6 +1378,24 @@ Hero.prototype.update = function () {
             this.movingEast = true;
             if (this.currentTile.boundingbox1 != null) {
                 if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox1, "right")) {
+                    this.movingEast = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox2 != null) {
+                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox2, "right")) {
+                    this.movingEast = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox3 != null) {
+                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox3, "right")) {
+                    this.movingEast = false;
+
+                }
+            }
+            if (this.currentTile.boundingbox4 != null) {
+                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox4, "right")) {
                     this.movingEast = false;
 
                 }

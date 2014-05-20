@@ -834,6 +834,8 @@ Battle.prototype.update = function () {
             //ability 1 //temp attack ability
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697) {
                 this.heroOne.abilityOne(this.heroOne, this.firstEnemy, this.actionTime);
+
+
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.firstEnemy.poisonDamage;
                 }
@@ -845,7 +847,13 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+                var snd = new Audio("sound/soundeffect6.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
+                
+
             }
             //ability 2 //temp healing ability.
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775) {
@@ -861,6 +869,11 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+
+                var snd = new Audio("sound/soundeffect7.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
 
             }
@@ -878,6 +891,11 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+
+                var snd = new Audio("sound/soundeffect12.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
             }
             //ability 4 //temp heal enemy
@@ -894,6 +912,11 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+
+                var snd = new Audio("sound/soundeffect9.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
             }
             //ability 5 //temp black magic poison
@@ -910,6 +933,11 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+
+                var snd = new Audio("sound/soundeffect10.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
             }
             //ability 6
@@ -926,11 +954,21 @@ Battle.prototype.update = function () {
                     this.firstEnemy.isPoisoned = false;
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
+
+                var snd = new Audio("sound/soundeffect11.mp3");
+                snd.play();
+                //snd.currentTime = 0;
+
                 this.actionTime = 0;
             }
 
             //enemy phase
             this.firstEnemy.abilityOne(this.heroOne, this.firstEnemy);
+
+            //enemy sound effect
+            //var snd = new Audio("sound/soundeffect1.mp3");
+            //snd.play();
+            //snd.currentTime = 0;
 
             //end logic
             if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp >= 0) {
@@ -996,6 +1034,10 @@ Battle.prototype.draw = function (ctx) {
         ctx.fillText(this.heroOne.abilityOneDescription, 137, 675);
         ctx.restore();
         ctx.strokeRect(23, 623, 251, 75);
+        //TODO fix sound effect 1
+        //var snd = new Audio("sounds/soundeffects1.mp3");
+        //snd.play();
+        //snd.currentTime = 0;
 
         //ability 2
         if (x > 23 && x < 273 && y > 698 && y < 775) {
@@ -1008,6 +1050,8 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityTwoDescription, 100, 750);
 
+        //TODO fix sound effect 2
+
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
             this.heroOne.abilityThreeDisplay(this.heroOne, this.firstEnemy, this.actionTime, ctx);
@@ -1018,6 +1062,8 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeRect(274, 623, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityThreeDescription, 360, 675);
+
+        //TODO fix sound effect 3
 
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
@@ -1030,6 +1076,8 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFourDescription, 360, 750);
 
+        //TODO fix sound effect 4
+
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
             this.heroOne.abilityFiveDisplay(this.heroOne, this.firstEnemy, this.actionTime, ctx);
@@ -1040,6 +1088,8 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeRect(528, 623, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFiveDescription, 600, 675);
+
+        //TODO fix sound effect 5
 
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
@@ -1058,6 +1108,9 @@ Battle.prototype.draw = function (ctx) {
 
 
         ctx.fillStyle = "purple";
+
+        //TODO fix sound effect 6
+
         //status effects
         if (this.heroOne.isPoisoned) {
             ctx.fillStyle = "Red";

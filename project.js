@@ -530,6 +530,12 @@ function TileTwo(game, hero) {
     this.SouthTile = null;
     this.WestTile = null;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
+    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
+    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
+
+
     Entity.call(this, game, 20, 20);
 }
 
@@ -539,6 +545,12 @@ TileTwo.prototype.constructor = TileZero;
 TileTwo.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
+    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
+    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
+
+
     this.NorthTile = null;
     this.EastTile = this.game.platforms[1];
     this.SouthTile = null;

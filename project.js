@@ -1,7 +1,5 @@
 // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 
-
-
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -433,16 +431,22 @@ TileZero.prototype.update = function () {
     this.boundingbox3 = new BoundingBox(500, 20, 280, 280);
     this.boundingbox4 = new BoundingBox(500, 710, 280, 70);
 
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[1];
-    this.SouthTile = this.game.platforms[3];
+
+    this.NorthTile = this.game.platforms[1];
+    this.EastTile = null;
+    this.SouthTile = null;
     this.WestTile = null;
+
+    //this.NorthTile = null;
+    //this.EastTile = this.game.platforms[1];
+    //this.SouthTile = this.game.platforms[3];
+    //this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileZero.prototype.draw = function (ctx) {
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonStart.png"), this.x, this.y, 760, 760);
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
@@ -452,25 +456,25 @@ TileZero.prototype.draw = function (ctx) {
     var i;
     var j;
     //left side
-    for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
-        for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
-    }
-    var k;
-    //bottom first portion
-    for (k = 0; k < 4; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 120+k*60, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
-    //second portion
-    for (k = 0; k < 5; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
+    //for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
+    //    for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
+    //        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
+    //}
+    //var k;
+    ////bottom first portion
+    //for (k = 0; k < 4; k++) {
+    //    ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 120+k*60, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    //}
+    ////second portion
+    //for (k = 0; k < 5; k++) {
+    //    ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    //}
 
-    //right corner
-    for (k = 0; k < 5; k++) {
-        for (j = 0; j < 4; j++)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
+    ////right corner
+    //for (k = 0; k < 5; k++) {
+    //    for (j = 0; j < 4; j++)
+    //        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
+    //}
 
 
     ctx.beginPath();
@@ -495,16 +499,16 @@ TileOne.prototype.constructor = TileZero;
 TileOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[2];
-    this.SouthTile = this.game.platforms[4];
-    this.WestTile = this.game.platforms[0];
+    this.NorthTile = this.game.platforms[3];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[0];
+    this.WestTile = this.game.platforms[2];
     Entity.prototype.update.call(this);
 }
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
 }
 
 function TileTwo(game, hero) {
@@ -523,15 +527,15 @@ TileTwo.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.NorthTile = null;
-    this.EastTile = null;
-    this.SouthTile = this.game.platforms[5];
-    this.WestTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[1];
+    this.SouthTile = null;
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileTwo.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonRoom.png"), this.x, this.y, 760, 760);
 }
 
 function TileThree(game, hero) {
@@ -549,16 +553,16 @@ TileThree.prototype.constructor = TileZero;
 TileThree.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[0];
-    this.EastTile = this.game.platforms[4];
-    this.SouthTile = this.game.platforms[6];
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[1];
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/BossMap.png"), this.x, this.y, 760, 760);
 }
 
 function TileFour(game, hero) {
@@ -2584,6 +2588,11 @@ ASSET_MANAGER.queueDownload("./img/snow.jpg");
 ASSET_MANAGER.queueDownload("./img/GoldenSun.png");
 ASSET_MANAGER.queueDownload("./img/hell4.jpg");
 ASSET_MANAGER.queueDownload("./img/tree.png");
+ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
+ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
+ASSET_MANAGER.queueDownload("./img/BossMap.png");
+
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -2596,39 +2605,58 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.battleRunning = false;
     gameEngine.menuRunning = false;
 
+    
+    var areas = [];
+    
+    var start = new TileZero(gameEngine);
+    var map = new TileOne(gameEngine);
+    var room = new TileTwo(gameEngine);
+    var boss = new TileThree(gameEngine);
+    areas.push(start);
+    gameEngine.addEntity(start);
+    areas.push(map);
+    gameEngine.addEntity(map);
+    areas.push(room);
+    gameEngine.addEntity(room);
+    areas.push(boss);
+    
+    
+    
+    gameEngine.addEntity(boss);
+    gameEngine.platforms = areas;
 
-    var platforms = [];
-    var t0 = new TileZero(gameEngine);
+    //var platforms = [];
+    //var t0 = new TileZero(gameEngine);
+    
+    //platforms.push(t0);
+    //gameEngine.addEntity(t0);
+    //var t1 = new TileOne(gameEngine);
 
-    platforms.push(t0);
-    gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine);
-
-    platforms.push(t1);
-    gameEngine.addEntity(t1);
-    var t2 = new TileTwo(gameEngine);
-    platforms.push(t2);
-    gameEngine.addEntity(t2);
-    var t3 = new TileThree(gameEngine);
-    platforms.push(t3);
-    gameEngine.addEntity(t3);
-    var t4 = new TileFour(gameEngine);
-    platforms.push(t4);
-    gameEngine.addEntity(t4);
-    var t5 = new TileFive(gameEngine);
-    platforms.push(t5);
-    gameEngine.addEntity(t5);
-    var t6 = new TileSix(gameEngine);
-    platforms.push(t6);
-    gameEngine.addEntity(t6);
-    var t7 = new TileSeven(gameEngine);
-    platforms.push(t7);
-    gameEngine.addEntity(t7);
-    var t8 = new TileEight(gameEngine);
-    platforms.push(t8);
-    gameEngine.addEntity(t8);
-    gameEngine.platforms = platforms;
-
+    //platforms.push(t1);
+    //gameEngine.addEntity(t1);
+    //var t2 = new TileTwo(gameEngine);
+    //platforms.push(t2);
+    //gameEngine.addEntity(t2);
+    //var t3 = new TileThree(gameEngine);
+    //platforms.push(t3);
+    //gameEngine.addEntity(t3);
+    //var t4 = new TileFour(gameEngine);
+    //platforms.push(t4);
+    //gameEngine.addEntity(t4);
+    //var t5 = new TileFive(gameEngine);
+    //platforms.push(t5);
+    //gameEngine.addEntity(t5);
+    //var t6 = new TileSix(gameEngine);
+    //platforms.push(t6);
+    //gameEngine.addEntity(t6);
+    //var t7 = new TileSeven(gameEngine);
+    //platforms.push(t7);
+    //gameEngine.addEntity(t7);
+    //var t8 = new TileEight(gameEngine);
+    //platforms.push(t8);
+    //gameEngine.addEntity(t8);
+    //gameEngine.platforms = platforms;
+   
 
     var classes = [];
     var warrior = new Warrior(gameEngine);

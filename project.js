@@ -1610,45 +1610,45 @@ Hero.prototype.draw = function (ctx) {
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
         if (this.boxes) {
-            ctx.strokeStyle = "blue";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            //ctx.strokeStyle = "blue";
+            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
         this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Danimation;
     } else if (this.movingNorth && this.game.up) {
         this.game.up = false;
         if (this.boxes) {
-            ctx.strokeStyle = "blue";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            //ctx.strokeStyle = "blue";
+            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
         this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Uanimation;
     } else if (this.movingWest && this.game.left) {
         this.game.left = false;
         if (this.boxes) {
-            ctx.strokeStyle = "blue";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            //ctx.strokeStyle = "blue";
+            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
         this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Lanimation;
     } else if (this.movingEast && this.game.right) {
         this.game.left = false;
         if (this.boxes) {
-            ctx.strokeStyle = "blue";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            //ctx.strokeStyle = "blue";
+            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
         this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Ranimation;
 
     } else {
         if (this.boxes) {
-            ctx.strokeStyle = "blue";
-            ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+            //ctx.strokeStyle = "blue";
+            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
         }
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
     }
     ctx.beginPath();
-    ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
+    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
     ctx.stroke();
 }
 function Warrior(game) {

@@ -411,10 +411,10 @@ function TileZero(game, hero, north, south, east, west) {
     this.WestTile = null;
 
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 50, 760);
-    this.boundingbox2 = new BoundingBox(20, 740, 760, 20);
-    this.boundingbox3 = new BoundingBox(20, 710, 330, 70);
-    this.boundingbox4 = new BoundingBox(20, 740, 100, 70);
+    this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
 
     this.circle1 = new Circle(100, 120, 50);
     Entity.call(this, game, 20, 20);
@@ -426,10 +426,10 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
-    this.boundingbox2 = new BoundingBox(20, 710, 330, 70);
-    this.boundingbox3 = new BoundingBox(500, 20, 280, 280);
-    this.boundingbox4 = new BoundingBox(500, 710, 280, 70);
+    this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
 
 
     this.NorthTile = this.game.platforms[1];
@@ -447,14 +447,14 @@ TileZero.prototype.update = function () {
 TileZero.prototype.draw = function (ctx) {
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonStart.png"), this.x, this.y, 760, 760);
-    ctx.strokeStyle = "red";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-    ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
-    ctx.strokeRect(this.boundingbox2.x, this.boundingbox2.y, this.boundingbox2.width, this.boundingbox2.height);
-    ctx.strokeRect(this.boundingbox3.x, this.boundingbox3.y, this.boundingbox3.width, this.boundingbox3.height);
-    ctx.strokeRect(this.boundingbox4.x, this.boundingbox4.y, this.boundingbox4.width, this.boundingbox4.height);
-    var i;
-    var j;
+    //ctx.strokeStyle = "red";
+    //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    //ctx.strokeRect(this.boundingbox1.x, this.boundingbox1.y, this.boundingbox1.width, this.boundingbox1.height);
+    //ctx.strokeRect(this.boundingbox2.x, this.boundingbox2.y, this.boundingbox2.width, this.boundingbox2.height);
+    //ctx.strokeRect(this.boundingbox3.x, this.boundingbox3.y, this.boundingbox3.width, this.boundingbox3.height);
+    //ctx.strokeRect(this.boundingbox4.x, this.boundingbox4.y, this.boundingbox4.width, this.boundingbox4.height);
+    //var i;
+    //var j;
     //left side
     //for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
     //    for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
@@ -490,6 +490,10 @@ function TileOne(game, hero) {
     this.WestTile = null;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     
+    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
 
     Entity.call(this, game, 20, 20);
 }
@@ -500,6 +504,12 @@ TileOne.prototype.constructor = TileZero;
 TileOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
+    this.boundingbox2 = new BoundingBox(400, 20, 350, 200);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox4 = new BoundingBox(21, 410, 300, 400);
+
     this.NorthTile = this.game.platforms[3];
     this.EastTile = null;
     this.SouthTile = this.game.platforms[0];
@@ -510,6 +520,8 @@ TileOne.prototype.update = function () {
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
+
+
 }
 
 function TileTwo(game, hero) {

@@ -757,6 +757,34 @@ Menu.prototype.update = function () {
         this.playerhero.currentClass.mp = this.playerhero.currentClass.mp;
 
     }
+    if (this.game.menuRunning) {
+         if (this.game.click) {
+             //warrior
+             if (this.game.click.x > 120 && this.game.click.x < 229 && this.game.click.y > 36 && this.game.click.y < 60) {
+                 this.playerhero.changeClass(0);
+             }//battle mage
+             else if (this.game.click.x > 230 && this.game.click.x < 425 && this.game.click.y > 36 && this.game.click.y < 60) {
+                 this.playerhero.changeClass(1);
+             } //ranger
+             else if (this.game.click.x > 120 && this.game.click.x < 229 && this.game.click.y > 76 && this.game.click.y < 100) {
+                 this.playerhero.changeClass(2);
+             } //fedaykin
+             else if (this.game.click.x > 230 && this.game.click.x < 425 && this.game.click.y > 76 && this.game.click.y < 100) {
+                 this.playerhero.changeClass(3);
+             } //necromancer
+             else if (this.game.click.x > 120 && this.game.click.x < 425 && this.game.click.y > 116 && this.game.click.y < 140) {
+                 this.playerhero.changeClass(4);
+             }
+         }
+     }
+     /*if (this.game.menuRunning) {
+ +
+ +        if (this.game.click) {
+ +            if (this.game.click.x > 25 && this.game.click.x < 425 && this.game.click.y > 25 && this.game.click.y < 175) {
+ +                this.playerhero.changeClass();
+ +            }
+ +        }
+ +    }*/
     Entity.prototype.update.call(this);
 
 }
@@ -772,12 +800,11 @@ Menu.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
 
         ctx.strokeRect(25, 25, 400, 150); //character area
-        if (this.game.click) {
-            if (this.game.click.x > 25 && this.game.click.x < 425 && this.game.click.y > 25 && this.game.click.y < 175) {
-                this.playerhero.changeClass();
-            }
-        }
-        ctx.fillText("Display Character", 125, 125);
+        ctx.fillText(this.game.classSystem[0].name, 120, 60);
+        ctx.fillText(this.game.classSystem[1].name, 230, 60);
+        ctx.fillText(this.game.classSystem[2].name, 120, 100);
+        ctx.fillText(this.game.classSystem[3].name, 230, 100);
+        ctx.fillText(this.game.classSystem[4].name, 120, 140);
 
         //ability boxes
         ctx.fillStyle = "black";
@@ -820,8 +847,8 @@ Menu.prototype.draw = function (ctx) {
             i = i + 75;
         }
 
-        this.playerhero.x = 75;
-        this.playerhero.y = 75;
+        this.playerhero.x = 50;
+        this.playerhero.y = 50;
         this.playerhero.draw(ctx);
     }
 
@@ -1511,8 +1538,8 @@ Hero.prototype.update = function () {
 
     Entity.prototype.update.call(this);
 }
-Hero.prototype.changeClass = function () {
-    this.currentClass = this.game.classSystem[1];
+Hero.prototype.changeClass = function (val) {
+    this.currentClass = this.game.classSystem[val];
     this.abilityOneDescription = this.currentClass.abilityOneDescription;
     this.abilityTwoDescription = this.currentClass.abilityTwoDescription;
     this.abilityThreeDescription = this.currentClass.abilityThreeDescription;
@@ -1805,88 +1832,10 @@ Warrior.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
 }
 Warrior.prototype.draw = function (ctx) {
 }
-function Rogue(game) {
-    this.level = 1;
-    this.cen = 2;
-    this.col = 0;
-    this.hp = 75;
-    this.hpMax = 75;
-    this.hpRegen = 5;
-    this.mp = 30;
-    this.mpMax = 30;
-    this.mpRegen = 7;
-    this.phystr = 10;
-    this.phydef = 8;
-    this.magstr = 7;
-    this.magdef = 4;
-    this.poisonTime = 0;
-    this.poisonDamage = 7;
-    this.ap = 0;
-    this.exp = 0;
-    this.expMax = 10;
-    this.name = "Rogue";
-    this.abilityOneDescription = "Attack";
-    this.abilityOneAP = 0;
-    this.abilityOneAPNeeded = 0;
-
-    this.abilityTwoDescription = "Stab";
-    this.abilityTwoAP = 0;
-    this.abilityTwoAPNeeded = 0;
-
-    this.abilityThreeDescription = "Flee";
-    this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
-
-    this.abilityFourDescription = "Invisibility";
-    this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
-
-    this.abilityFiveDescription = "Bomb";
-    this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
-
-    this.abilitySixDescription = "Zombie Dart";
-    this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
-
-    this.abilitySevenDescription = "Cleave";
-    this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
-
-    this.abilityEightDescription = "Cleave";
-    this.abilityEightAP = 0;
-    this.abilityEightAPNeeded = 100;
-
-    this.abilityNineDescription = "Cleave";
-    this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
-
-    this.abilityTenDescription = "Cleave";
-    this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
-    Entity.call(this, game, 380, 380);
-}
-Rogue.prototype = new Entity();
-Rogue.prototype.constructor = Rogue;
-Rogue.prototype.update = function () {
-    if (this.exp >= this.expMax) {
-        this.hpMax += 5;
-        this.hp = this.hpMax;
-        this.phystr += 2;
-        this.phydef += 1;
-        this.magdef += .10;
-        this.mpMax += 2;
-        this.mp = this.mpMax;
-        this.magstr += .50;
-        this.level += 1;
-        this.exp -= this.expMax;
-    }
-    Entity.prototype.update.call(this);
-}
 
 function BattleMage(game) {
     this.level = 1;
-    this.cen = -1;
+    this.cen = 5;
     this.col = 0;
     this.hp = 60;
     this.hpMax = 60;
@@ -2068,7 +2017,7 @@ BattleMage.prototype.draw = function (ctx) {
 
 function Ranger(game) {
     this.level = 1;
-    this.cen = -1;
+    this.cen = 2;
     this.col = 0;
     this.hp = 70;
     this.hpMax = 70;
@@ -2251,7 +2200,7 @@ Ranger.prototype.draw = function (ctx) {
 
 function Fedaykin(game) {
     this.level = 1;
-    this.cen = -1;
+    this.cen = 8;
     this.col = 0;
     this.hp = 60;
     this.hpMax = 50;
@@ -2435,7 +2384,7 @@ Fedaykin.prototype.draw = function (ctx) {
 function Necromancer(game) {
     this.level = 1;
     this.cen = -1;
-    this.col = 0;
+    this.col = 4;
     this.hp = 50;
     this.hpMax = 50;
     this.hpRegen = 3;
@@ -2697,8 +2646,6 @@ ASSET_MANAGER.downloadAll(function () {
     var classes = [];
     var warrior = new Warrior(gameEngine);
     classes.push(warrior);
-    var rogue = new Rogue(gameEngine);
-    classes.push(rogue);
     var battleMage = new BattleMage(gameEngine);
     classes.push(battleMage);
     var ranger = new Ranger(gameEngine);
@@ -2710,7 +2657,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.classSystem = classes;
 
-    var hero1 = new Hero(gameEngine, gameEngine.classSystem[4].cen, gameEngine.classSystem[4].col, gameEngine.classSystem[4], gameEngine.platforms[0]);
+    var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
 
     var enemy1 = new EnemyType1(gameEngine, 2, 4);
     gameEngine.firstEnemy = enemy1;

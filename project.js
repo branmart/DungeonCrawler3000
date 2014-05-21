@@ -962,7 +962,7 @@ Battle.prototype.update = function () {
                     this.firstEnemy.poisonTime = this.firstEnemy.poisonTimeStart;
                 }
 
-                var snd = new Audio("sound/soundeffect10.mp3");
+                var snd = new Audio("sound/soundeffect8.mp3");
                 snd.play();
                 //snd.currentTime = 0;
 

@@ -887,7 +887,7 @@ Battle.prototype.update = function () {
         this.battleTime = 0;
         this.game.fledSuccessfully = false;
     }
-    if (this.battleTime > 30) {
+    if (this.battleTime > 5) {
         this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
@@ -1279,6 +1279,225 @@ EnemyType1.prototype.ability1Display = function (hero, enemy, time, ctx) {
 }
 EnemyType1.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+}
+
+function Ghoul(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 45;
+    this.mp = 0;
+    this.phystr = 17;
+    this.phydef = 5;
+    this.magstr = 1;
+    this.magdef = 0;
+    this.exp = 2;
+    this.ap = 1;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/ghoul.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/ghoul.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/ghoul.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/ghoul.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/ghoul.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 380;
+    this.y = 380;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, 700, 50);
+
+}
+Ghoul.prototype = new Entity();
+Ghoul.prototype.constructor = Ghoul;
+
+Ghoul.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Ghoul.prototype.reset = function () {
+    this.hp = 56;
+    this.mp = 0;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+
+    Entity.prototype.update.call(this);
+}
+Ghoul.prototype.abilityOne = function (hero, enemy) {
+    if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+        hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+    }
+}
+Ghoul.prototype.ability1Display = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red"
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+            ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+        } else {
+            ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+        }
+        ctx.restore();
+    }
+}
+Ghoul.prototype.draw = function (ctx) {
+
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/ghoul.png"),
+      //            this.x, this.y, 80, 80);
+}
+
+function Emu(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 55;
+    this.mp = 0;
+    this.phystr = 12;
+    this.phydef = 12;
+    this.magstr = 1;
+    this.magdef = 3;
+    this.exp = 2;
+    this.ap = 1;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/emu.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/emu.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/emu.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/emu.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/emu.png"), 64, 64, .2, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 380;
+    this.y = 380;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, 700, 50);
+
+}
+Emu.prototype = new Entity();
+Emu.prototype.constructor = Emu;
+
+Emu.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Emu.prototype.reset = function () {
+    this.hp = 56;
+    this.mp = 0;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+
+    Entity.prototype.update.call(this);
+}
+Emu.prototype.abilityOne = function (hero, enemy) {
+    if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+        hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+    }
+}
+Emu.prototype.ability1Display = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red"
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+            ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+        } else {
+            ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+        }
+        ctx.restore();
+    }
+}
+Emu.prototype.draw = function (ctx) {
+
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/emu.png"),
+    //            this.x, this.y, 80, 80);
+}
+
+function Wolfkin(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 55;
+    this.mp = 0;
+    this.phystr = 18;
+    this.phydef = 6;
+    this.magstr = 1;
+    this.magdef = 3;
+    this.exp = 2;
+    this.ap = 1;
+    this.isPoisoned = false;
+    this.poisonTime = 5;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/wolfkin.png"), 64, 64, .4, 3, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/wolfkin.png"), 64, 64, .4, 3, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/wolfkin.png"), 64, 64, .4, 3, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/wolfkin.png"), 64, 64, .4, 3, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/wolfkin.png"), 64, 64, .2, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 380;
+    this.y = 380;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, 700, 50);
+
+}
+Wolfkin.prototype = new Entity();
+Wolfkin.prototype.constructor = Wolfkin;
+
+Wolfkin.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Wolfkin.prototype.reset = function () {
+    this.hp = 56;
+    this.mp = 0;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+
+    Entity.prototype.update.call(this);
+}
+Wolfkin.prototype.abilityOne = function (hero, enemy) {
+    if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+        hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+    }
+}
+Wolfkin.prototype.ability1Display = function (hero, enemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red"
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+            ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+        } else {
+            ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+        }
+        ctx.restore();
+    }
+}
+Wolfkin.prototype.draw = function (ctx) {
+
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Wolfkin.png"),
+    //            this.x, this.y, 80, 80);
 }
 function Hero(game, cen, col, job, tile) {
     this.cen = cen;
@@ -2573,10 +2792,15 @@ ASSET_MANAGER.queueDownload("./img/snow.jpg");
 ASSET_MANAGER.queueDownload("./img/GoldenSun.png");
 ASSET_MANAGER.queueDownload("./img/hell4.jpg");
 ASSET_MANAGER.queueDownload("./img/tree.png");
+ASSET_MANAGER.queueDownload("./img/emu.png");
+ASSET_MANAGER.queueDownload("./img/ghoul.png");
+ASSET_MANAGER.queueDownload("./img/wolfkin.png");
+
 ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
 ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
 ASSET_MANAGER.queueDownload("./img/BossMap.png");
+
 
 
 ASSET_MANAGER.downloadAll(function () {
@@ -2659,7 +2883,11 @@ ASSET_MANAGER.downloadAll(function () {
 
     var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
 
-    var enemy1 = new EnemyType1(gameEngine, 2, 4);
+    //var enemy1 = new EnemyType1(gameEngine, 2, 4);
+    //var enemy2 = new Ghoul(gameEngine, -1, 0);
+    var enemy1 = new Emu(gameEngine, -1, 0);
+    //var enemy3 = new Wolfkin(gameEngine, -1, 0);
+
     gameEngine.firstEnemy = enemy1;
     var menu = new Menu(gameEngine, 25, 25, hero1);
     var battle = new Battle(gameEngine, 20, 20, hero1, gameEngine.firstEnemy);
@@ -2672,4 +2900,5 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+
 });

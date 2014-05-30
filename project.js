@@ -813,32 +813,47 @@ Menu.prototype.update = function () {
     }
     if (this.game.menuRunning) {
         //class change
+        if (this.game.mouse) {
+            console.log("(" + this.game.mouse.x + "," + this.game.mouse.y + ")");
+        }
         if (this.game.click) {
             //gunner
-            if (this.game.click.x > 120 && this.game.click.x < 229 && this.game.click.y > 36 && this.game.click.y < 60) {
+            if (this.game.click.x > 30 && this.game.click.x < 120 && this.game.click.y > 80 && this.game.click.y < 120) {
                 this.playerhero.changeClass(0);
                 this.resetAbilities();
             }//black mage
-            else if (this.game.click.x > 230 && this.game.click.x < 425 && this.game.click.y > 36 && this.game.click.y < 60) {
+            else if (this.game.click.x > 130 && this.game.click.x < 220 && this.game.click.y > 80 && this.game.click.y < 120) {
                 this.playerhero.changeClass(1);
                 this.resetAbilities();
             } //white mage
-            else if (this.game.click.x > 120 && this.game.click.x < 229 && this.game.click.y > 76 && this.game.click.y < 100) {
+            else if (this.game.click.x > 230 && this.game.click.x < 320 && this.game.click.y > 80 && this.game.click.y < 120) {
                 this.playerhero.changeClass(2);
                 this.resetAbilities();
             } //Samurai
-            else if (this.game.click.x > 230 && this.game.click.x < 425 && this.game.click.y > 76 && this.game.click.y < 100) {
+            else if (this.game.click.x > 330 && this.game.click.x < 420 && this.game.click.y > 80 && this.game.click.y < 120) {
                 this.playerhero.changeClass(3);
                 this.resetAbilities();
             } //Warrior
-            else if (this.game.click.x > 120 && this.game.click.x < 425 && this.game.click.y > 116 && this.game.click.y < 140) {
+            else if (this.game.click.x > 30 && this.game.click.x < 120 && this.game.click.y > 130 && this.game.click.y < 170) {
                 this.playerhero.changeClass(4);
+                this.resetAbilities();
+            }//sixth
+            else if (this.game.click.x > 130 && this.game.click.x < 220 && this.game.click.y > 130 && this.game.click.y < 170) {
+                this.playerhero.changeClass(5);
+                this.resetAbilities();
+            }//seventh
+            else if (this.game.click.x > 230 && this.game.click.x < 320 && this.game.click.y > 130 && this.game.click.y < 170) {
+                this.playerhero.changeClass(6);
+                this.resetAbilities();
+            } //eight
+            else if (this.game.click.x > 330 && this.game.click.x < 420 && this.game.click.y > 130 && this.game.click.y < 170) {
+                this.playerhero.changeClass(7);
                 this.resetAbilities();
             }
         }
     }
         //abilities list
-        if (this.game.click) {
+    if (this.game.click) {
             if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 25 && this.game.click.y < 100) {
                 if (this.playerhero.currentClass.abilityOneAP === this.playerhero.currentClass.abilityOneAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityOne;
@@ -851,7 +866,7 @@ Menu.prototype.update = function () {
 
                 }
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 101 && this.game.mouse.y < 176) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 101 && this.game.click.y < 176) {
                 if (this.playerhero.currentClass.abilityTwoAP === this.playerhero.currentClass.abilityTwoAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityTwo;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilityTwoDescription;
@@ -862,7 +877,7 @@ Menu.prototype.update = function () {
                     this.playerhero.currentClass.ap--;
                 }
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 177 && this.game.mouse.y < 251) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 177 && this.game.click.y < 251) {
                 if (this.playerhero.currentClass.abilityThreeAP === this.playerhero.currentClass.abilityThreeAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityThree;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilityThreeDescription;
@@ -875,7 +890,7 @@ Menu.prototype.update = function () {
 
 
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 252 && this.game.mouse.y < 326) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 252 && this.game.click.y < 326) {
                 if (this.playerhero.currentClass.abilityFourAP === this.playerhero.currentClass.abilityFourAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityFour;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilityFourDescription;
@@ -886,7 +901,7 @@ Menu.prototype.update = function () {
                     this.playerhero.currentClass.ap--;
                 }
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 327 && this.game.mouse.y < 401) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 327 && this.game.click.y < 401) {
                 if (this.playerhero.currentClass.abilityFiveAP === this.playerhero.currentClass.abilityFiveAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityFive;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilityFiveDescription;
@@ -899,7 +914,7 @@ Menu.prototype.update = function () {
 
 
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 402 && this.game.mouse.y < 476) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 402 && this.game.click.y < 476) {
                 if (this.playerhero.currentClass.abilitySixAP === this.playerhero.currentClass.abilitySixAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilitySix;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilitySixDescription;
@@ -911,7 +926,7 @@ Menu.prototype.update = function () {
                 }
 
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 477 && this.game.mouse.y < 551) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 477 && this.game.click.y < 551) {
                 if (this.playerhero.currentClass.abilitySevenAP === this.playerhero.currentClass.abilitySevenAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilitySeven;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilitySevenDescription;
@@ -924,7 +939,7 @@ Menu.prototype.update = function () {
 
 
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 552 && this.game.mouse.y < 626) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 552 && this.game.click.y < 626) {
                 if (this.playerhero.currentClass.abilityEightAP === this.playerhero.currentClass.abilityEightAPNeeded) {
                     this.currentAbility = this.playerhero.currentClass.abilityEight;
                     this.currentAbilityDescription = this.playerhero.currentClass.abilityEightDescription;
@@ -936,14 +951,14 @@ Menu.prototype.update = function () {
                 }
 
                 //support Abilities
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 627 && this.game.mouse.y < 701) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 627 && this.game.click.y < 701) {
                 if  (this.playerhero.currentClass.abilityNineAP < this.playerhero.currentClass.abilityNineAPNeeded && this.playerhero.currentClass.ap > 0) {
                     this.playerhero.currentClass.abilityNineAP += 1;
                     this.playerhero.currentClass.ap--;
                 }
 
 
-            } else if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 701 && this.game.mouse.y < 776) {
+            } else if (this.game.click.x > 415 && this.game.click.x < 415 + 365 && this.game.click.y > 701 && this.game.click.y < 776) {
                 if (this.playerhero.currentClass.abilityTenAP < this.playerhero.currentClass.abilityTenAPNeeded && this.playerhero.currentClass.ap > 0) {
                     this.playerhero.currentClass.abilityTenAP += 1;
                     this.playerhero.currentClass.ap--;
@@ -1008,7 +1023,132 @@ Menu.prototype.update = function () {
     Entity.prototype.update.call(this);
 
 }
+Menu.prototype.drawAbilities = function (ctx) {
+    var x = 25;
+    var y = 440;
+    var z = 40;
+    ctx.fillStyle = "black";
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 25 && this.game.clickOnce.y < 25 + 75) {
+            ctx.fillStyle = "red";
+        }
+    }
 
+    if (this.game.mouse && !this.game.abilitySelected) {
+        if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 25 && this.game.mouse.y < 25 + 75) {
+
+            ctx.fillText("A normal Attack", y, x + z);
+        } else {
+            ctx.fillText(this.playerhero.currentClass.abilityOneDescription, y, x + z);
+
+        }
+    } else {
+        ctx.fillText(this.playerhero.currentClass.abilityOneDescription, y, x + z);
+
+    }
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityOneAP + "/" + this.playerhero.currentClass.abilityOneAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 101 && this.game.clickOnce.y < 176) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilityTwoDescription, y, x + z);
+    ctx.fillStyle = "black";
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityTwoAP + "/" + this.playerhero.currentClass.abilityTwoAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 177 && this.game.clickOnce.y < 251) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilityThreeDescription, y, x + z);
+    ctx.fillStyle = "black";
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityThreeAP + "/" + this.playerhero.currentClass.abilityThreeAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 252 && this.game.clickOnce.y < 362) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilityFourDescription, y, x + z);
+    ctx.fillStyle = "black";
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityFourAP + "/" + this.playerhero.currentClass.abilityFourAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 327 && this.game.clickOnce.y < 401) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilityFiveDescription, y, x + z);
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityFiveAP + "/" + this.playerhero.currentClass.abilityFiveAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 402 && this.game.clickOnce.y < 476) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilitySixDescription, y, x + z);
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilitySixAP + "/" + this.playerhero.currentClass.abilitySixAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 477 && this.game.clickOnce.y < 551) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilitySevenDescription, y, x + z);
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilitySevenAP + "/" + this.playerhero.currentClass.abilitySevenAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.clickOnce) {
+        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 552 && this.game.clickOnce.y < 626) {
+            ctx.fillStyle = "red";
+        }
+    }
+    ctx.fillText(this.playerhero.currentClass.abilityEightDescription, y, x + z);
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityEightAP + "/" + this.playerhero.currentClass.abilityEightAPNeeded, y, x + z + 30);
+    x += 75;
+    if (this.game.mouse) {
+        if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 627 && this.game.mouse.y < 701) {
+            ctx.fillText("A support Ability", y, x + z);
+        } else {
+            ctx.fillText(this.playerhero.currentClass.abilityNineDescription, y, x + z);
+
+        }
+    } else {
+        ctx.fillText(this.playerhero.currentClass.abilityNineDescription, y, x + z);
+
+    }
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityNineAP + "/" + this.playerhero.currentClass.abilityNineAPNeeded, y, x + z + 30);
+    x += 75;
+
+    if (this.game.mouse) {
+        if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 702 && this.game.mouse.y < 776) {
+            ctx.fillText("A support Ability", y, x + z);
+        } else {
+            ctx.fillText(this.playerhero.currentClass.abilityTenDescription, y, x + z);
+
+        }
+    } else {
+        ctx.fillText(this.playerhero.currentClass.abilityTenDescription, y, x + z);
+
+    }
+    ctx.fillStyle = "black";
+
+    ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityTenAP + "/" + this.playerhero.currentClass.abilityTenAPNeeded, y, x + z + 30);
+    x += 75;
+}
 Menu.prototype.draw = function (ctx) {
 
     if (this.game.menuRunning) {
@@ -1018,133 +1158,68 @@ Menu.prototype.draw = function (ctx) {
         ctx.strokeStyle = "white";
         ctx.font = "24pt Impact";
         ctx.fillStyle = "white";
-        //list of abilities can learn bassed on class
-        //ctx.fillText("List of abilities", 430, 90);
-        var x = 25;
-        var y = 440;
-        var z = 40;
-        ctx.fillStyle = "black";
-
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 25 && this.game.clickOnce.y < 25 + 75) {
-            ctx.fillStyle = "red";
-        }
-        if (this.game.mouse && !this.game.abilitySelected) {
-            if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 25 && this.game.mouse.y < 25 + 75) {
-
-                ctx.fillText("A normal Attack", y, x + z);
-            } else {
-                ctx.fillText(this.playerhero.currentClass.abilityOneDescription, y, x + z);
-
-            }
-        } else {
-            ctx.fillText(this.playerhero.currentClass.abilityOneDescription, y, x + z);
-
-        }
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityOneAP + "/" + this.playerhero.currentClass.abilityOneAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 101 && this.game.clickOnce.y < 176) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilityTwoDescription, y, x + z);
-        ctx.fillStyle = "black";
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityTwoAP + "/" + this.playerhero.currentClass.abilityTwoAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 177 && this.game.clickOnce.y < 251) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilityThreeDescription, y, x + z);
-        ctx.fillStyle = "black";
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityThreeAP + "/" + this.playerhero.currentClass.abilityThreeAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 252 && this.game.clickOnce.y < 362) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilityFourDescription, y, x + z);
-        ctx.fillStyle = "black";
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityFourAP + "/" + this.playerhero.currentClass.abilityFourAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 327 && this.game.clickOnce.y < 401) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilityFiveDescription, y, x + z);
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityFiveAP + "/" + this.playerhero.currentClass.abilityFiveAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 402 && this.game.clickOnce.y < 476) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilitySixDescription, y, x + z);
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilitySixAP + "/" + this.playerhero.currentClass.abilitySixAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 477 && this.game.clickOnce.y < 551) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilitySevenDescription, y, x + z);
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilitySevenAP + "/" + this.playerhero.currentClass.abilitySevenAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.clickOnce.x > 415 && this.game.clickOnce.x < 415 + 365 && this.game.clickOnce.y > 552 && this.game.clickOnce.y < 626) {
-            ctx.fillStyle = "red";
-        }
-        ctx.fillText(this.playerhero.currentClass.abilityEightDescription, y, x + z);
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityEightAP + "/" + this.playerhero.currentClass.abilityEightAPNeeded, y, x + z + 30);
-        x += 75;
-        if (this.game.mouse) {
-            if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 627 && this.game.mouse.y < 701) {
-                ctx.fillText("A support Ability", y, x + z);
-            } else {
-                ctx.fillText(this.playerhero.currentClass.abilityNineDescription, y, x + z);
-
-            }
-        } else {
-            ctx.fillText(this.playerhero.currentClass.abilityNineDescription, y, x + z);
-
-        }
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityNineAP + "/" + this.playerhero.currentClass.abilityNineAPNeeded, y, x + z + 30);
-        x += 75;
-
-        if (this.game.mouse) {
-            if (this.game.mouse.x > 415 && this.game.mouse.x < 415 + 365 && this.game.mouse.y > 702 && this.game.mouse.y < 776) {
-                ctx.fillText("A support Ability", y, x + z);
-            } else {
-                ctx.fillText(this.playerhero.currentClass.abilityTenDescription, y, x + z);
-
-            }
-        } else {
-            ctx.fillText(this.playerhero.currentClass.abilityTenDescription, y, x + z);
-
-        }
-        ctx.fillStyle = "black";
-
-        ctx.fillText("AP Needed: " + this.playerhero.currentClass.abilityTenAP + "/" + this.playerhero.currentClass.abilityTenAPNeeded, y, x + z + 30);
-        x += 75;
-
+        
+        this.drawAbilities(ctx);
 
         for (var i = 25; i < 750;) {
             ctx.strokeRect(415, i, 365, 75);
             i = i + 75;
         }
-
-        this.playerhero.x = 50;
-        this.playerhero.y = 50;
-        this.playerhero.draw(ctx);
         ctx.strokeRect(25, 25, 400, 150); //character area
-        ctx.fillText(this.game.classSystem[0].name, 120, 60);
-        ctx.fillText(this.game.classSystem[1].name, 230, 60);
-        ctx.fillText(this.game.classSystem[2].name, 120, 100);
-        ctx.fillText(this.game.classSystem[3].name, 230, 100);
-        ctx.fillText(this.game.classSystem[4].name, 120, 140);
 
+        ctx.save();
+
+        for (var o = 0; o < 2; o++) {
+            for (var i = 0; i < 4; i++) {
+                ctx.strokeRect(25 + (i * 100), 75 + (o * 50), 100, 50);
+            }
+        }
+
+        if (this.game.mouse) {
+            //gunner
+            if (this.game.mouse.x > 30 && this.game.mouse.x < 120 && this.game.mouse.y > 80 && this.game.mouse.y < 120) {
+                ctx.fillText(this.game.classSystem[0].name, 140, 60);
+            }//black mage
+            else if (this.game.mouse.x > 130 && this.game.mouse.x < 220 && this.game.mouse.y > 80 && this.game.mouse.y < 120) {
+                ctx.fillText(this.game.classSystem[1].name, 140, 60);
+            } //white mage
+            else if (this.game.mouse.x > 230 && this.game.mouse.x < 320 && this.game.mouse.y > 80 && this.game.mouse.y < 120) {
+                ctx.fillText(this.game.classSystem[2].name, 140, 60);
+            } //Samurai
+            else if (this.game.mouse.x > 330 && this.game.mouse.x < 420 && this.game.mouse.y > 80 && this.game.mouse.y < 120) {
+                ctx.fillText(this.game.classSystem[3].name, 140, 60);
+            } //Warrior
+            else if (this.game.mouse.x > 30 && this.game.mouse.x < 120 && this.game.mouse.y > 130 && this.game.mouse.y < 170) {
+                ctx.fillText(this.game.classSystem[4].name, 140, 60);
+            }//sixth
+            else if (this.game.mouse.x > 130 && this.game.mouse.x < 220 && this.game.mouse.y > 130 && this.game.mouse.y < 170) {
+                ctx.fillText(this.game.classSystem[5].name, 140, 60);
+            }//seventh
+            else if (this.game.mouse.x > 230 && this.game.mouse.x < 320 && this.game.mouse.y > 130 && this.game.mouse.y < 170) {
+                ctx.fillText(this.game.classSystem[6].name, 140, 60);
+            } //eight
+            else if (this.game.mouse.x > 330 && this.game.mouse.x < 420 && this.game.mouse.y > 130 && this.game.mouse.y < 170) {
+                ctx.fillText(this.game.classSystem[7].name, 140, 60);
+            } else {
+                ctx.fillText(this.playerhero.currentClass.name, 140, 60);
+            }
+        } 
+        this.game.classSystem[0].draw(ctx, 50, 80, 1.25);
+        //ctx.fillText(this.game.classSystem[0].name, 120, 60);
+        this.game.classSystem[1].draw(ctx, 150, 80, 1.25);
+        //ctx.fillText(this.game.classSystem[1].name, 230, 60);
+        this.game.classSystem[2].draw(ctx, 250, 80, 1.25);
+
+        //ctx.fillText(this.game.classSystem[2].name, 120, 100);
+        this.game.classSystem[3].draw(ctx, 350, 80, 1.25);
+        //ctx.fillText(this.game.classSystem[3].name, 230, 100);
+
+        this.game.classSystem[4].draw(ctx, 50, 130, 1.25);
+        //ctx.fillText(this.game.classSystem[4].name, 120, 140);
+        this.game.classSystem[5].draw(ctx, 150, 130, 1.25);
+        this.game.classSystem[6].draw(ctx, 250, 130, 1.25);
+        this.game.classSystem[7].draw(ctx, 350, 130, 1.25);
+        ctx.restore();
         //ability boxes
         ctx.fillStyle = "black";
         ctx.strokeRect(25, 175, 400, 300); //main box 
@@ -1154,11 +1229,11 @@ Menu.prototype.draw = function (ctx) {
         ctx.fillText(this.abilityThreeDescription, 25, 325);
         ctx.strokeRect(25, 375, 190, 100); // 5
         ctx.fillText(this.abilityFiveDescription, 25, 425);
-        ctx.strokeRect(210, 175, 200, 100); // 2
+        ctx.strokeRect(210, 175, 210, 100); // 2
         ctx.fillText(this.abilityTwoDescription, 225, 225);
-        ctx.strokeRect(210, 275, 200, 100); // 4
+        ctx.strokeRect(210, 275, 210, 100); // 4
         ctx.fillText(this.abilityFourDescription, 225, 325);
-        ctx.strokeRect(210, 375, 200, 100); // 6
+        ctx.strokeRect(210, 375, 210, 100); // 6
         ctx.fillText(this.abilitySixDescription, 225, 425);
 
 
@@ -1282,7 +1357,16 @@ Battle.prototype.update = function () {
             } else if (this.game.click.x > 20 + (760 / this.game.classSystem.length * 4) && this.game.click.x < 20 + (760 / this.game.classSystem.length * 4) + 760 / this.game.classSystem.length && this.game.click.y > 560 && this.game.click.y < 560 + 65) {
                 this.heroOne.changeClass(4);
                 this.resetAbilities();
-            } 
+            } else if (this.game.click.x > 20 + (760 / this.game.classSystem.length * 5) && this.game.click.x < 20 + (760 / this.game.classSystem.length * 5) + 760 / this.game.classSystem.length && this.game.click.y > 560 && this.game.click.y < 560 + 65) {
+                this.heroOne.changeClass(5);
+                this.resetAbilities();
+            } else if (this.game.click.x > 20 + (760 / this.game.classSystem.length * 6) && this.game.click.x < 20 + (760 / this.game.classSystem.length * 6) + 760 / this.game.classSystem.length && this.game.click.y > 560 && this.game.click.y < 560 + 65) {
+                this.heroOne.changeClass(6);
+                this.resetAbilities();
+            } else if (this.game.click.x > 20 + (760 / this.game.classSystem.length * 7) && this.game.click.x < 20 + (760 / this.game.classSystem.length * 7) + 760 / this.game.classSystem.length && this.game.click.y > 560 && this.game.click.y < 560 + 65) {
+                this.heroOne.changeClass(7);
+                this.resetAbilities();
+            }
             while (this.selectedEnemy === null && i < this.heroOne.currentTile.enemies.length) {
                 if (this.heroOne.currentTile.enemies[i].hp > 0) {
                     this.selectedEnemy = this.heroOne.currentTile.enemies[i];
@@ -1474,6 +1558,8 @@ Battle.prototype.update = function () {
 
             //enemy phase
             if (this.selectedEnemy.hp < 0) {
+                this.selectedEnemy.aggro = false;
+
                 this.selectedEnemy = null;
             }
             //this.firstEnemy.abilityOne(this.heroOne, this.firstEnemy);
@@ -1500,8 +1586,9 @@ Battle.prototype.update = function () {
                 this.heroOne.currentClass.ap += this.firstEnemy.ap + this.firstEnemy.exp;
                 this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
                 this.heroOne.currentClass.mp = this.heroOne.currentClass.mp;
-
+                this.selectedEnemy = null;
                 this.firstEnemy.reset();
+                this.secondEnemy.reset();
             } else if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp <= 0) {
                 this.game.battleRunning = false;
                 this.game.running = false;
@@ -1551,7 +1638,7 @@ Battle.prototype.draw = function (ctx) {
         //ability 1
         for (var i = 0; i < this.game.classSystem.length; i++) {
             ctx.strokeRect(20 + (760 / this.game.classSystem.length * i), 560, 760 / this.game.classSystem.length, 65);
-            this.game.classSystem[i].draw(ctx, 75 + (760 / this.game.classSystem.length * i), 560);
+            this.game.classSystem[i].draw(ctx, 40 + (760 / this.game.classSystem.length * i), 560, 1.75);
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
             if (this.selectedEnemy != null) {
@@ -1756,6 +1843,7 @@ Ghoul.prototype.reset = function () {
     this.poisonTime = 3;
     this.poisonTimeStart = 3;
     this.isPoisoned = false;
+    this.aggro = false;
 
     Entity.prototype.update.call(this);
 }
@@ -1843,6 +1931,7 @@ Emu.prototype.reset = function () {
     this.poisonTime = 3;
     this.poisonTimeStart = 3;
     this.isPoisoned = false;
+    this.aggro = false;
 
     Entity.prototype.update.call(this);
 }
@@ -1951,6 +2040,7 @@ Wolfkin.prototype.reset = function () {
     this.poisonTime = 3;
     this.poisonTimeStart = 3;
     this.isPoisoned = false;
+    this.aggro = false;
 
     Entity.prototype.update.call(this);
 }
@@ -2342,7 +2432,7 @@ Hero.prototype.draw = function (ctx) {
 }
 function Gunner(game) {
     this.level = 1;
-    this.cen = -1;
+    this.cen = 8;
     this.col = 0;
     this.hp = 100;
     this.hpMax = 100;
@@ -2411,11 +2501,11 @@ Gunner.prototype.update = function () {
         this.hpMax += 5;
         this.hp = this.hpMax;
         this.phystr += 2;
-        this.phydef += 1;
-        this.magdef += .10.toFixed(2);
+        this.phydef += 3;
+        this.magdef += 2;
         this.mpMax += 2;
         this.mp = this.mpMax;
-        this.magstr += .50.toFixed(2);
+        this.magstr += 2;
         this.level += 1;
         this.exp -= this.expMax;
     }
@@ -2512,82 +2602,62 @@ Gunner.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
     }
 }
 Gunner.prototype.abilityThree = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (hero.currentClass.mp >= cost) {
-        enemy.hp = enemy.hp - this.hero.currentClass.phydef;
-        this.mp -= cost;
-    }
+
 }
 Gunner.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
 
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phydef, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
 }
 Gunner.prototype.abilityFour = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phystr * 3;
-        this.mp -= cost;
-    }
+
 }
 Gunner.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phystr * 3, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
 
-    }
 }
 Gunner.prototype.abilityFive = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (this.mp >= cost) {
-        enemy.hp -= enemy.phydef + enemy.magdef;
-        this.mp -= cost;
-    }
+
 }
 Gunner.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (time < 0.75) {
-        var damage = enemy.phydef + enemy.magdef;
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 Gunner.prototype.abilitySix = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.poisonDamage;
-        enemy.isPoisoned = true;
-        this.mp -= cost;
-    }
+
 }
 Gunner.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
-Gunner.prototype.draw = function (ctx, x, y) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, 1.7);
+Gunner.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Gunner.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
 
 function BMage(game) {
     this.level = 1;
-    this.cen = 5;
-    this.col = 0;
+    this.cen = -1;
+    this.col = 4;
     this.hp = 60;
     this.hpMax = 60;
     this.hpRegen = 2;
@@ -2665,113 +2735,73 @@ BMage.prototype.update = function () {
 }
 
 BMage.prototype.abilityOne = function (hero, enemy, time) {
-    if ((this.phystr - enemy.phydef) > 0) {
-        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
-    }
+
 }
 BMage.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        if ((this.phystr - enemy.phydef) > 0) {
-            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
-        } else {
-            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
 
-        }
-    }
 }
 BMage.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magstr;
-        this.mp -= cost;
-    }
+
 }
 BMage.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magstr, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 BMage.prototype.abilityThree = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magdef;
-        this.mp -= cost;
-    }
+
 }
 BMage.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
 
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magdef, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
 }
 BMage.prototype.abilityFour = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magstr * 3;
-        this.mp -= cost;
-    }
+
 }
 BMage.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magstr * 3, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
 
-    }
 }
 BMage.prototype.abilityFive = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (this.mp >= cost) {
-        enemy.hp -= enemy.phydef + enemy.magdef;
-        this.mp -= cost;
-    }
+
 }
 BMage.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (time < 0.75) {
-        var damage = enemy.phydef + enemy.magdef;
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 BMage.prototype.abilitySix = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.poisonDamage;
-        enemy.isPoisoned = true;
-        this.mp -= cost;
-    }
+
 }
 BMage.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
-BMage.prototype.draw = function (ctx, x, y) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, 1.7);
+BMage.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+BMage.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
 
 function Warrior(game) {
     this.level = 1;
-    this.cen = 2;
+    this.cen = -1;
     this.col = 0;
     this.hp = 70;
     this.hpMax = 70;
@@ -2850,114 +2880,73 @@ Warrior.prototype.update = function () {
 }
 
 Warrior.prototype.abilityOne = function (hero, enemy, time) {
-    if ((this.phystr - enemy.phydef) > 0) {
-        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
-    }
+
 }
 Warrior.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        if ((this.phystr - enemy.phydef) > 0) {
-            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
-        } else {
-            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
 
-        }
-    }
 }
 Warrior.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phystr;
-        this.mp -= cost;
-    }
+
 }
 Warrior.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phystr, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 Warrior.prototype.abilityThree = function (hero, enemy, time, ctx) {
-    var cost = 2;
-    if (this.mp >= cost) {
-        this.hp += this.magstr;
-        if (this.hp > this.hpMax) {
-            this.hp = this.hpMax;
-        }
-        this.mp -= cost;
-    }
+
 }
 Warrior.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
 
-    if (time < 0.75) {
-        ctx.fillStyle = "Green";
-        ctx.fillText("+" + this.magstr, hero.x + 50, hero.y + 50);
-    }
 }
 Warrior.prototype.abilityFour = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phystr * 3;
-        this.mp -= cost;
-    }
+
 }
 Warrior.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phystr * 3, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
 
-    }
 }
 Warrior.prototype.abilityFive = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (this.mp >= cost) {
-        enemy.hp -= enemy.phydef + enemy.magdef;
-        this.mp -= cost;
-    }
+
 }
 Warrior.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (time < 0.75) {
-        var damage = enemy.phydef + enemy.magdef;
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 Warrior.prototype.abilitySix = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.poisonDamage;
-        enemy.isPoisoned = true;
-        this.mp -= cost;
-    }
+
 }
 Warrior.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
-Warrior.prototype.draw = function (ctx, x, y) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, 1.7);
+Warrior.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Warrior.prototype.draw = function (ctx, x, y,size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
 
 function WMage(game) {
     this.level = 1;
-    this.cen = 8;
+    this.cen = 2;
     this.col = 0;
     this.hp = 60;
     this.hpMax = 50;
@@ -3036,115 +3025,74 @@ WMage.prototype.update = function () {
 }
 
 WMage.prototype.abilityOne = function (hero, enemy, time) {
-    if ((this.phystr - enemy.phydef) > 0) {
-        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
-    }
+
 }
 WMage.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        if ((this.phystr - enemy.phydef) > 0) {
-            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
-        } else {
-            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
 
-        }
-    }
 }
 WMage.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phystr;
-        this.mp -= cost;
-    }
+
 }
 WMage.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phystr, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 WMage.prototype.abilityThree = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phydef;
-        this.hp = this.hp - (this.phydef / 2);
-        this.mp -= cost;
-    }
+
 }
 WMage.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
 
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phydef, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
 }
 WMage.prototype.abilityFour = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.phystr * 3;
-        this.mp -= cost;
-    }
+
 }
 WMage.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.phystr * 3, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
 
-    }
 }
 WMage.prototype.abilityFive = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (this.mp >= cost) {
-        enemy.hp -= enemy.phydef + enemy.magdef;
-        this.mp -= cost;
-    }
+
 }
 WMage.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (time < 0.75) {
-        var damage = enemy.phydef + enemy.magdef;
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 WMage.prototype.abilitySix = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.poisonDamage;
-        enemy.isPoisoned = true;
-        this.mp -= cost;
-    }
+
 }
 WMage.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
-WMage.prototype.draw = function (ctx, x, y) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, 1.7);
+WMage.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+WMage.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
 
 function Samurai(game) {
     this.level = 1;
-    this.cen = -1;
-    this.col = 4;
+    this.cen = 5;
+    this.col = 0;
     this.hp = 50;
     this.hpMax = 50;
     this.hpRegen = 3;
@@ -3222,110 +3170,501 @@ Samurai.prototype.update = function () {
 }
 
 Samurai.prototype.abilityOne = function (hero, enemy, time) {
-    if ((this.phystr - enemy.phydef) > 0) {
-        enemy.hp = enemy.hp - (this.phystr - enemy.phydef);
-    }
+
 }
 Samurai.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        if ((this.phystr - enemy.phydef) > 0) {
-            ctx.fillText("-" + (this.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
-        } else {
-            ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
 
-        }
-    }
 }
 Samurai.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magstr;
-        this.mp -= cost;
-    }
+
 }
 Samurai.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magstr, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 Samurai.prototype.abilityThree = function (hero, enemy, time, ctx) {
-    var cost = 1;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magdef;
-        this.mp -= cost;
-    }
+
 }
 Samurai.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-    var cost = 1;
 
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magdef, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
 }
 Samurai.prototype.abilityFour = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.magstr * 3;
-        this.mp -= cost;
-    }
 }
 Samurai.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-    var cost = 3;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red"
-        ctx.fillText("-" + this.magstr * 3, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
 
-    }
 }
 Samurai.prototype.abilityFive = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (this.mp >= cost) {
-        enemy.hp -= enemy.phydef + enemy.magdef;
-        this.mp -= cost;
-    }
+
 }
 Samurai.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-    var cost = 5;
-    if (time < 0.75) {
-        var damage = enemy.phydef + enemy.magdef;
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + damage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
-    }
+
 }
 Samurai.prototype.abilitySix = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (this.mp >= cost) {
-        enemy.hp = enemy.hp - this.poisonDamage;
-        enemy.isPoisoned = true;
-        this.mp -= cost;
-    }
+
 }
 Samurai.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-    var cost = 4;
-    if (time < 0.75) {
-        ctx.fillStyle = "Red";
-        ctx.fillText("-" + this.poisonDamage, enemy.x - 10, enemy.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+}
+Samurai.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Samurai.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
+
+}
+function DKnight(game) {
+    this.level = 1;
+    this.cen = 8;
+    this.col = 4;
+    this.hp = 70;
+    this.hpMax = 70;
+    this.hpRegen = 2;
+    this.mp = 100;
+    this.mpMax = 100;
+    this.mpRegen = 4;
+    this.phystr = 6;
+    this.phydef = 5;
+    this.magstr = 3;
+    this.magdef = 5;
+    this.poisonTime = 1;
+    this.poisonDamage = 4;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Dark Knight";
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.abilityOneDescription = "";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+DKnight.prototype = new Entity();
+DKnight.prototype.constructor = DKnight;
+DKnight.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
     }
+    Entity.prototype.update.call(this);
 }
-Samurai.prototype.draw = function (ctx, x, y) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, 1.7);
+
+DKnight.prototype.abilityOne = function (hero, enemy, time) {
+
+}
+DKnight.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityThree = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityFour = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityFive = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilitySix = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+DKnight.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
 
+function Berserker(game) {
+    this.level = 1;
+    this.cen = 5;
+    this.col = 4;
+    this.hp = 60;
+    this.hpMax = 50;
+    this.hpRegen = 2;
+    this.mp = 100;
+    this.mpMax = 100;
+    this.mpRegen = 2;
+    this.phystr = 14;
+    this.phydef = 8;
+    this.magstr = 2;
+    this.magdef = 2;
+    this.poisonTime = 3;
+    this.poisonDamage = 6;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Berserker";
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.abilityOneDescription = "";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+Berserker.prototype = new Entity();
+Berserker.prototype.constructor = Berserker;
+Berserker.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Berserker.prototype.abilityOne = function (hero, enemy, time) {
+
+}
+Berserker.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityThree = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityFour = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityFive = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilitySix = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Berserker.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
+
+}
+
+function Psychic(game) {
+    this.level = 1;
+    this.cen = 2;
+    this.col = 4;
+    this.hp = 50;
+    this.hpMax = 50;
+    this.hpRegen = 3;
+    this.mp = 150;
+    this.mpMax = 150;
+    this.mpRegen = 4;
+    this.phystr = 2;
+    this.phydef = 4;
+    this.magstr = 8;
+    this.magdef = 10;
+    this.poisonTime = 2;
+    this.poisonDamage = 1;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "Samurai";
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.abilityOneDescription = "";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
+
+    this.abilityTwoDescription = "";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.abilityNineDescription = "";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 100;
+
+    this.abilityTenDescription = "";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 100;
+    Entity.call(this, game, 380, 380);
+}
+Psychic.prototype = new Entity();
+Psychic.prototype.constructor = Psychic;
+Psychic.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.hpMax += 2;
+        this.hp = this.hpMax;
+        this.phystr += .5;
+        this.phydef += .1;
+        this.magdef += 1;
+        this.mpMax += 5;
+        this.mp = this.mpMax;
+        this.magstr += 2;
+        this.level += 1;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Psychic.prototype.abilityOne = function (hero, enemy, time) {
+
+}
+Psychic.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityThree = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityFour = function (hero, enemy, time, ctx) {
+}
+Psychic.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityFive = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilitySix = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityEight = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityNine = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityTen = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+
+}
+Psychic.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
+
+}
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();
@@ -3424,6 +3763,12 @@ ASSET_MANAGER.downloadAll(function () {
     classes.push(samurai);
     var warrior = new Warrior(gameEngine);
     classes.push(warrior);
+    var dKnight = new DKnight(gameEngine);
+    classes.push(dKnight);
+    var berserker = new Berserker(gameEngine);
+    classes.push(berserker);
+    var psychic = new Psychic(gameEngine);
+    classes.push(psychic);
 
     gameEngine.classSystem = classes;
 

@@ -955,6 +955,8 @@ Menu.prototype.update = function () {
                 if  (this.playerhero.currentClass.abilityNineAP < this.playerhero.currentClass.abilityNineAPNeeded && this.playerhero.currentClass.ap > 0) {
                     this.playerhero.currentClass.abilityNineAP += 1;
                     this.playerhero.currentClass.ap--;
+                } else  if  (this.playerhero.currentClass.abilityNineAP === this.playerhero.currentClass.abilityNineAPNeeded) {
+                    this.playerhero.currentClass.abilityNine(this.playerhero.currentClass);
                 }
 
 
@@ -962,6 +964,8 @@ Menu.prototype.update = function () {
                 if (this.playerhero.currentClass.abilityTenAP < this.playerhero.currentClass.abilityTenAPNeeded && this.playerhero.currentClass.ap > 0) {
                     this.playerhero.currentClass.abilityTenAP += 1;
                     this.playerhero.currentClass.ap--;
+                } else  if  (this.playerhero.currentClass.abilityTenAP < this.playerhero.currentClass.abilityTenAPNeeded) {
+                    this.playerhero.currentClass.abilityTen(this.playerhero.currentClass);
                 }
 
 
@@ -1240,8 +1244,6 @@ Menu.prototype.draw = function (ctx) {
         ctx.strokeRect(25, 475, 400, 300); //stats area
 
         ctx.fillText("Level: " + this.playerhero.currentClass.level, 225, 525);
-        ctx.fillText("Class: " + this.playerhero.currentClass.name, 225, 560);
-
         ctx.fillText("EXP: " + this.playerhero.currentClass.exp + "/" + this.playerhero.currentClass.expMax, 225, 600);
         ctx.fillText("AP: " + this.playerhero.currentClass.ap, 225, 635);
 
@@ -1335,7 +1337,6 @@ Battle.prototype.update = function () {
         this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
-
         if (this.game.click) {
             var x = this.game.click.x;
             var y = this.game.click.y;
@@ -1378,10 +1379,25 @@ Battle.prototype.update = function () {
             if (this.game.click.x > this.secondEnemy.x && this.game.click.x < this.secondEnemy.x + 60 && this.game.click.y > this.secondEnemy.y && this.game.click.y < this.secondEnemy.y + 90 && this.secondEnemy.hp > 0) {
                 this.selectedEnemy = this.secondEnemy;
             }
-            //ability 1 
+            //ability 1
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.actionTime);
+                this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 }
@@ -1391,7 +1407,6 @@ Battle.prototype.update = function () {
                 }
                 if (this.thirdEnemy != null) {
                     this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
-
                 }
 
 
@@ -1416,13 +1431,33 @@ Battle.prototype.update = function () {
             }
             //ability 2
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 698 && this.game.click.y < 775 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.actionTime);
+                this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
-                while (l < this.heroOne.currentTile.enemies.length) {
-                    if (this.heroOne.currentTile.enemies[l].hp > 0) {
-                        this.heroOne.currentTile.enemies[l].ability;
-                    } else l++;
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1445,13 +1480,33 @@ Battle.prototype.update = function () {
             }
             //ability 3 //temp run ability
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.actionTime);
+                this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
-                while (l < this.heroOne.currentTile.enemies.length) {
-                    if (this.heroOne.currentTile.enemies[l].hp > 0) {
-                        this.selectedEnemy = this.heroOne.currentTile.enemies[l].ability;
-                    } else l++;
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1473,13 +1528,33 @@ Battle.prototype.update = function () {
             }
             //ability 4 //temp heal enemy
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.actionTime);
+                this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
-                while (l < this.heroOne.currentTile.enemies.length) {
-                    if (this.heroOne.currentTile.enemies[l].hp > 0) {
-                        this.selectedEnemy = this.heroOne.currentTile.enemies[l].ability;
-                    } else l++;
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability(this.heroOne,this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1501,13 +1576,33 @@ Battle.prototype.update = function () {
             }
             //ability 5 //temp black magic poison
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.actionTime);
+                this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
-                while (l < this.heroOne.currentTile.enemies.length) {
-                    if (this.heroOne.currentTile.enemies[l].hp > 0) {
-                        this.selectedEnemy = this.heroOne.currentTile.enemies[l].ability;
-                    } else l++;
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1529,13 +1624,32 @@ Battle.prototype.update = function () {
             }
             //ability 6
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 698 && this.game.click.y < 775 && this.selectedEnemy != null) {
+                if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
+                    this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.abilityTenAP === this.heroOne.currentClass.abilityTenAPNeeded) {
+                    this.heroOne.currentClass.abilityTen(this.heroOne.currentClass);
+                }
+                if (this.heroOne.currentClass.name === "Black Mage") {
+                    if (this.heroOne.currentClass.battleRegen) {
+                        this.heroOne.currentClass.mp += this.heroOne.currentClass.mpRegen;
+                        if (this.heroOne.currentClass.mp > this.heroOne.currentClass.mpMax) {
+                            this.heroOne.currentClass.mp = this.heroOne.currentClass.mpMax;
+                        }
+                    }
+                }
                 this.selectedEnemy.aggro = true;
-                this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.actionTime);
-                var l = 0;
-                while (l < this.heroOne.currentTile.enemies.length) {
-                    if (this.heroOne.currentTile.enemies[l].hp > 0) {
-                        this.selectedEnemy = this.heroOne.currentTile.enemies[l].ability;
-                    } else l++;
+                this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.firstEnemy.poisonDamage;
@@ -1582,6 +1696,11 @@ Battle.prototype.update = function () {
                 this.battleTime = 0;
                 this.heroOne.x = this.heroOne.currentX;
                 this.heroOne.y = this.heroOne.currentY;
+                this.heroOne.currentClass.phystr = this.heroOne.currentClass.phystrMax;
+                this.heroOne.currentClass.phydef = this.heroOne.currentClass.phydefMax;
+                this.heroOne.currentClass.magdef = this.heroOne.currentClass.magdefMax;
+                this.heroOne.currentClass.magstr = this.heroOne.currentClass.magstrMax;
+
                 this.heroOne.currentClass.exp += this.firstEnemy.exp + this.firstEnemy.exp;
                 this.heroOne.currentClass.ap += this.firstEnemy.ap + this.firstEnemy.exp;
                 this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
@@ -1642,7 +1761,7 @@ Battle.prototype.draw = function (ctx) {
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilityOneDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilityOneDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
 
@@ -1679,8 +1798,19 @@ Battle.prototype.draw = function (ctx) {
         //ability 2
         if (x > 20 && x < 273 && y > 698 && y < 775) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilityTwoDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
-                this.selectedEnemy.ability1Display(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilityTwoDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability1Display(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability1Display(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy, this.actionTime, ctx);
+
+                }
             }
         }
         ctx.fillStyle = "blue";
@@ -1694,8 +1824,19 @@ Battle.prototype.draw = function (ctx) {
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilityThreeDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
-                this.selectedEnemy.ability1Display(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilityThreeDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability1Display(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability1Display(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy, this.actionTime, ctx);
+
+                }
             }
         }
         ctx.fillStyle = "blue";
@@ -1709,8 +1850,19 @@ Battle.prototype.draw = function (ctx) {
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilityFourDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
-                this.selectedEnemy.ability1Display(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilityFourDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability1Display(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability1Display(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy, this.actionTime, ctx);
+
+                }
             }
         }
         ctx.fillStyle = "blue";
@@ -1724,8 +1876,19 @@ Battle.prototype.draw = function (ctx) {
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilityFiveDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
-                this.selectedEnemy.ability1Display(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilityFiveDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability1Display(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability1Display(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy, this.actionTime, ctx);
+
+                }
             }
         }
         ctx.fillStyle = "blue";
@@ -1739,8 +1902,19 @@ Battle.prototype.draw = function (ctx) {
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
             if (this.selectedEnemy != null) {
-                this.heroOne.abilitySixDisplay(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
-                this.selectedEnemy.ability1Display(this.heroOne, this.selectedEnemy, this.actionTime, ctx);
+                this.heroOne.abilitySixDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+                if (this.firstEnemy != null) {
+                    this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.secondEnemy != null) {
+                    this.secondEnemy.ability1Display(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy, this.actionTime, ctx);
+
+                }
+                if (this.thirdEnemy != null) {
+                    this.thirdEnemy.ability1Display(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy, this.actionTime, ctx);
+
+                }
             }
         }
 
@@ -1804,6 +1978,11 @@ function Ghoul(game, cen, col) {
     this.phydef = 5;
     this.magstr = 1;
     this.magdef = 0;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Dark");
     this.exp = 2;
     this.ap = 5;
     this.isPoisoned = false;
@@ -1849,9 +2028,20 @@ Ghoul.prototype.reset = function () {
 }
 Ghoul.prototype.ability = function (hero, enemy, ally1, ally2) {
     if (this.aggro) {
-        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
-            hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            } 
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
         }
+
     } else {
         if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
     }
@@ -1894,6 +2084,9 @@ function Emu(game, cen, col) {
     this.phydef = 12;
     this.magstr = 7;
     this.magdef = 3;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.strength = [];
     this.exp = 2;
     this.ap = 1;
     this.aggro = false;
@@ -1936,9 +2129,20 @@ Emu.prototype.reset = function () {
     Entity.prototype.update.call(this);
 }
 Emu.prototype.ability = function (hero, enemy, ally1, ally2) {
+
     if (this.aggro) {
-        if ((enemy.magstr - hero.currentClass.magdef) > 0) {
-            hero.currentClass.hp = hero.currentClass.hp - (enemy.magstr - hero.currentClass.magdef);
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.magGuard) {
+                if ((enemy.magstr - hero.currentClass.magdef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.magstr - hero.currentClass.magdef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.magstr - hero.currentClass.magdef);
+                }
+            }
+        } else {
+            if ((enemy.magstr - hero.currentClass.magdef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.magstr - hero.currentClass.magdef);
+            }
         }
     } else {
         if(ally1.phystr < ally1.phydef) {
@@ -2002,6 +2206,11 @@ function Wolfkin(game, cen, col) {
     this.magdef = 3;
     this.exp = 2;
     this.ap = 10;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Dark");
     this.aggro = false;
     this.isPoisoned = false;
     this.poisonTime = 5;
@@ -2046,8 +2255,18 @@ Wolfkin.prototype.reset = function () {
 }
 Wolfkin.prototype.ability = function (hero, enemy) {
     if (this.aggro) {
-        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
-            hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
         }
     } else {
 
@@ -2441,9 +2660,13 @@ function Gunner(game) {
     this.mpMax = 26;
     this.mpRegen = 2;
     this.phystr = 10;
+    this.phystrMax = 10;
     this.phydef = 10;
+    this.phydefMax = 10;
     this.magstr = 2;
+    this.magstrMax = 2;
     this.magdef = 3;
+    this.magdefMax = 3;
     this.poisonTime = 1;
     this.poisonDamage = 3;
     this.ap = 0;
@@ -2475,6 +2698,9 @@ function Gunner(game) {
     this.abilitySixAP = 0;
     this.abilitySixAPNeeded = 45;
 
+    this.random1 = 0;
+    this.random2 = 0;
+    this.random3 = 0;
     this.abilitySevenDescription = "Anarchy";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
@@ -2498,49 +2724,51 @@ Gunner.prototype = new Entity();
 Gunner.prototype.constructor = Gunner;
 Gunner.prototype.update = function () {
     if (this.exp >= this.expMax) {
+        this.level += 1;
         this.hpMax += 5;
         this.hp = this.hpMax;
+        this.mp = this.mpMax;
+        this.mpMax += 2;
         this.phystr += 2;
         this.phydef += 3;
-        this.magdef += 2;
-        this.mpMax += 2;
-        this.mp = this.mpMax;
         this.magstr += 2;
-        this.level += 1;
+        this.magdef += 2;
+        this.phystrMax += 2;
+        this.phydefMax += 3;
+        this.magstrMax += 2;
+        this.magdefMax += 2;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-Gunner.prototype.abilityOne = function (hero, enemy, time) {
-
+Gunner.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
     var plasma = hero.currentClass.phystr * 3;
     var overload = hero.currentClass.phystr * 10;
     if (hero.currentClass.plasma) {
         if (hero.currentClass.overload) {
             plasma *= 10;
-            if ((plasma - enemy.phydef) > 0) {
-                enemy.hp = enemy.hp - (plasma - enemy.phydef);
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma - selectedEnemy.phydef);
             }
         } else {
-            if ((plasma - enemy.phydef) > 0) {
-                enemy.hp = enemy.hp - (plasma - enemy.phydef);
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma - selectedEnemy.phydef);
             }
         }
     } else {
         if (hero.currentClass.overload) {
-            if ((overload - enemy.phydef) > 0) {
-                enemy.hp = enemy.hp - (overload - enemy.phydef);
+            if ((overload - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (overload - selectedEnemy.phydef);
             }
         } else {
-            if ((hero.currentClass.phystr - enemy.phydef) > 0) {
-                enemy.hp = enemy.hp - (hero.currentClass.phystr - enemy.phydef);
+            if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr - selectedEnemy.phydef);
             }
         }
     }
-
 }
-Gunner.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
     if (time < 0.75) {
         ctx.fillStyle = "Red"
 
@@ -2549,39 +2777,37 @@ Gunner.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
         if (hero.currentClass.plasma) {
             if (hero.currentClass.overload) {
                 plasma *= 10;
-                if ((plasma - enemy.phydef) > 0) {
-                    ctx.fillText("-" + (plasma - enemy.phydef), enemy.x - 10, enemy.y - 5);
+                if ((plasma - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
                 } else {
-                    ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
                 }
             } else {
-                if ((plasma - enemy.phydef) > 0) {
-                    ctx.fillText("-" + (plasma - enemy.phydef), enemy.x - 10, enemy.y - 5);
+                if ((plasma - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
                 } else {
-                    ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
                 }
             }
         } else {
             if (hero.currentClass.overload) {
-                if ((overload - enemy.phydef) > 0) {
-                    ctx.fillText("-" + (overload - enemy.phydef), enemy.x - 10, enemy.y - 5);
+                if ((overload - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
                 } else {
-                    ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
                 }
             } else {
-                if ((hero.currentClass.phystr - enemy.phydef) > 0) {
-                    ctx.fillText("-" + (hero.currentClass.phystr - enemy.phydef), enemy.x - 10, enemy.y - 5);
+                if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
                 } else {
-                    ctx.fillText("-" + 0, enemy.x - 10, enemy.y - 5);
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
 
                 }
             }
         }
-
-
     }
 }
-Gunner.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
     var cost = 1;
     if (hero.currentClass.mp >= cost) {
         hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
@@ -2592,61 +2818,555 @@ Gunner.prototype.abilityTwo = function (hero, enemy, time, ctx) {
         hero.currentClass.mp -= cost;
     }
 }
-Gunner.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
     var cost = 1;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp ).toFixed(2), hero.x+25, hero.y - 5);
-        ctx.fillStyle = "Blue";
-        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        if (hero.currentClass.mp >= cost) {
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+
     }
 }
-Gunner.prototype.abilityThree = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            selectedEnemy.hp = selectedEnemy.hp - plasma;
+        } else {
+            selectedEnemy.hp = selectedEnemy.hp - plasma;
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            selectedEnemy.hp = selectedEnemy.hp - overload;
+        } else {
+            selectedEnemy.hp = selectedEnemy.hp - hero.currentClass.phystr;
+        }
+    }
+}
+Gunner.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + plasma , selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } 
+            } else {
+                if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + plasma, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((overload*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + overload, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((hero.currentClass.phystr*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            }
+        }
+    }
+}
+Gunner.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma*5 - selectedEnemy.phydef);
+            }
+        } else {
+            if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma*5 - selectedEnemy.phydef);
+            }
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            if ((overload*5 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (overload*5 - selectedEnemy.phydef);
+            }
+        } else {
+            if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr*5 - selectedEnemy.phydef);
+            }
+        }
+    }
+}
+Gunner.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma*5 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((plasma*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma*5 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((overload*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload*5 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((hero.currentClass.phystr*5 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr*5 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                }
+            }
+        }
+    }
+}
+Gunner.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            if (selectedEnemy.phydef > 100) {
+                plasma *= 10;
+                selectedEnemy.hp = selectedEnemy.hp - plasma;
+            } else {
+                selectedEnemy.hp = selectedEnemy.hp - plasma;
+            }
+        } else {
+            if (selectedEnemy.phydef > 100) {
+                plasma *= 10;
+                selectedEnemy.hp = selectedEnemy.hp - plasma;
+            } else {
+                selectedEnemy.hp = selectedEnemy.hp - plasma;
+            }
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            if ((selectedEnemy.phydef) > 100) {
+                overload *= 10;
+                selectedEnemy.hp = selectedEnemy.hp - overload;
+            } else {
+                selectedEnemy.hp = selectedEnemy.hp - overload;
+            }
+        } else {
+            if ((selectedEnemy.phydef) > 100) {
+                selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr * 10);
+
+            } else {
+                selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr);
+
+            }
+        }
+    }
+}
+Gunner.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if (selectedEnemy.phydef > 100) {
+                    plasma *= 10;
+                    ctx.fillText("-" + plasma, selectedEnemy.x - 10, selectedEnemy.y - 5);               
+                } else {
+                    ctx.fillText("-" + plasma, selectedEnemy.x - 10, selectedEnemy.y - 5);               
+                }
+            } else {
+                if (selectedEnemy.phydef > 100) {
+                    plasma *= 10;
+                    ctx.fillText("-" + plasma, selectedEnemy.x - 10, selectedEnemy.y - 5);               
+                } else {
+                    ctx.fillText("-" + plasma, selectedEnemy.x - 10, selectedEnemy.y - 5);               
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((selectedEnemy.phydef) > 100) {
+                    overload *= 10;
+                    ctx.fillText("-" + overload, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + overload, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((selectedEnemy.phydef) > 100) {
+                    ctx.fillText("-" + hero.currentClass.phystr*10, selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                } else {
+                    ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                }
+            }
+        }
+    }
+}
+Gunner.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (plasma - firstEnemy.phydef);
+            }
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (plasma - secondEnemy.phydef);
+            }
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (plasma - thirdEnemy.phydef);
+            }
+        } else {
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (plasma - firstEnemy.phydef);
+            }
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (plasma - secondEnemy.phydef);
+            }
+            if ((plasma - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (plasma - thirdEnemy.phydef);
+            }
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            if ((overload - firstEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (overload - firstEnemy.phydef);
+            }
+            if ((overload - secondEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (overload - secondEnemy.phydef);
+            }
+            if ((overload - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (overload - thirdEnemy.phydef);
+            }
+        } else {
+            if ((hero.currentClass.phystr - firstEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (hero.currentClass.phystr - firstEnemy.phydef);
+            }
+            if ((hero.currentClass.phystr - secondEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (hero.currentClass.phystr - secondEnemy.phydef);
+            }
+            if ((hero.currentClass.phystr - thirdEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (hero.currentClass.phystr - thirdEnemy.phydef);
+            }
+        }
+    }
+}
+Gunner.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if ((plasma - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+                }
+                if ((plasma - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((plasma - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            } else {
+                if ((plasma - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+                }
+                if ((plasma - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((plasma - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((overload - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+                if ((overload - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((overload - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            } else {
+                if ((hero.currentClass.phystr - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+
+                }
+                if ((hero.currentClass.phystr - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+
+                }
+                if ((hero.currentClass.phystr - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+
+                }
+            }
+        }
+    }
+}
+Gunner.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    this.random1 = Math.random() * (100 - 1) + 1;
+    this.random2 = Math.random() * (100 - 1) + 1;
+    this.random3 = Math.random() * (100 - 1) + 1;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            if ((plasma * this.random1 - selectedEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (plasma * this.random1 - firstEnemy.phydef);
+            }
+            if ((plasma * this.random2 - selectedEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (plasma * this.random2 - secondEnemy.phydef);
+            }
+            if ((plasma * this.random3 - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (plasma * this.random3 - thirdEnemy.phydef);
+            }
+        } else {
+            if ((plasma * this.random1 - selectedEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (plasma * this.random1 - firstEnemy.phydef);
+            }
+            if ((plasma * this.random2 - selectedEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (plasma * this.random2 - secondEnemy.phydef);
+            }
+            if ((plasma * this.random3 - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (plasma * this.random3 - thirdEnemy.phydef);
+            }
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            if ((overload * this.random1 - firstEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (overload * this.random1 - firstEnemy.phydef);
+            }
+            if ((overload * this.random1 - secondEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (overload * this.random2 - secondEnemy.phydef);
+            }
+            if ((overload * this.random1 - selectedEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (overload * this.random3 - thirdEnemy.phydef);
+            }
+        } else {
+            if ((hero.currentClass.phystr * this.random1 - firstEnemy.phydef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (hero.currentClass.phystr * this.random1 - firstEnemy.phydef);
+            }
+            if ((hero.currentClass.phystr * this.random2 - secondEnemy.phydef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (hero.currentClass.phystr * this.random2 - secondEnemy.phydef);
+            }
+            if ((hero.currentClass.phystr * this.random3 - thirdEnemy.phydef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (hero.currentClass.phystr * this.random3 - thirdEnemy.phydef);
+            }
+        }
+    }
+}
+Gunner.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if ((plasma * this.random1 - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random1 - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+                }
+                if ((plasma * this.random2 - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random2 - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((plasma * this.random2 - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random3 - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            } else {
+                if ((plasma * this.random1 - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random1 - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+                }
+                if ((plasma * this.random2 - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random2 - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((plasma * this.random2 - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma * this.random3 - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((overload * this.random1 - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload * this.random1 - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+                if ((overload * this.random2 - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload * this.random2 - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+                if ((overload * this.random3 - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload * this.random3 - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            } else {
+                if ((hero.currentClass.phystr * this.random1 - firstEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr * this.random1 - firstEnemy.phydef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, firstEnemy.x - 10, firstEnemy.y - 5);
+
+                }
+                if ((hero.currentClass.phystr * this.random2 - secondEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr * this.random3 - secondEnemy.phydef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, secondEnemy.x - 10, secondEnemy.y - 5);
+
+                }
+                if ((hero.currentClass.phystr * this.random3 - thirdEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr * this.random3 - thirdEnemy.phydef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, thirdEnemy.x - 10, thirdEnemy.y - 5);
+
+                }
+            }
+        }
+    }
 
 }
-Gunner.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var plasma = hero.currentClass.phystr * 3;
+    var overload = hero.currentClass.phystr * 10;
+    if (hero.currentClass.plasma) {
+        if (hero.currentClass.overload) {
+            plasma *= 10;
+            if ((plasma*15 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma*15 - selectedEnemy.phydef);
+            }
+        } else {
+            if ((plasma*15 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (plasma*15 - selectedEnemy.phydef);
+            }
+        }
+    } else {
+        if (hero.currentClass.overload) {
+            if ((overload*15 - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (overload*15 - selectedEnemy.phydef);
+            }
+        } else {
+            if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr*15 - selectedEnemy.phydef);
+            }
+        }
+    }
+}
+Gunner.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        var plasma = hero.currentClass.phystr * 3;
+        var overload = hero.currentClass.phystr * 10;
+        if (hero.currentClass.plasma) {
+            if (hero.currentClass.overload) {
+                plasma *= 10;
+                if ((plasma*15 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma*15 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((plasma*15 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (plasma*15 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            }
+        } else {
+            if (hero.currentClass.overload) {
+                if ((overload*15 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (overload*15 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                }
+            } else {
+                if ((hero.currentClass.phystr*15 - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr*15 - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("-" + 0, selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                }
+            }
+        }
+    }
+}
+Gunner.prototype.abilityNine = function (hero) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.plasma = true;
 
 }
-Gunner.prototype.abilityFour = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Gunner.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-
+Gunner.prototype.abilityTen = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.overload = true;
 }
-Gunner.prototype.abilityFive = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilitySix = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilitySeven = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-Gunner.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+Gunner.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 Gunner.prototype.draw = function (ctx, x, y, size) {
@@ -2658,16 +3378,20 @@ function BMage(game) {
     this.level = 1;
     this.cen = -1;
     this.col = 4;
-    this.hp = 60;
-    this.hpMax = 60;
-    this.hpRegen = 2;
+    this.hp = 90;
+    this.hpMax = 90;
+    this.hpRegen = 4;
     this.mp = 100;
     this.mpMax = 100;
-    this.mpRegen = 4;
-    this.phystr = 2;
-    this.phydef = 4;
-    this.magstr = 10;
-    this.magdef = 10;
+    this.mpRegen = 8;
+    this.phystr = 3;
+    this.phystrMax = 3;
+    this.phydef = 14;
+    this.phydefMax = 14;
+    this.magstr = 19;
+    this.magstrMax = 19;
+    this.magdef = 13;
+    this.magdefMax = 13;
     this.poisonTime = 1;
     this.poisonDamage = 3;
     this.ap = 0;
@@ -2679,142 +3403,1351 @@ function BMage(game) {
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "Fireball";
+    this.abilityTwoDescription = "Soul Heal";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "Forcefield Push";
+    this.abilityThreeDescription = "Fire";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 10;
 
-    this.abilityFourDescription = "Storm of Swords";
+    this.abilityFourDescription = "Hellfire";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 75;
 
-    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveDescription = "Water";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 10;
 
-    this.abilitySixDescription = "Poison";
+    this.abilitySixDescription = "Tsunami";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 75;
 
-    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenDescription = "Shadow";
     this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
+    this.abilitySevenAPNeeded = 20;
 
-    this.abilityEightDescription = "Cleave";
+    this.abilityEightDescription = "Tenebrae";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "Cleave";
+    this.oneMPCost = false;
+    this.abilityNineDescription = "MP-Regen";
     this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
+    this.abilityNineAPNeeded = 200;
 
-    this.abilityTenDescription = "Cleave";
+    this.battleRegen = false;
+    this.abilityTenDescription = "1 MP";
     this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
+    this.abilityTenAPNeeded = 400;
     Entity.call(this, game, 380, 380);
 }
 BMage.prototype = new Entity();
 BMage.prototype.constructor = BMage;
 BMage.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 5;
+        this.hp = this.hpMax;
+        this.mp = this.mpMax;
+        this.mpMax += 2;
+        this.phystr += 2;
+        this.phydef += 3;
+        this.magstr += 2;
+        this.magdef += 2;
+        this.phystrMax += 2;
+        this.phydefMax += 3;
+        this.magstrMax += 2;
+        this.magdefMax += 2;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-BMage.prototype.abilityOne = function (hero, enemy, time) {
+BMage.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+BMage.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+BMage.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+    if (hero.currentClass.hp > hero.currentClass.hpMax) {
+        hero.currentClass.hp = hero.currentClass.hpMax;
+    }
+    hero.currentClass.mp = hero.currentClass.mp + (cost);
+    if (hero.currentClass.mp > hero.currentClass.mpMax) {
+        hero.currentClass.mp = hero.currentClass.mpMax;
+    }
+}
+BMage.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+BMage.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 10;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 10);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 10);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (weakToFire) {
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else if (strongToFire) {
+                ctx.fillStyle = "Green";
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                    if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                        ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Fire") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Fire") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Fire") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Fire") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Fire") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Fire") strongToFire3 = true;
+        }
+    }
+
+    if (hero.currentClass.mp >= cost) {
+        if (firstEnemy != null) {
+            if (weakToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp - i;
+            } else if (strongToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - firstEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                    firstEnemy.hp = firstEnemy.hp - i;
+                }
+            }
+        }
+        if (secondEnemy != null) {
+            if (weakToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp - i;
+            } else if (strongToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - secondEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                }
+            }
+        }
+        if (thirdEnemy != null) {
+            if (weakToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp - i;
+            } else if (strongToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                }
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Fire") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Fire") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Fire") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Fire") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Fire") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Fire") strongToFire3 = true;
+        }
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (firstEnemy != null) {
+                if (weakToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else if (strongToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - firstEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                        ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", firstEnemy.x - 10, firstEnemy.y - 5);
+                    }
+                }
+            }
+            if (secondEnemy != null) {
+                if (weakToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                } else if (strongToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - secondEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                        ctx.fillText("-" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", secondEnemy.x - 10, secondEnemy.y - 5);
+                    }
+                }
+            }
+            if (thirdEnemy != null) {
+                if (weakToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                } else if (strongToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                        ctx.fillText("-" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (weakToFire) {
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else if (strongToFire) {
+                ctx.fillStyle = "Green";
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                    if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                        ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Water") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Water") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Water") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Water") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Water") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Water") strongToFire3 = true;
+        }
+    }
+
+    if (hero.currentClass.mp >= cost) {
+        if (firstEnemy != null) {
+            if (weakToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp - i;
+            } else if (strongToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - firstEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                    firstEnemy.hp = firstEnemy.hp - i;
+                }
+            }
+        }
+        if (secondEnemy != null) {
+            if (weakToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp - i;
+            } else if (strongToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - secondEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                }
+            }
+        }
+        if (thirdEnemy != null) {
+            if (weakToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp - i;
+            } else if (strongToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                }
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Water") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Water") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Water") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Water") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Water") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Water") strongToFire3 = true;
+        }
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (firstEnemy != null) {
+                if (weakToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else if (strongToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - firstEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                        ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", firstEnemy.x - 10, firstEnemy.y - 5);
+                    }
+                }
+            }
+            if (secondEnemy != null) {
+                if (weakToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                } else if (strongToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - secondEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                        ctx.fillText("-" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", secondEnemy.x - 10, secondEnemy.y - 5);
+                    }
+                }
+            }
+            if (thirdEnemy != null) {
+                if (weakToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                } else if (strongToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                        ctx.fillText("-" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Shadow") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Shadow") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Shadow") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Shadow") strongToFire = true;
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (weakToFire) {
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else if (strongToFire) {
+                ctx.fillStyle = "Green";
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                    if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                        ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Shadow") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Shadow") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Shadow") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Shadow") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Shadow") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Shadow") strongToFire3 = true;
+        }
+    }
+
+        if (hero.currentClass.mp >= cost) {
+            if (firstEnemy != null) {
+                if (weakToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    firstEnemy.hp = firstEnemy.hp - i;
+                } else if (strongToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    firstEnemy.hp = firstEnemy.hp + i;
+                } else {
+                    if (hero.currentClass.magstr - firstEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                        firstEnemy.hp = firstEnemy.hp - i;
+                    }
+                }
+            }
+            if (secondEnemy != null) {
+                if (weakToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                } else if (strongToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp + i;
+                } else {
+                    if (hero.currentClass.magstr - secondEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                        secondEnemy.hp = secondEnemy.hp - i;
+                    }
+                }
+            }
+            if (thirdEnemy != null) {
+                if (weakToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                } else if (strongToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp + i;
+                } else {
+                    if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                        thirdEnemy.hp = thirdEnemy.hp - i;
+                    }
+                }
+            }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+BMage.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Shadow") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Shadow") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Shadow") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Shadow") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Shadow") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Shadow") strongToFire3 = true;
+        }
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (firstEnemy != null) {
+                if (weakToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else if (strongToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - firstEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                        ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", firstEnemy.x - 10, firstEnemy.y - 5);
+                    }
+                }
+            }
+            if (secondEnemy != null) {
+                if (weakToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                } else if (strongToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - secondEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                        ctx.fillText("-" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", secondEnemy.x - 10, secondEnemy.y - 5);
+                    }
+                }
+            }
+            if (thirdEnemy != null) {
+                if (weakToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                } else if (strongToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                        ctx.fillText("-" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+BMage.prototype.abilityNine = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.battleRegen = true;
+}
+BMage.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-BMage.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-
+BMage.prototype.abilityTen = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.oneMPCost = true;
 }
-BMage.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityThree = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityFour = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityFive = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilitySix = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilitySeven = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-BMage.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+BMage.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 BMage.prototype.draw = function (ctx, x, y, size) {
     this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
+function WMage(game) {
+    this.level = 1;
+    this.cen = 2;
+    this.col = 0;
+    this.hp = 85;
+    this.hpMax = 85;
+    this.hpRegen = 15;
+    this.mp = 70;
+    this.mpMax = 70;
+    this.mpRegen = 8;
+    this.phystr = 2;
+    this.phystrMax = 2;
+    this.phydef = 15;
+    this.phydefMax = 15;
+    this.magstr = 15;
+    this.magstrMax = 15;
+    this.magdef = 15;
+    this.magdefMax = 15;
+    this.poisonTime = 1;
+    this.poisonDamage = 3;
+    this.ap = 0;
+    this.exp = 0;
+    this.expMax = 10;
+    this.name = "White Mage";
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
+    this.abilityOneDescription = "Attack";
+    this.abilityOneAP = 0;
+    this.abilityOneAPNeeded = 0;
 
+    this.abilityTwoDescription = "Pray";
+    this.abilityTwoAP = 0;
+    this.abilityTwoAPNeeded = 0;
+
+    this.abilityThreeDescription = "Vigor";
+    this.abilityThreeAP = 0;
+    this.abilityThreeAPNeeded = 0;
+
+    this.abilityFourDescription = "Cure";
+    this.abilityFourAP = 0;
+    this.abilityFourAPNeeded = 0;
+
+    this.abilityFiveDescription = "Cura";
+    this.abilityFiveAP = 0;
+    this.abilityFiveAPNeeded = 0;
+
+    this.abilitySixDescription = "Holy";
+    this.abilitySixAP = 0;
+    this.abilitySixAPNeeded = 0;
+
+    this.abilitySevenDescription = "Holy Blast";
+    this.abilitySevenAP = 0;
+    this.abilitySevenAPNeeded = 100;
+
+    this.abilityEightDescription = "Curaga";
+    this.abilityEightAP = 0;
+    this.abilityEightAPNeeded = 100;
+
+    this.oneMPCost = false;
+    this.abilityNineDescription = "MP-Regen";
+    this.abilityNineAP = 0;
+    this.abilityNineAPNeeded = 200;
+
+    this.battleRegen = false;
+    this.abilityTenDescription = "1 MP";
+    this.abilityTenAP = 0;
+    this.abilityTenAPNeeded = 400;
+    Entity.call(this, game, 380, 380);
+}
+WMage.prototype = new Entity();
+WMage.prototype.constructor = WMage;
+WMage.prototype.update = function () {
+    if (this.exp >= this.expMax) {
+        this.level += 1;
+        this.hpMax += 7;
+        this.hp = this.hpMax;
+        this.mpMax += 7;
+        this.mp = this.mpMax;
+
+        this.phystr += 1;
+        this.phydef += 3;
+        this.magstr += 3;
+        this.magdef += 3;
+        this.phystrMax += 1;
+        this.phydefMax += 3;
+        this.magstrMax += 3;
+        this.magdefMax += 3;
+        this.exp -= this.expMax;
+    }
+    Entity.prototype.update.call(this);
+}
+
+WMage.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+WMage.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+WMage.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    hero.currentClass.hp += hero.currentClass.hpRegen;
+    if (hero.currentClass.hp > hero.currentClass.hpMax) {
+        hero.currentClass.hp = hero.currentClass.hpMax;
+    }
+    hero.currentClass.mp += hero.currentClass.mpRegen;
+    if (hero.currentClass.mp > hero.currentClass.mpMax) {
+        hero.currentClass.mp = hero.currentClass.mpMax;
+    }
+}
+WMage.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + hero.currentClass.hpRegen, hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("+" + hero.currentClass.mpRegen, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+WMage.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (hero.currentClass.mp > cost) {
+        hero.currentClass.hp += hero.currentClass.hpRegen*5;
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+        hero.currentClass.mp -= cost;
+    }
+
+}
+WMage.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        if (hero.currentClass.mp > cost) {
+            ctx.fillText("+" + hero.currentClass.hpRegen*5, hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+
+    if (hero.currentClass.mp > cost) {
+        for (var i = 0; i < this.game.classSystem.length; i++) {
+            this.game.classSystem[i].hp += hero.currentClass.hpRegen * 5;
+            if (this.game.classSystem[i].hp > this.game.classSystem[i].hp.hpMax) {
+                this.game.classSystem[i].hp = this.game.classSystem[i].hp.hpMax;
+            }
+        }
+
+        hero.currentClass.mp -= cost;
+    }
+}
+WMage.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        if (hero.currentClass.mp > cost) {
+            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 8;
+
+    if (hero.currentClass.mp > cost) {
+        for (var i = 0; i < this.game.classSystem.length; i++) {
+            this.game.classSystem[i].hp += hero.currentClass.hpRegen * 15;
+            if (this.game.classSystem[i].hp > this.game.classSystem[i].hp.hpMax) {
+                this.game.classSystem[i].hp = this.game.classSystem[i].hp.hpMax;
+            }
+        }
+
+        hero.currentClass.mp -= cost;
+    }
+}
+WMage.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        if (hero.currentClass.mp > cost) {
+            ctx.fillText("+" + hero.currentClass.hpRegen * 15, hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 7;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Light") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Light") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+WMage.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 7;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Shadow") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Shadow") strongToFire = true;
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (weakToFire) {
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else if (strongToFire) {
+                ctx.fillStyle = "Green";
+                var i = Math.abs((hero.currentClass.magstr - selectedEnemy.magdef) * 5);
+                ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                    if (hero.currentClass.magstr - selectedEnemy.magdef > 0) {
+                        var i = (hero.currentClass.magstr - selectedEnemy.magdef);
+                        ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Shadow") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Shadow") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Shadow") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Shadow") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Shadow") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Shadow") strongToFire3 = true;
+        }
+    }
+
+    if (hero.currentClass.mp >= cost) {
+        if (firstEnemy != null) {
+            if (weakToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp - i;
+            } else if (strongToFire1) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                firstEnemy.hp = firstEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - firstEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                    firstEnemy.hp = firstEnemy.hp - i;
+                }
+            }
+        }
+        if (secondEnemy != null) {
+            if (weakToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp - i;
+            } else if (strongToFire2) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                secondEnemy.hp = secondEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - secondEnemy.magdef > 0) {
+                    var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                }
+            }
+        }
+        if (thirdEnemy != null) {
+            if (weakToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp - i;
+            } else if (strongToFire3) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                thirdEnemy.hp = thirdEnemy.hp + i;
+            } else {
+                if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                }
+            }
+        }
+        if (hero.currentClass.oneMPCost) cost = 1;
+
+        hero.currentClass.mp -= cost;
+    }
+}
+WMage.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 28;
+    var weakToFire1 = false;
+    var weakToFire2 = false;
+    var weakToFire3 = false;
+    var strongToFire1 = false;
+    var strongToFire2 = false;
+    var strongToFire3 = false;
+
+    if (firstEnemy != null) {
+        for (var i = 0; i < firstEnemy.weakness.length; i++) {
+            if (firstEnemy.weakness[i] === "Light") weakToFire1 = true;
+        }
+        for (var i = 0; i < firstEnemy.strength.length; i++) {
+            if (firstEnemy.strength[i] === "Light") strongToFire1 = true;
+        }
+    }
+
+    if (secondEnemy != null) {
+        for (var i = 0; i < secondEnemy.weakness.length; i++) {
+            if (secondEnemy.weakness[i] === "Light") weakToFire2 = true;
+        }
+        for (var i = 0; i < secondEnemy.strength.length; i++) {
+            if (secondEnemy.strength[i] === "Light") strongToFire2 = true;
+        }
+    }
+
+    if (thirdEnemy != null) {
+        for (var i = 0; i < thirdEnemy.weakness.length; i++) {
+            if (thirdEnemy.weakness[i] === "Light") weakToFire3 = true;
+        }
+        for (var i = 0; i < thirdEnemy.strength.length; i++) {
+            if (thirdEnemy.strength[i] === "Light") strongToFire3 = true;
+        }
+    }
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            if (firstEnemy != null) {
+                if (weakToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else if (strongToFire1) {
+                    var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - firstEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - firstEnemy.magdef);
+                        ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", firstEnemy.x - 10, firstEnemy.y - 5);
+                    }
+                }
+            }
+            if (secondEnemy != null) {
+                if (weakToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    secondEnemy.hp = secondEnemy.hp - i;
+                } else if (strongToFire2) {
+                    var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - secondEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - secondEnemy.magdef);
+                        ctx.fillText("-" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", secondEnemy.x - 10, secondEnemy.y - 5);
+                    }
+                }
+            }
+            if (thirdEnemy != null) {
+                if (weakToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    thirdEnemy.hp = thirdEnemy.hp - i;
+                } else if (strongToFire3) {
+                    var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 20);
+                    ctx.fillText("+" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    if (hero.currentClass.magstr - thirdEnemy.phydef > 0) {
+                        var i = (hero.currentClass.magstr - thirdEnemy.magdef);
+                        ctx.fillText("-" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    } else {
+                        ctx.fillText("0", thirdEnemy.x - 10, thirdEnemy.y - 5);
+                    }
+                }
+            }
+            ctx.fillStyle = "Blue";
+            if (hero.currentClass.oneMPCost) cost = 1;
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 16;
+
+    if (hero.currentClass.mp > cost) {
+        for (var i = 0; i < this.game.classSystem.length; i++) {
+            this.game.classSystem[i].hp += hero.currentClass.hpRegen * 32;
+            if (this.game.classSystem[i].hp > this.game.classSystem[i].hp.hpMax) {
+                this.game.classSystem[i].hp = this.game.classSystem[i].hp.hpMax;
+            }
+        }
+
+        hero.currentClass.mp -= cost;
+    }
+}
+WMage.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 16;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        if (hero.currentClass.mp > cost) {
+            ctx.fillText("+" + hero.currentClass.hpRegen * 32, hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+WMage.prototype.abilityNine = function (hero) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.battleRegen = true;
+
+}
+WMage.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+
+}
+WMage.prototype.abilityTen = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.oneMPCost = true;
+
+}
+WMage.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+
+}
+WMage.prototype.draw = function (ctx, x, y, size) {
+    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
+
+}
 function Warrior(game) {
     this.level = 1;
     this.cen = -1;
     this.col = 0;
-    this.hp = 70;
-    this.hpMax = 70;
-    this.hpRegen = 2;
-    this.mp = 100;
-    this.mpMax = 100;
-    this.mpRegen = 4;
-    this.phystr = 6;
-    this.phydef = 5;
-    this.magstr = 3;
-    this.magdef = 5;
+    this.hp = 100;
+    this.hpMax = 100;
+    this.hpRegen = 9;
+    this.mp = 17;
+    this.mpMax = 17;
+    this.mpRegen = 2;
+    this.phystr = 17;
+    this.phystrMax = 17;
+    this.phydef = 15;
+    this.phydefMax = 15;
+    this.magstr = 10;
+    this.magstrMax = 10;
+    this.magdef = 13;
+    this.magdefMax = 13;
     this.poisonTime = 1;
-    this.poisonDamage = 4;
+    this.poisonDamage = 3;
     this.ap = 0;
     this.exp = 0;
     this.expMax = 10;
@@ -2824,39 +4757,41 @@ function Warrior(game) {
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "Arrow";
+    this.abilityTwoDescription = "Aura Heal";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "Kingsfoil Field Dressing";
+    this.abilityThreeDescription = "Sentinel";
     this.abilityThreeAP = 0;
     this.abilityThreeAPNeeded = 0;
 
-    this.abilityFourDescription = "Flame of the North";
+    this.abilityFourDescription = "Power Break";
     this.abilityFourAP = 0;
     this.abilityFourAPNeeded = 0;
 
-    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveDescription = "Armor Break";
     this.abilityFiveAP = 0;
     this.abilityFiveAPNeeded = 0;
 
-    this.abilitySixDescription = "Poison";
+    this.abilitySixDescription = "Magic Break";
     this.abilitySixAP = 0;
     this.abilitySixAPNeeded = 0;
 
-    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenDescription = "Full Break";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
 
-    this.abilityEightDescription = "Cleave";
+    this.abilityEightDescription = "Omni Break";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "Cleave";
+    this.protect = 0;
+    this.abilityNineDescription = "Protect";
     this.abilityNineAP = 0;
     this.abilityNineAPNeeded = 100;
 
-    this.abilityTenDescription = "Cleave";
+    this.assault = 0;
+    this.abilityTenDescription = "Assault";
     this.abilityTenAP = 0;
     this.abilityTenAPNeeded = 100;
     Entity.call(this, game, 380, 380);
@@ -2865,78 +4800,203 @@ Warrior.prototype = new Entity();
 Warrior.prototype.constructor = Warrior;
 Warrior.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 5;
+        this.hp = this.hpMax;
+        this.mp = this.mpMax;
+        this.mpMax += 2;
+        this.phystr += 2;
+        this.phydef += 3;
+        this.magstr += 2;
+        this.magdef += 2;
+        this.phystrMax += 2;
+        this.phydefMax += 3;
+        this.magstrMax += 2;
+        this.magdefMax += 2;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-Warrior.prototype.abilityOne = function (hero, enemy, time) {
+Warrior.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+Warrior.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+Warrior.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+Warrior.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.phydef += 1 + this.protect;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("Defense Up", hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+Warrior.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.phystr -= 1 + this.assault;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("Power Down", selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+Warrior.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.phydef -= 1 + this.assault;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("Defense Down", selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+Warrior.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.magstr -= 1 + this.assault;
+        selectedEnemy.magdef -= 1 + this.assault;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("Magic Down", selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+Warrior.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.magstr-=1+this.assault;
+        selectedEnemy.magdef -= 1 + this.assault;
+        selectedEnemy.phydef -= 1 + this.assault;
+        selectedEnemy.phydef -= 1 + this.assault;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("All Down", selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+Warrior.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.magstr -= 1 + this.assault;
+        firstEnemy.magdef -= 1 + this.assault;
+        firstEnemy.phydef -= 1 + this.assault;
+        firstEnemy.phydef -= 1 + this.assault;
+
+        secondEnemy.magstr -= 1 + this.assault;
+        secondEnemy.magdef -= 1 + this.assault;
+        secondEnemy.phydef -= 1 + this.assault;
+        secondEnemy.phydef -= 1 + this.assault;
+
+        thirdEnemy.magstr -= 1 + this.assault;
+        thirdEnemy.magdef -= 1 + this.assault;
+        thirdEnemy.phydef -= 1 + this.assault;
+        thirdEnemy.phydef -= 1 + this.assault;
+        hero.currentClass.mp -= cost;
+    }
+}
+Warrior.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("All Down", firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("All Down", secondEnemy.x - 10, secondEnemy.y - 5);
+
+        ctx.fillText("All Down", thirdEnemy.x - 10, thirdEnemy.y - 5);
+
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
+}
+Warrior.prototype.abilityNine = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.protect = hero.level;
+}
+Warrior.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Warrior.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-
+Warrior.prototype.abilityTen = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.assault = hero.level + hero.phystr + hero.magstr;
 }
-Warrior.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityThree = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityFour = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityFive = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilitySix = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilitySeven = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-Warrior.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+Warrior.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 Warrior.prototype.draw = function (ctx, x, y,size) {
@@ -2944,209 +5004,69 @@ Warrior.prototype.draw = function (ctx, x, y,size) {
 
 }
 
-function WMage(game) {
-    this.level = 1;
-    this.cen = 2;
-    this.col = 0;
-    this.hp = 60;
-    this.hpMax = 50;
-    this.hpRegen = 2;
-    this.mp = 100;
-    this.mpMax = 100;
-    this.mpRegen = 2;
-    this.phystr = 14;
-    this.phydef = 8;
-    this.magstr = 2;
-    this.magdef = 2;
-    this.poisonTime = 3;
-    this.poisonDamage = 6;
-    this.ap = 0;
-    this.exp = 0;
-    this.expMax = 10;
-    this.name = "White Mage";
-    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
-    this.abilityOneDescription = "Crysknife";
-    this.abilityOneAP = 0;
-    this.abilityOneAPNeeded = 0;
-
-    this.abilityTwoDescription = "Maula Pistol";
-    this.abilityTwoAP = 0;
-    this.abilityTwoAPNeeded = 0;
-
-    this.abilityThreeDescription = "Shield Belt Overload";
-    this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
-
-    this.abilityFourDescription = "Whirlwind";
-    this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
-
-    this.abilityFiveDescription = "Table-turner";
-    this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
-
-    this.abilitySixDescription = "Gom Jabbar";
-    this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
-
-    this.abilitySevenDescription = "Cleave";
-    this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
-
-    this.abilityEightDescription = "Cleave";
-    this.abilityEightAP = 0;
-    this.abilityEightAPNeeded = 100;
-
-    this.abilityNineDescription = "Cleave";
-    this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
-
-    this.abilityTenDescription = "Cleave";
-    this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
-    Entity.call(this, game, 380, 380);
-}
-WMage.prototype = new Entity();
-WMage.prototype.constructor = WMage;
-WMage.prototype.update = function () {
-    if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
-        this.level += 1;
-        this.exp -= this.expMax;
-    }
-    Entity.prototype.update.call(this);
-}
-
-WMage.prototype.abilityOne = function (hero, enemy, time) {
-
-}
-WMage.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityTwo = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityThree = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityFour = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityFive = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilitySix = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilitySeven = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
-
-}
-WMage.prototype.draw = function (ctx, x, y, size) {
-    this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
-
-}
 
 function Samurai(game) {
     this.level = 1;
     this.cen = 5;
     this.col = 0;
-    this.hp = 50;
-    this.hpMax = 50;
+    this.hp = 100;
+    this.hpMax = 100;
     this.hpRegen = 3;
-    this.mp = 150;
-    this.mpMax = 150;
-    this.mpRegen = 4;
-    this.phystr = 2;
-    this.phydef = 4;
-    this.magstr = 8;
-    this.magdef = 10;
-    this.poisonTime = 2;
-    this.poisonDamage = 1;
+    this.mp = 26;
+    this.mpMax = 26;
+    this.mpRegen = 2;
+    this.phystr = 12;
+    this.phystrMax = 12;
+    this.phydef = 17;
+    this.phydefMax = 17;
+    this.magstr = 12;
+    this.magstrMax = 12;
+    this.magdef = 17;
+    this.magdefMax = 17;
+    this.poisonTime = 1;
+    this.poisonDamage = 3;
     this.ap = 0;
     this.exp = 0;
     this.expMax = 10;
     this.name = "Samurai";
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
-    this.abilityOneDescription = "Shovel";
+    this.abilityOneDescription = "Attack";
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "Fireball";
+    this.abilityTwoDescription = "Healing Mirror";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "Forcefield Push";
+    this.abilityThreeDescription = "Hanzo";
     this.abilityThreeAP = 0;
     this.abilityThreeAPNeeded = 0;
 
-    this.abilityFourDescription = "Army of Darkness";
+    this.abilityFourDescription = "Tensaiga";
     this.abilityFourAP = 0;
     this.abilityFourAPNeeded = 0;
 
-    this.abilityFiveDescription = "Table-turner";
+    this.abilityFiveDescription = "Tessaiga";
     this.abilityFiveAP = 0;
     this.abilityFiveAPNeeded = 0;
 
-    this.abilitySixDescription = "Poison";
+    this.abilitySixDescription = "So'unga";
     this.abilitySixAP = 0;
     this.abilitySixAPNeeded = 0;
 
-    this.abilitySevenDescription = "Cleave";
+    this.abilitySevenDescription = "Zangetsu";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
 
-    this.abilityEightDescription = "Cleave";
+    this.abilityEightDescription = "Tensa Zangetsu";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "Cleave";
+    this.abilityNineDescription = "Momentum";
     this.abilityNineAP = 0;
     this.abilityNineAPNeeded = 100;
-
-    this.abilityTenDescription = "Cleave";
+    this.innerPeace = false;
+    this.abilityTenDescription = "Inner Peace";
     this.abilityTenAP = 0;
     this.abilityTenAPNeeded = 100;
     Entity.call(this, game, 380, 380);
@@ -3155,77 +5075,115 @@ Samurai.prototype = new Entity();
 Samurai.prototype.constructor = Samurai;
 Samurai.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 12;
+        this.hp = this.hpMax;
+        this.mpMax += 2;
+        this.mp = this.mpMax;
+
+        this.phystr += 7;
+        this.phydef += 3;
+        this.magstr += 2;
+        this.magdef += 2;
+        this.phystrMax += 2;
+        this.phydefMax += 3;
+        this.magstrMax += 2;
+        this.magdefMax += 2;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-Samurai.prototype.abilityOne = function (hero, enemy, time) {
+Samurai.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+Samurai.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+Samurai.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Samurai.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+Samurai.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+}
+Samurai.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityThree = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityFour = function (hero, enemy, time, ctx) {
-}
-Samurai.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityFive = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilitySix = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityNine = function (hero) {
+    var str = 0;
+    if (firstEnemy.hp < 0) str += firstEnemy.phystr;
+    if (secondEnemy.hp < 0) str += secondEnemy.phystr;
+    if (thirdEnemy.hp < 0) str += thirdEnemy.phystr;
+
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.currentClass.phystr += str;
 
 }
-Samurai.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Samurai.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
+Samurai.prototype.abilityTen = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.oneMPCost = true;
 }
-Samurai.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-Samurai.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-Samurai.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-Samurai.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-Samurai.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+Samurai.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 Samurai.prototype.draw = function (ctx, x, y, size) {
@@ -3236,60 +5194,66 @@ function DKnight(game) {
     this.level = 1;
     this.cen = 8;
     this.col = 4;
-    this.hp = 70;
-    this.hpMax = 70;
-    this.hpRegen = 2;
-    this.mp = 100;
-    this.mpMax = 100;
-    this.mpRegen = 4;
-    this.phystr = 6;
-    this.phydef = 5;
-    this.magstr = 3;
-    this.magdef = 5;
+    this.hp = 200;
+    this.hpMax = 200;
+    this.hpRegen = 0;
+    this.mp = 30;
+    this.mpMax = 30;
+    this.mpRegen = 5;
+    this.phystr = 20;
+    this.phystrMax = 20;
+    this.phydef = 15;
+    this.phydefMax = 15;
+    this.magstr = 10;
+    this.magstrMax = 10;
+    this.magdef = 15;
+    this.magdefMax = 15;
     this.poisonTime = 1;
-    this.poisonDamage = 4;
+    this.poisonDamage = 3;
     this.ap = 0;
     this.exp = 0;
     this.expMax = 10;
     this.name = "Dark Knight";
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
-    this.abilityOneDescription = "";
+    this.abilityOneDescription = "Attack";
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "";
+    this.abilityTwoDescription = "Consume";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "";
+    this.abilityThreeDescription = "Dark Shoot";
     this.abilityThreeAP = 0;
     this.abilityThreeAPNeeded = 0;
 
-    this.abilityFourDescription = "";
+    this.abilityFourDescription = "Dark Blast";
     this.abilityFourAP = 0;
     this.abilityFourAPNeeded = 0;
 
-    this.abilityFiveDescription = "";
+    this.abilityFiveDescription = "Dark Wave";
     this.abilityFiveAP = 0;
     this.abilityFiveAPNeeded = 0;
 
-    this.abilitySixDescription = "";
+    this.abilitySixDescription = "Dark Sky";
     this.abilitySixAP = 0;
     this.abilitySixAPNeeded = 0;
 
-    this.abilitySevenDescription = "";
+    this.abilitySevenDescription = "Hades";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
 
-    this.abilityEightDescription = "";
+    this.abilityEightDescription = "Charon";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "";
+    this.releaseD = false;
+    this.abilityNineDescription = "Release Darkness";
     this.abilityNineAP = 0;
     this.abilityNineAPNeeded = 100;
 
-    this.abilityTenDescription = "";
+    this.tentacles = false;
+    this.abilityTenDescription = "Tentacles";
     this.abilityTenAP = 0;
     this.abilityTenAPNeeded = 100;
     Entity.call(this, game, 380, 380);
@@ -3298,78 +5262,115 @@ DKnight.prototype = new Entity();
 DKnight.prototype.constructor = DKnight;
 DKnight.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 10;
+        this.hp = this.hpMax;
+        this.mpMax += 6;
+        this.mp = this.mpMax;
+
+        this.phystr += 5;
+        this.phydef += 1;
+        this.magstr += 4;
+        this.magdef += 1;
+        this.phystrMax += 4;
+        this.phydefMax += 1;
+        this.magstrMax += 4;
+        this.magdefMax += 1;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-DKnight.prototype.abilityOne = function (hero, enemy, time) {
+DKnight.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+DKnight.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+DKnight.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+        selectedEnemy.hp -= hero.currentClass.mp;
+        hero.currentClass.mp -= cost;
+    }
 
 }
-DKnight.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+
+        ctx.fillText("-" + hero.currentClass.mp, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+DKnight.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityThree = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityFour = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityFive = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilitySix = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityNine = function (hero) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.releaseD = true;
+}
+DKnight.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-DKnight.prototype.abilityEight = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityTen = function (hero) {
 
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.tentacles = true;
 }
-DKnight.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-DKnight.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-DKnight.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-DKnight.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-DKnight.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+DKnight.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 DKnight.prototype.draw = function (ctx, x, y, size) {
@@ -3381,140 +5382,179 @@ function Berserker(game) {
     this.level = 1;
     this.cen = 5;
     this.col = 4;
-    this.hp = 60;
-    this.hpMax = 50;
-    this.hpRegen = 2;
-    this.mp = 100;
-    this.mpMax = 100;
-    this.mpRegen = 2;
-    this.phystr = 14;
-    this.phydef = 8;
+    this.hp = 175;
+    this.hpMax = 175;
+    this.hpRegen = 8;
+    this.mp = 14;
+    this.mpMax = 14;
+    this.mpRegen = 1;
+    this.phystr = 17;
+    this.phystrMax = 17;
+    this.phydef = 18;
+    this.phydefMax = 18;
     this.magstr = 2;
-    this.magdef = 2;
-    this.poisonTime = 3;
-    this.poisonDamage = 6;
+    this.magstrMax = 2;
+    this.magdef = 10;
+    this.magdefMax = 10;
+    this.poisonTime = 1;
+    this.poisonDamage = 3;
     this.ap = 0;
     this.exp = 0;
     this.expMax = 10;
     this.name = "Berserker";
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
-    this.abilityOneDescription = "";
+    this.abilityOneDescription = "Attack";
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "";
+    this.abilityTwoDescription = "Healing Roar";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "";
+    this.abilityThreeDescription = "Cripple";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 10;
 
-    this.abilityFourDescription = "";
+    this.abilityFourDescription = "Mad Rush";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 20;
 
-    this.abilityFiveDescription = "";
+    this.abilityFiveDescription = "Crackdown";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 30;
 
-    this.abilitySixDescription = "";
+    this.abilitySixDescription = "Hurt";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 40;
 
-    this.abilitySevenDescription = "";
+    this.abilitySevenDescription = "Howl";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
 
-    this.abilityEightDescription = "";
+    this.abilityEightDescription = "Beserk";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "";
+    this.counter = false;
+    this.abilityNineDescription = "Counterattack";
     this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
+    this.abilityNineAPNeeded = 250;
 
-    this.abilityTenDescription = "";
+    this.evade = false;
+    this.abilityTenDescription = "Evade & Counter";
     this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
+    this.abilityTenAPNeeded = 500;
     Entity.call(this, game, 380, 380);
 }
 Berserker.prototype = new Entity();
 Berserker.prototype.constructor = Berserker;
 Berserker.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 18;
+        this.hp = this.hpMax;
+        this.mpMax += 6;
+        this.mp = this.mpMax;
+
+        this.phystr += 5;
+        this.phydef += 3;
+        this.magstr += 1;
+        this.magdef += 1;
+        this.phystrMax += 5;
+        this.phydefMax += 3;
+        this.magstrMax += 1;
+        this.magdefMax += 1;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-Berserker.prototype.abilityOne = function (hero, enemy, time) {
+Berserker.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+Berserker.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+Berserker.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 5;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + 13;
+        if (hero.currentClass.hp > hero.currentClass.hpMax && !this.howl) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Berserker.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + 13, hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+Berserker.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityThree = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityFour = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityFive = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilitySix = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilitySeven = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityNine = function (hero) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.counter = true;
 
 }
-Berserker.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Berserker.prototype.abilityEight = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityTen = function (hero) {
 
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.evade = true;
 }
-Berserker.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-Berserker.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-Berserker.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-Berserker.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-Berserker.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
+Berserker.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
 Berserker.prototype.draw = function (ctx, x, y, size) {
@@ -3526,140 +5566,441 @@ function Psychic(game) {
     this.level = 1;
     this.cen = 2;
     this.col = 4;
-    this.hp = 50;
-    this.hpMax = 50;
-    this.hpRegen = 3;
-    this.mp = 150;
-    this.mpMax = 150;
-    this.mpRegen = 4;
-    this.phystr = 2;
-    this.phydef = 4;
-    this.magstr = 8;
-    this.magdef = 10;
-    this.poisonTime = 2;
-    this.poisonDamage = 1;
+    this.hp = 80;
+    this.hpMax = 80;
+    this.hpRegen = 1;
+    this.mp = 40;
+    this.mpMax = 40;
+    this.mpRegen = 3;
+    this.phystr = 18;
+    this.phystrMax = 18;
+    this.phydef = 14;
+    this.phydefMax = 14;
+    this.magstr = 21;
+    this.magstrMax = 21;
+    this.magdef = 14;
+    this.magdefMax = 14;
+    this.poisonTime = 1;
+    this.poisonDamage = 3;
     this.ap = 0;
     this.exp = 0;
     this.expMax = 10;
-    this.name = "Samurai";
+    this.name = "Psychic";
+    this.physGuard = false;
+    this.magGuard = false;
     this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/FinalFantasyX_zps39dfae2a.png"), 32, 32.2, .4, 3, true, false, 0, this.cen, this.col);
-    this.abilityOneDescription = "";
+    this.abilityOneDescription = "Attack";
     this.abilityOneAP = 0;
     this.abilityOneAPNeeded = 0;
 
-    this.abilityTwoDescription = "";
+    this.pastDamage = 0;
+    this.abilityTwoDescription = "Reverse Time";
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "";
+    this.abilityThreeDescription = "Pyschic Bomb";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 10;
 
-    this.abilityFourDescription = "";
+    this.abilityFourDescription = "Telekinesis";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 10;
 
-    this.abilityFiveDescription = "";
+    this.abilityFiveDescription = "Pyrokinesis";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 15;
 
-    this.abilitySixDescription = "";
+    this.abilitySixDescription = "Aquakinesis";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 30;
 
-    this.abilitySevenDescription = "";
+    this.abilitySevenDescription = "Void";
     this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
+    this.abilitySevenAPNeeded = 70;
 
-    this.abilityEightDescription = "";
+    this.abilityEightDescription = "Brainstorm";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
 
-    this.abilityNineDescription = "";
+    this.abilityNineDescription = "Magic Guard";
     this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
+    this.abilityNineAPNeeded = 300;
 
-    this.abilityTenDescription = "";
+    this.abilityTenDescription = "Physics Guard";
     this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
+    this.abilityTenAPNeeded = 400;
     Entity.call(this, game, 380, 380);
 }
 Psychic.prototype = new Entity();
 Psychic.prototype.constructor = Psychic;
 Psychic.prototype.update = function () {
     if (this.exp >= this.expMax) {
-        this.hpMax += 2;
-        this.hp = this.hpMax;
-        this.phystr += .5;
-        this.phydef += .1;
-        this.magdef += 1;
-        this.mpMax += 5;
-        this.mp = this.mpMax;
-        this.magstr += 2;
         this.level += 1;
+        this.hpMax += 5;
+        this.hp = this.hpMax;
+        this.mpMax += 7;
+        this.mp = this.mpMax;
+
+        this.phystr += 4;
+        this.phydef += 1;
+        this.magstr += 4;
+        this.magdef += 1;
+        this.phystrMax += 4;
+        this.phydefMax += 1;
+        this.magstrMax += 4;
+        this.magdefMax += 1;
         this.exp -= this.expMax;
     }
     Entity.prototype.update.call(this);
 }
 
-Psychic.prototype.abilityOne = function (hero, enemy, time) {
+Psychic.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    }
+}
+Psychic.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+        }
+    }
+}
+Psychic.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 5;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + hero.currentClass.pastDamage;
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        ctx.fillStyle = "Green"
+        if (hero.currentClass.mp >= cost) {
+            ctx.fillText("+" + hero.currentClass.pastDamage, hero.x + 25, hero.y - 5);
+            ctx.fillStyle = "Blue";
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+
+    }
+}
+Psychic.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 10;
+    if (hero.currentClass.mp >= cost) {
+        if (firstEnemy != null) {
+            if ((hero.currentClass.magstr - firstEnemy.magdef) > 0) {
+                firstEnemy.hp = firstEnemy.hp - (hero.currentClass.magstr - firstEnemy.magdef);
+            }
+        }
+        if (secondEnemy != null) {
+            if ((hero.currentClass.magstr - secondEnemy.magdef) > 0) {
+                secondEnemy.hp = secondEnemy.hp - (hero.currentClass.magstr - secondEnemy.magdef);
+            }
+        }
+        if (thirdEnemy != null) {
+            if ((hero.currentClass.magstr - thirdEnemy.magdef) > 0) {
+                thirdEnemy.hp = thirdEnemy.hp - (hero.currentClass.magstr - thirdEnemy.magdef);
+            }
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 10;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        if (hero.currentClass.mp >= cost) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+            if (firstEnemy != null) {
+                if ((hero.currentClass.magstr - firstEnemy.magdef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.magstr - firstEnemy.magdef), firstEnemy.x - 10, firstEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", firstEnemy.x - 10, firstEnemy.y - 5);
+                }
+            }
+            if (secondEnemy != null) {
+                if ((hero.currentClass.magstr - secondEnemy.magdef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.magstr - secondEnemy.magdef), secondEnemy.x - 10, secondEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", secondEnemy.x - 10, secondEnemy.y - 5);
+                }
+            }
+            if (thirdEnemy != null) {
+                if ((hero.currentClass.magstr - thirdEnemy.magdef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.magstr - thirdEnemy.magdef), thirdEnemy.x - 10, thirdEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", thirdEnemy.x - 10, thirdEnemy.y - 5);
+                }
+            }
+
+        }
+
+    }
+}
+Psychic.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    if (hero.currentClass.mp >= cost) {
+        if ((hero.currentClass.magstr) > selectedEnemy.magdef) {
+            var i = (hero.currentClass.magstr - selectedEnemy.magdef) * (hero.currentClass.magstr - selectedEnemy.magdef);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else {
+            selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr - selectedEnemy.phydef);
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    if (time < 0.75) {
+        if (hero.currentClass.mp >= cost) {
+            ctx.fillStyle = "Blue";
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+
+            ctx.fillStyle = "Red";
+            if ((hero.currentClass.magstr) > selectedEnemy.magdef) {
+                var i = (hero.currentClass.magstr - selectedEnemy.magdef) * (hero.currentClass.magstr - selectedEnemy.magdef);
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                ctx.fillText("-" + (hero.currentClass.phystr - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+            }
+        }
+
+    }
+}
+Psychic.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 1;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else if (strongToFire) {
+            ctx.fillStyle = "Green";
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                    ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                }
+            }
+        }
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Psychic.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 3;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else if (strongToFire) {
+            ctx.fillStyle = "Green";
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                    ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
+
+                }
+            }
+        }
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Psychic.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 5;
+    var weak = false;
+    var strong = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Gravity") weak = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Gravity") strong = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weak) {
+            selectedEnemy.hp = selectedEnemy.hp - selectedEnemy.hp/2;
+        } else if (strong) {
+            selectedEnemy.hp = selectedEnemy.hp + selectedEnemy.hp / 2;
+
+        } else {
+            var i = selectedEnemy.hp / 4;
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 5;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = selectedEnemy.hp / 2;
+            ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else if (strongToFire) {
+            ctx.fillStyle = "Green";
+            var i = selectedEnemy.hp / 2;
+            ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = selectedEnemy.hp / 4;
+                ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+            }
+        }
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
+}
+Psychic.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 20;
+    if (hero.currentClass.mp >= cost) {
+        if (firstEnemy != null) {
+            var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 10);
+            firstEnemy.hp = firstEnemy.hp - i;
+        }
+        if (secondEnemy != null) {
+            var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 10);
+            secondEnemy.hp = secondEnemy.hp - i;
+        }
+        if (thirdEnemy != null) {
+            var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 10);
+            thirdEnemy.hp = thirdEnemy.hp - i;
+        }
+        hero.currentClass.mp -= cost;
+    }
+}
+Psychic.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 20;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        if (hero.currentClass.mp >= cost) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+            if (firstEnemy != null) {
+                var i = Math.abs((hero.currentClass.magstr - firstEnemy.magdef) * 10);
+                ctx.fillText("-" + i, firstEnemy.x - 10, firstEnemy.y - 5);
+            }
+            if (secondEnemy != null) {
+                var i = Math.abs((hero.currentClass.magstr - secondEnemy.magdef) * 10);
+                ctx.fillText("-" + i, secondEnemy.x - 10, secondEnemy.y - 5);
+            }
+            if (thirdEnemy != null) {
+                var i = Math.abs((hero.currentClass.magstr - thirdEnemy.magdef) * 10);
+                ctx.fillText("-" + i, thirdEnemy.x - 10, thirdEnemy.y - 5);
+            }
+
+        }
+
+    }
+}
+Psychic.prototype.abilityNine = function (hero) {
+    if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.magGuard = true;
 
 }
-Psychic.prototype.abilityOneDisplay = function (hero, enemy, time, ctx) {
+Psychic.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
 }
-Psychic.prototype.abilityTwo = function (hero, enemy, time, ctx) {
+Psychic.prototype.abilityTen = function (hero) {
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.physGuard = true;
+
 
 }
-Psychic.prototype.abilityTwoDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityThree = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityThreeDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityFour = function (hero, enemy, time, ctx) {
-}
-Psychic.prototype.abilityFourDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityFive = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityFiveDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilitySix = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilitySixDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilitySeven = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilitySevenDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityEight = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityEightDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityNine = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityNineDisplay = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityTen = function (hero, enemy, time, ctx) {
-
-}
-Psychic.prototype.abilityTenDisplay = function (hero, enemy, time, ctx) {
-
+Psychic.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 }
 Psychic.prototype.draw = function (ctx, x, y, size) {
     this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
@@ -3755,20 +6096,28 @@ ASSET_MANAGER.downloadAll(function () {
     var classes = [];
     var gunner = new Gunner(gameEngine);
     classes.push(gunner);
+    gameEngine.addEntity(gunner);
     var bMage = new BMage(gameEngine);
     classes.push(bMage);
+    gameEngine.addEntity(bMage);
     var wMage = new WMage(gameEngine);
     classes.push(wMage);
+    gameEngine.addEntity(wMage);
     var samurai = new Samurai(gameEngine);
     classes.push(samurai);
+    gameEngine.addEntity(samurai);
     var warrior = new Warrior(gameEngine);
     classes.push(warrior);
+    gameEngine.addEntity(warrior);
     var dKnight = new DKnight(gameEngine);
     classes.push(dKnight);
+    gameEngine.addEntity(dKnight);
     var berserker = new Berserker(gameEngine);
     classes.push(berserker);
+    gameEngine.addEntity(berserker);
     var psychic = new Psychic(gameEngine);
     classes.push(psychic);
+    gameEngine.addEntity(psychic);
 
     gameEngine.classSystem = classes;
 

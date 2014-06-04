@@ -1397,16 +1397,47 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.heroOne.currentClass.name === "Berserker") {
+                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else if (this.heroOne.currentClass.evade) {
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
                 }
                 if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                    if (this.heroOne.currentClass.name === "Berserker") {
+                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else if (this.heroOne.currentClass.evade) {
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else {
+                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                        }
+                    }
 
                 }
                 if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    if (this.heroOne.currentClass.name === "Berserker") {
+                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else if (this.heroOne.currentClass.evade) {
+                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        } else {
+                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                        }
+                    }
+
                 }
 
 
@@ -1446,6 +1477,9 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
                 if (this.firstEnemy != null) {
@@ -1495,6 +1529,9 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
                 if (this.firstEnemy != null) {
@@ -1543,6 +1580,9 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
                 if (this.firstEnemy != null) {
@@ -1591,6 +1631,9 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 var l = 0;
                 if (this.firstEnemy != null) {
@@ -1639,6 +1682,9 @@ Battle.prototype.update = function () {
                     }
                 }
                 this.selectedEnemy.aggro = true;
+                if (this.heroOne.currentClass.name === "Samurai") {
+                    if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
+                }
                 this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
@@ -4274,27 +4320,27 @@ function WMage(game) {
 
     this.abilityThreeDescription = "Vigor";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 25;
 
     this.abilityFourDescription = "Cure";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 50;
 
     this.abilityFiveDescription = "Cura";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 100;
 
     this.abilitySixDescription = "Holy";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 100;
 
     this.abilitySevenDescription = "Holy Blast";
     this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
+    this.abilitySevenAPNeeded = 400;
 
     this.abilityEightDescription = "Curaga";
     this.abilityEightAP = 0;
-    this.abilityEightAPNeeded = 100;
+    this.abilityEightAPNeeded = 300;
 
     this.oneMPCost = false;
     this.abilityNineDescription = "MP-Regen";
@@ -4763,19 +4809,19 @@ function Warrior(game) {
 
     this.abilityThreeDescription = "Sentinel";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 5;
 
     this.abilityFourDescription = "Power Break";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 10;
 
     this.abilityFiveDescription = "Armor Break";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 40;
 
     this.abilitySixDescription = "Magic Break";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 70;
 
     this.abilitySevenDescription = "Full Break";
     this.abilitySevenAP = 0;
@@ -4783,7 +4829,7 @@ function Warrior(game) {
 
     this.abilityEightDescription = "Omni Break";
     this.abilityEightAP = 0;
-    this.abilityEightAPNeeded = 100;
+    this.abilityEightAPNeeded = 300;
 
     this.protect = 0;
     this.abilityNineDescription = "Protect";
@@ -4982,7 +5028,7 @@ Warrior.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnem
         ctx.fillText("All Down", thirdEnemy.x - 10, thirdEnemy.y - 5);
 
         ctx.fillStyle = "Blue";
-        if (hero.currentClass.mp > hero.currentClass.mpMax) {
+        if (hero.currentClass.mp > 0) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
         }
     }
@@ -5038,25 +5084,26 @@ function Samurai(game) {
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
+    this.fivepointExplodingHeartTechnique = 0;
     this.abilityThreeDescription = "Hanzo";
     this.abilityThreeAP = 0;
     this.abilityThreeAPNeeded = 0;
 
-    this.abilityFourDescription = "Tensaiga";
+    this.abilityFourDescription = "Muramasa";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 18;
 
     this.abilityFiveDescription = "Tessaiga";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
+    this.abilityFiveAPNeeded = 30;
 
-    this.abilitySixDescription = "So'unga";
+    this.abilitySixDescription = "Caldabolg";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 40;
 
     this.abilitySevenDescription = "Zangetsu";
     this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
+    this.abilitySevenAPNeeded = 70;
 
     this.abilityEightDescription = "Tensa Zangetsu";
     this.abilityEightAP = 0;
@@ -5064,11 +5111,11 @@ function Samurai(game) {
 
     this.abilityNineDescription = "Momentum";
     this.abilityNineAP = 0;
-    this.abilityNineAPNeeded = 100;
+    this.abilityNineAPNeeded = 80;
     this.innerPeace = false;
     this.abilityTenDescription = "Inner Peace";
     this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
+    this.abilityTenAPNeeded = 700;
     Entity.call(this, game, 380, 380);
 }
 Samurai.prototype = new Entity();
@@ -5095,15 +5142,15 @@ Samurai.prototype.update = function () {
 }
 
 Samurai.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
-    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
-        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+    if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr - selectedEnemy.phydef);
     }
 }
 Samurai.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
     if (time < 0.75) {
         ctx.fillStyle = "Red"
-        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
-            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.phystr - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
         } else {
             ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
 
@@ -5111,7 +5158,7 @@ Samurai.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy,
     }
 }
 Samurai.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-    var cost = 1;
+    var cost = 3;
     if (hero.currentClass.mp >= cost) {
         hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
         if (hero.currentClass.hp > hero.currentClass.hpMax) {
@@ -5134,39 +5181,205 @@ Samurai.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     }
 }
 Samurai.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    var cost = 5;
+    if (hero.currentClass.mp > cost) {
+        hero.fivepointExplodingHeartTechnique++;
+        if (hero.fivepointExplodingHeartTechnique === 5) {
+            selectedEnemy.hp -= selectedEnemy.hp;
+            hero.fivepointExplodingHeartTechnique = 0;
+        } else {
+            if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                selectedEnemy.hp = selectedEnemy.hp - hero.currentClass.phystr;
+            }
+        }
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 5;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red";
+        if (hero.currentClass.mp > cost) {
+            if (hero.fivepointExplodingHeartTechnique === 5) {
+                ctx.fillText("-" + (selectedEnemy.hp), selectedEnemy.x - 10, selectedEnemy.y - 5);
+            } else {
+                if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+                    ctx.fillText("-" + (hero.currentClass.phystr - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
 
+                }
+            }
+            if (hero.currentClass.mp > hero.currentClass.mpMax) {
+                ctx.fillStyle = "Blue";
+                ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+            }
+    }
+
+    }
 }
 Samurai.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 7;
+    if (hero.currentClass.mp >= cost) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.phystr);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+        selectedEnemy.hp -= hero.currentClass.phystr;
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        if (hero.currentClass.mp >= cost) {
+        ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        ctx.fillStyle = "Green"
+        ctx.fillText("+" + (hero.currentClass.phystr).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillStyle = "Blue";
+            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        }
 
+    }
 }
 Samurai.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 7;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.hp = firstEnemy.hp - hero.currentClass.phystr;
 
+        secondEnemy.hp = secondEnemy.hp - hero.currentClass.phystr;
+
+        thirdEnemy.hp = thirdEnemy.hp - hero.currentClass.phystr;
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 7;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Samurai.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    var cost = 3;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp - i;
+        } else if (strongToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            selectedEnemy.hp = selectedEnemy.hp + i;
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                selectedEnemy.hp = selectedEnemy.hp - i;
+            }
+        }
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 3;
+    var weakToFire = false;
+    var strongToFire = false;
+    for (var i = 0; i < selectedEnemy.weakness.length; i++) {
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
+    }
+    for (var i = 0; i < selectedEnemy.strength.length; i++) {
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
+    }
+    if (hero.currentClass.mp >= cost) {
+        if (weakToFire) {
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else if (strongToFire) {
+            ctx.fillStyle = "Green";
+            var i = Math.abs((hero.currentClass.magstr - selectedEnemy.phydef) * 5);
+            ctx.fillText("+" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        } else {
+            if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                if (hero.currentClass.magstr - selectedEnemy.phydef > 0) {
+                    var i = (hero.currentClass.magstr - selectedEnemy.phydef);
+                    ctx.fillText("-" + i, selectedEnemy.x - 10, selectedEnemy.y - 5);
+                } else {
+                    ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
 
+                }
+            }
+        }
+        ctx.fillStyle = "Blue";
+        ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+    }
 }
 Samurai.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 15;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.hp = firstEnemy.hp - hero.currentClass.phystr*5;
 
+        secondEnemy.hp = secondEnemy.hp - hero.currentClass.phystr * 5;
+
+        thirdEnemy.hp = thirdEnemy.hp - hero.currentClass.phystr * 5;
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 15;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr*5, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 5, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 5, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Samurai.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 15;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.hp = firstEnemy.hp - hero.currentClass.phystr * 50;
 
+        secondEnemy.hp = secondEnemy.hp - hero.currentClass.phystr * 50;
+
+        thirdEnemy.hp = thirdEnemy.hp - hero.currentClass.phystr * 50;
+        hero.currentClass.mp -= cost;
+    }
 }
 Samurai.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 15;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr * 50, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 50, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 50, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Samurai.prototype.abilityNine = function (hero) {
     var str = 0;
@@ -5181,7 +5394,7 @@ Samurai.prototype.abilityNineDisplay = function (hero, selectedEnemy, firstEnemy
 
 }
 Samurai.prototype.abilityTen = function (hero) {
-    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.oneMPCost = true;
+    if (hero.abilityTenAP === hero.abilityTenAPNeeded) hero.innerPeace = true;
 }
 Samurai.prototype.abilityTenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
 
@@ -5223,29 +5436,29 @@ function DKnight(game) {
     this.abilityTwoAP = 0;
     this.abilityTwoAPNeeded = 0;
 
-    this.abilityThreeDescription = "Dark Shoot";
+    this.abilityThreeDescription = "Dark Shot";
     this.abilityThreeAP = 0;
-    this.abilityThreeAPNeeded = 0;
+    this.abilityThreeAPNeeded = 10;
 
     this.abilityFourDescription = "Dark Blast";
     this.abilityFourAP = 0;
-    this.abilityFourAPNeeded = 0;
+    this.abilityFourAPNeeded = 25;
 
     this.abilityFiveDescription = "Dark Wave";
     this.abilityFiveAP = 0;
-    this.abilityFiveAPNeeded = 0;
-
+    this.abilityFiveAPNeeded = 40;
+    this.dkRandom = 0;
     this.abilitySixDescription = "Dark Sky";
     this.abilitySixAP = 0;
-    this.abilitySixAPNeeded = 0;
+    this.abilitySixAPNeeded = 100;
 
     this.abilitySevenDescription = "Hades";
     this.abilitySevenAP = 0;
-    this.abilitySevenAPNeeded = 100;
+    this.abilitySevenAPNeeded = 500;
 
     this.abilityEightDescription = "Charon";
     this.abilityEightAP = 0;
-    this.abilityEightAPNeeded = 100;
+    this.abilityEightAPNeeded = 300;
 
     this.releaseD = false;
     this.abilityNineDescription = "Release Darkness";
@@ -5255,7 +5468,7 @@ function DKnight(game) {
     this.tentacles = false;
     this.abilityTenDescription = "Tentacles";
     this.abilityTenAP = 0;
-    this.abilityTenAPNeeded = 100;
+    this.abilityTenAPNeeded = 30;
     Entity.call(this, game, 380, 380);
 }
 DKnight.prototype = new Entity();
@@ -5285,6 +5498,12 @@ DKnight.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, second
     if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
         selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
     }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
     if (time < 0.75) {
@@ -5294,6 +5513,10 @@ DKnight.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy,
         } else {
             ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
 
+        }
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
         }
     }
 }
@@ -5325,40 +5548,169 @@ DKnight.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     }
 }
 DKnight.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    selectedEnemy.hp -= hero.currentClass.phystr * 2;
+    if (!hero.currentclass.releaseD) {
+        hero.currentClass.hp -= hero.currentClass.phystr * 2;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.phystr * 2);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr * 2, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + hero.currentClass.phystr * 2, hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    selectedEnemy.hp -= hero.currentClass.phystr * 5;
+    if (!hero.currentclass.releaseD) {
+        hero.currentClass.hp -= hero.currentClass.phystr * 5;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.phystr * 5);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr * 5, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + hero.currentClass.phystr * 5, hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    firstEnemy.hp -= hero.currentClass.phystr * 10;
+    secondEnemy.hp -= hero.currentClass.phystr * 10;
+    thirdEnemy.hp -= hero.currentClass.phystr * 10;
+    if (!hero.currentclass.releaseD) {
+        hero.currentClass.hp -= hero.currentClass.phystr * 10;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.phystr * 10);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr * 10, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 10, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * 10, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + hero.currentClass.phystr * 10, hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    hero.currentClass.dkRandom = Math.random() * (1000 - 1) + 1;
+    var damage = 1;
+    if (hero.currentClass.dkRandom % 666 === 0) {
+        damage = 1000;
+    } else if (hero.currentClass.dkRandom % 777 === 0) {
+        damage = 10;
+    }
+    firstEnemy.hp -= hero.currentClass.phystr * damage;
+    secondEnemy.hp -= hero.currentClass.phystr * damage;
+    thirdEnemy.hp -= hero.currentClass.phystr * damage;
+    if (!hero.currentclass.releaseD) {
+        hero.currentClass.hp -= hero.currentClass.phystr * damage;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.phystr * damage);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        var damage = 1;
+        if (hero.currentClass.dkRandom % 666 === 0) {
+            damage = 1000;
+        } else if (hero.currentClass.dkRandom % 777 === 0) {
+            damage = 10;
+        }
+        ctx.fillText("-" + hero.currentClass.phystr * damage, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * damage, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr * damage, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + hero.currentClass.phystr * damage, hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    hero.currentClass.dkRandom = Math.random() * (1000 - 1) + 1;
+    var damage = 1;
+    if (hero.currentClass.dkRandom % 100 === 0) {
+        firstEnemy.hp -= hero.currentClass.phystr * damage;
+        secondEnemy.hp -= hero.currentClass.phystr * damage;
+        thirdEnemy.hp -= hero.currentClass.phystr * damage;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        var damage = 1;
+        if (hero.currentClass.dkRandom % 100 === 0) {
+            ctx.fillText("-" + hero.currentClass.phystr * damage, firstEnemy.x - 10, firstEnemy.y - 5);
+            ctx.fillText("-" + hero.currentClass.phystr * damage, secondEnemy.x - 10, secondEnemy.y - 5);
+            ctx.fillText("-" + hero.currentClass.phystr * damage, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        }        
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    hero.currentClass.dkRandom = Math.random() * (1000 - 1) + 1;
+    var damage = 1;
+    if (hero.currentClass.dkRandom % 100 === 0) {
+        selectedEnemy.hp -= hero.currentClass.phystr * damage;
+    }
+    if (hero.tentacles) {
+        hero.currentClass.hp = hero.currentClass.hp + (hero.currentClass.mp);
+        if (hero.currentClass.hp > hero.currentClass.hpMax) {
+            hero.currentClass.hp = hero.currentClass.hpMax;
+        }
+    }
 }
 DKnight.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        var damage = 1;
+        if (hero.currentClass.dkRandom % 100 === 0) {
+            ctx.fillText("-" + hero.currentClass.phystr * damage, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        }
+        if (hero.tentacles) {
+            ctx.fillStyle = "Green"
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        }
+    }
 }
 DKnight.prototype.abilityNine = function (hero) {
     if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.releaseD = true;
@@ -5427,10 +5779,12 @@ function Berserker(game) {
     this.abilitySixAP = 0;
     this.abilitySixAPNeeded = 40;
 
+    this.howl = false;
     this.abilitySevenDescription = "Howl";
     this.abilitySevenAP = 0;
     this.abilitySevenAPNeeded = 100;
 
+    this.beserk = 0;
     this.abilityEightDescription = "Beserk";
     this.abilityEightAP = 0;
     this.abilityEightAPNeeded = 100;
@@ -5469,23 +5823,23 @@ Berserker.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Berserker.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time) {
-    if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
-        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.magstr - selectedEnemy.magdef);
+Berserker.prototype.abilityOne = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+        selectedEnemy.hp = selectedEnemy.hp - (hero.currentClass.phystr - selectedEnemy.phydef);
     }
 }
 Berserker.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
     if (time < 0.75) {
         ctx.fillStyle = "Red"
-        if ((hero.currentClass.magstr - selectedEnemy.magdef) > 0) {
-            ctx.fillText("-" + (hero.currentClass.magstr - selectedEnemy.magdef), selectedEnemy.x - 10, selectedEnemy.y - 5);
+        if ((hero.currentClass.phystr - selectedEnemy.phydef) > 0) {
+            ctx.fillText("-" + (hero.currentClass.phystr - selectedEnemy.phydef), selectedEnemy.x - 10, selectedEnemy.y - 5);
         } else {
             ctx.fillText("0", selectedEnemy.x - 10, selectedEnemy.y - 5);
 
         }
     }
 }
-Berserker.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+Berserker.prototype.abilityTwo = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
     var cost = 5;
     if (hero.currentClass.mp >= cost) {
         hero.currentClass.hp = hero.currentClass.hp + 13;
@@ -5501,47 +5855,158 @@ Berserker.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnem
         ctx.fillStyle = "Green"
         ctx.fillText("+" + 13, hero.x + 25, hero.y - 5);
         ctx.fillStyle = "Blue";
-        if (hero.currentClass.mp > hero.currentClass.mpMax) {
-            ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
         }
 
     }
 }
-Berserker.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+Berserker.prototype.abilityThree = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 10;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.hp = selectedEnemy.hp - hero.currentClass.phystr;
+        selectedEnemy.phydef -= hero.currentClass.phystr;
+        if (selectedEnemy.phydef < 0) selectedEnemy.phydef = 0;
+        hero.currentClass.mp -= cost;
+    }
 }
 Berserker.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 10;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
-Berserker.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+Berserker.prototype.abilityFour = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 25;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.hp = firstEnemy.hp - hero.currentClass.phystr;
+        firstEnemy.phydef -= hero.currentClass.phystr;
+        if (firstEnemy.phydef < 0) firstEnemy.phydef = 0;
 
+        secondEnemy.hp = secondEnemy.hp - hero.currentClass.phystr;
+        secondEnemy.phydef -= hero.currentClass.phystr;
+        if (secondEnemy.phydef < 0) secondEnemy.phydef = 0;
+
+        thirdEnemy.hp = thirdEnemy.hp - hero.currentClass.phystr;
+        thirdEnemy.phydef -= hero.currentClass.phystr;
+        if (thirdEnemy.phydef < 0) thirdEnemy.phydef = 0;
+        hero.currentClass.mp -= cost;
+    }
 }
 Berserker.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 25;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Berserker.prototype.abilityFive = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 25;
+    if (hero.currentClass.mp >= cost) {
+        firstEnemy.hp = firstEnemy.hp - hero.currentClass.phystr;
+        firstEnemy.phystr -= hero.currentClass.phystr;
+        if (firstEnemy.phystr < 0) firstEnemy.phystr = 0;
 
+        secondEnemy.hp = secondEnemy.hp - hero.currentClass.phystr;
+        secondEnemy.phystr -= hero.currentClass.phystr;
+        if (secondEnemy.phystr < 0) secondEnemy.phystr = 0;
+
+        thirdEnemy.hp = thirdEnemy.hp - hero.currentClass.phystr;
+        thirdEnemy.phystr -= hero.currentClass.phystr;
+        if (thirdEnemy.phystr < 0) thirdEnemy.phystr = 0;
+        hero.currentClass.mp -= cost;
+    }
 }
 Berserker.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 25;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.phystr, firstEnemy.x - 10, firstEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, secondEnemy.x - 10, secondEnemy.y - 5);
+        ctx.fillText("-" + hero.currentClass.phystr, thirdEnemy.x - 10, thirdEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Berserker.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    var cost = 0;
+    if (hero.currentClass.mp >= cost) {
+        selectedEnemy.hp = selectedEnemy.hp - hero.currentClass.hp;
+        selectedEnemy.phystr -= hero.currentClass.phystr;
+        hero.currentClass.mp -= cost;
+    }
 }
 Berserker.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 0;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "Red"
+        ctx.fillText("-" + hero.currentClass.hp, firstEnemy.x - 10, firstEnemy.y - 5);
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "Blue"
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Berserker.prototype.abilitySeven = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+    var cost = 1;
+    if (!hero.howl) {
+        hero.howl = !hero.howl;
+        hero.currentClass.hp = hero.currentClass.hp * 2;
+        hero.currentClass.mp -= cost;
+    }
 }
 Berserker.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 0;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "green";
+        ctx.fillText("Double HP" + hero.x + 25, hero.y - 5);
+
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "blue";
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
-Berserker.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
-
+Berserker.prototype.abilityEight = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy) {
+    var cost = 10 * (hero.beserk + 1);
+    if (selectedEnemy.hp > 1000000) cost = 0;
+    hero.currentClass.phystr = hero.currentClass.phystr * cost;
+    hero.currentClass.mp -= cost;
 }
 Berserker.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy, secondEnemy, thirdEnemy, time, ctx) {
+    var cost = 10 * (hero.beserk + 1);
+    if (selectedEnemy.hp > 1000000) cost = 0;
 
+    if (time < 0.75) {
+        ctx.fillStyle = "green";
+        ctx.fillText("Beserk" + hero.x + 25, hero.y - 5);
+
+        if (hero.currentClass.mp > 0) {
+            ctx.fillStyle = "blue";
+            ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
+        }
+    }
 }
 Berserker.prototype.abilityNine = function (hero) {
     if (hero.abilityNineAP === hero.abilityNineAPNeeded) hero.counter = true;
@@ -5841,10 +6306,10 @@ Psychic.prototype.abilitySix = function (hero, selectedEnemy, firstEnemy, second
     var weakToFire = false;
     var strongToFire = false;
     for (var i = 0; i < selectedEnemy.weakness.length; i++) {
-        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
     }
     for (var i = 0; i < selectedEnemy.strength.length; i++) {
-        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
     }
     if (hero.currentClass.mp >= cost) {
         if (weakToFire) {
@@ -5867,10 +6332,10 @@ Psychic.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy,
     var weakToFire = false;
     var strongToFire = false;
     for (var i = 0; i < selectedEnemy.weakness.length; i++) {
-        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+        if (selectedEnemy.weakness[i] === "Water") weakToFire = true;
     }
     for (var i = 0; i < selectedEnemy.strength.length; i++) {
-        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+        if (selectedEnemy.strength[i] === "Water") strongToFire = true;
     }
     if (hero.currentClass.mp >= cost) {
         if (weakToFire) {
@@ -5924,10 +6389,10 @@ Psychic.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnem
     var weakToFire = false;
     var strongToFire = false;
     for (var i = 0; i < selectedEnemy.weakness.length; i++) {
-        if (selectedEnemy.weakness[i] === "Fire") weakToFire = true;
+        if (selectedEnemy.weakness[i] === "Gravity") weakToFire = true;
     }
     for (var i = 0; i < selectedEnemy.strength.length; i++) {
-        if (selectedEnemy.strength[i] === "Fire") strongToFire = true;
+        if (selectedEnemy.strength[i] === "Gravity") strongToFire = true;
     }
     if (hero.currentClass.mp >= cost) {
         if (weakToFire) {

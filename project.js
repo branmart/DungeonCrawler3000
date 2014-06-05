@@ -533,7 +533,7 @@ TileOne.prototype.update = function () {
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
 
 
 }
@@ -7770,14 +7770,20 @@ ASSET_MANAGER.queueDownload("./img/bluedragon.png");
 ASSET_MANAGER.queueDownload("./img/seadragon.png");
 ASSET_MANAGER.queueDownload("./img/chimera.png");
 
+//Map Files
 ASSET_MANAGER.queueDownload("./img/battle.png");
-
-ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
-ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
-ASSET_MANAGER.queueDownload("./img/BossMap.png");
-
-
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/RightDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLeft.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/Right.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/DownLava.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -7830,6 +7836,84 @@ ASSET_MANAGER.downloadAll(function () {
     var platforms = [];
     var t0 = new TileZero(gameEngine, enemy3, enemy2);
     
+
+    var world_1_1 = new TileOne(gameEngine);
+    platforms.push(world_1_1);
+    gameEngine.addEntity(world_1_1);
+    
+    var world_1_2 = new TileSix(gameEngine);
+    platforms.push(world_1_2);
+    gameEngine.addEntity(world_1_2);
+    var world_1_3 = new TileSeven(gameEngine);
+    platforms.push(world_1_3);
+    gameEngine.addEntity(world_1_3);
+    var world_1_4 = new TileThirteen(gameEngine);
+    platforms.push(world_1_4);
+    gameEngine.addEntity(world_1_4);
+    var world_1_5 = new TileFourteen(gameEngine);
+    platforms.push(world_1_5);
+    gameEngine.addEntity(world_1_5);
+   
+    var dungeon_1_1 = new TileTwo(gameEngine);
+    platforms.push(dungeon_1_1);
+    gameEngine.addEntity(dungeon_1_1);
+    var dungeon_1_2 = new TileThree(gameEngine);
+    platforms.push(dungeon_1_2);
+    gameEngine.addEntity(dungeon_1_2);
+    var dungeon_1_3 = new TileFour(gameEngine);
+    platforms.push(dungeon_1_3);
+    gameEngine.addEntity(dungeon_1_3);
+    var dungeon_1_4 = new TileFive(gameEngine);
+    platforms.push(dungeon_1_4);
+    gameEngine.addEntity(dungeon_1_4);
+    
+    var dungeon_2_1 = new TileEight(gameEngine);
+    platforms.push(dungeon_2_1);
+    gameEngine.addEntity(dungeon_2_1);
+    var dungeon_2_2 = new TileNine(gameEngine);
+    platforms.push(dungeon_2_2);
+    gameEngine.addEntity(dungeon_2_2);
+    var dungeon_2_3 = new TileTen(gameEngine);
+    platforms.push(dungeon_2_3);
+    gameEngine.addEntity(dungeon_2_3);
+    var dungeon_2_4 = new TileEleven(gameEngine);
+    platforms.push(dungeon_2_4);
+    gameEngine.addEntity(dungeon_2_4);
+    var dungeon_2_5 = new TileTwelve(gameEngine);
+    platforms.push(dungeon_2_5);
+    gameEngine.addEntity(dungeon_2_5);
+
+    var dungeon_3_1 = new TileFifteen(gameEngine);
+    platforms.push(dungeon_3_1);
+    gameEngine.addEntity(dungeon_3_1);
+    var dungeon_3_2 = new TileSixteen(gameEngine);
+    platforms.push(dungeon_3_2);
+    gameEngine.addEntity(dungeon_3_2);
+    var dungeon_3_3 = new TileSeventeen(gameEngine);
+    platforms.push(dungeon_3_3);
+    gameEngine.addEntity(dungeon_3_3);
+    var dungeon_3_4 = new TileEighteen(gameEngine);
+    platforms.push(dungeon_3_4);
+    gameEngine.addEntity(dungeon_3_4);
+    var dungeon_3_5 = new TileNineteen(gameEngine);
+    platforms.push(dungeon_3_5);
+    gameEngine.addEntity(dungeon_3_5);
+    var dungeon_3_6 = new TileTwenty(gameEngine);
+    platforms.push(dungeon_3_6);
+    gameEngine.addEntity(dungeon_3_6);
+    var dungeon_3_7 = new TileTwentyOne(gameEngine);
+    platforms.push(dungeon_3_7);
+    gameEngine.addEntity(dungeon_3_7);
+    var dungeon_3_8 = new TileTwentyTwo(gameEngine);
+    platforms.push(dungeon_3_8);
+    gameEngine.addEntity(dungeon_3_8);
+    var dungeon_3_9 = new TileTwentyThree(gameEngine);
+    platforms.push(dungeon_3_9);
+    gameEngine.addEntity(dungeon_3_9);
+    
+    gameEngine.platforms = platforms;
+
+    /*
     platforms.push(t0);
     gameEngine.addEntity(t0);
     var t1 = new TileOne(gameEngine);
@@ -7858,7 +7942,7 @@ ASSET_MANAGER.downloadAll(function () {
     platforms.push(t8);
     gameEngine.addEntity(t8);
     gameEngine.platforms = platforms;
-   
+   */
 
     var classes = [];
     var gunner = new Gunner(gameEngine);

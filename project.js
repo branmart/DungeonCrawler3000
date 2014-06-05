@@ -2343,6 +2343,1277 @@ Wolfkin.prototype.draw = function (ctx) {
     //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Wolfkin.png"),
     //            this.x, this.y, 80, 80);
 }
+function Dinox(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 60;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 12;
+    this.phydef = 7;
+    this.magstr = 2;
+    this.magdef = 1;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 2;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Dinox.prototype = new Entity();
+Dinox.prototype.constructor = Dinox;
+
+Dinox.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Dinox.prototype.reset = function () {
+    this.hp = 60;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Dinox.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Dinox.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Claw Slash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Dinox.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/dinox.png"),
+    //            this.x, this.y, 80, 80);
+}
+function LizardMan(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 65;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 14;
+    this.phydef = 10;
+    this.magstr = 2;
+    this.magdef = 2;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 2;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+LizardMan.prototype = new Entity();
+LizardMan.prototype.constructor = LizardMan;
+
+LizardMan.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+LizardMan.prototype.reset = function () {
+    this.hp = 65;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+LizardMan.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+LizardMan.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Cleaver Hack", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+LizardMan.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/LizardMan.png"),
+    //            this.x, this.y, 80, 80);
+}
+function TornadoLizard(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 65;
+    this.mp = 15;
+    this.aggro = false;
+    this.phystr = 4;
+    this.phydef = 4;
+    this.magstr = 15;
+    this.magdef = 12;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 5;
+    this.ap = 8;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+TornadoLizard.prototype = new Entity();
+TornadoLizard.prototype.constructor = TornadoLizard;
+
+TornadoLizard.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+TornadoLizard.prototype.reset = function () {
+    this.hp = 65;
+    this.mp = 15;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+TornadoLizard.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Mini Storm", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+TornadoLizard.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Seabird(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 30;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 10;
+    this.phydef = 4;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Gravity");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 3;
+    this.ap = 2;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Seabird.prototype = new Entity();
+Seabird.prototype.constructor = Seabird;
+
+Seabird.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Seabird.prototype.reset = function () {
+    this.hp = 30;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Seabird.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Seabird.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Gull Slash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Seabird.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Seabird.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Gillman(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 70;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 18;
+    this.phydef = 12;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 7;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Gillman.prototype = new Entity();
+Gillman.prototype.constructor = Gillman;
+
+Gillman.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Gillman.prototype.reset = function () {
+    this.hp = 70;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Gillman.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Gillman.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Trident Stab", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Gillman.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Gillman.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Sentinel(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 75;
+    this.mp = 10;
+    this.aggro = false;
+    this.phystr = 18;
+    this.phydef = 12;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 8;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Sentinel.prototype = new Entity();
+Sentinel.prototype.constructor = Sentinel;
+
+Sentinel.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Sentinel.prototype.reset = function () {
+    this.hp = 75;
+    this.mp = 10;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Sentinel.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Sentinel.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Sword Hack", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Sentinel.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Sentinel.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Siren(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 85;
+    this.mp = 15;
+    this.aggro = false;
+    this.phystr = 8;
+    this.phydef = 10;
+    this.magstr = 18;
+    this.magdef = 20;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Dark");
+    this.exp = 10;
+    this.ap = 7;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Siren.prototype = new Entity();
+Siren.prototype.constructor = Siren;
+
+Siren.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Siren.prototype.reset = function () {
+    this.hp = 85;
+    this.mp = 15;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Siren.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Siren.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Seductive Tune", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Siren.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Siren.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Hydra(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 85;
+    this.mp = 12;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 15;
+    this.magstr = 2;
+    this.magdef = 7;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Flame");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 8;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Hydra.prototype = new Entity();
+Hydra.prototype.constructor = Hydra;
+
+Hydra.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Hydra.prototype.reset = function () {
+    this.hp = 85;
+    this.mp = 12;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Hydra.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Hydra.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Recursive Strike", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Hydra.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Hydra.png"),
+    //            this.x, this.y, 80, 80);
+}
+function BlueDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 95;
+    this.mp = 20;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 20;
+    this.magstr = 0;
+    this.magdef = 10;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Dark");
+    this.exp = 10;
+    this.ap = 7;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+BlueDragon.prototype = new Entity();
+BlueDragon.prototype.constructor = BlueDragon;
+
+BlueDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+BlueDragon.prototype.reset = function () {
+    this.hp = 95;
+    this.mp = 20;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+BlueDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+BlueDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Tail Thrash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+BlueDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/BlueDragon.png"),
+    //            this.x, this.y, 80, 80);
+}
+function FlameDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 100;
+    this.mp = 22;
+    this.aggro = false;
+    this.phystr = 12;
+    this.phydef = 18;
+    this.magstr = 20;
+    this.magdef = 15;
+    this.weakness = [];
+	this.weakness.push("Water");
+    this.strength = [];
+    this.strength.push("Fire");
+    this.exp = 15;
+    this.ap = 9;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+FlameDragon.prototype = new Entity();
+FlameDragon.prototype.constructor = FlameDragon;
+
+FlameDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+FlameDragon.prototype.reset = function () {
+    this.hp = 100;
+    this.mp = 22;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+FlameDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            } 
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+FlameDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Fireball", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+FlameDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/FlameDragon.png"),
+      //            this.x, this.y, 80, 80);
+}
+function SeaDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 100;
+    this.mp = 22;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 20;
+    this.magstr = 10;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 17;
+    this.ap = 11;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "DKnight";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+SeaDragon.prototype = new Entity();
+SeaDragon.prototype.constructor = SeaDragon;
+
+SeaDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+SeaDragon.prototype.reset = function () {
+    this.hp = 100;
+    this.mp = 22;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+SeaDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+SeaDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Vortex", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+SeaDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/SeaDragon.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Chimera(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 120;
+    this.mp = 24;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 14;
+    this.magstr = 16;
+    this.magdef = 10;
+    this.weakness = [];
+    this.weakness.push("Gravity");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Fire");
+    this.exp = 20;
+    this.ap = 14;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Berserker";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Chimera.prototype = new Entity();
+Chimera.prototype.constructor = Chimera;
+
+Chimera.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Chimera.prototype.reset = function () {
+    this.hp = 120;
+    this.mp = 24;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Chimera.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Chimera.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Amalgo-flame", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Chimera.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Chimera.png"),
+    //            this.x, this.y, 80, 80);
+}
 function Hero(game, cen, col, job, tile) {
     this.cen = cen;
     this.col = col;
@@ -6485,6 +7756,19 @@ ASSET_MANAGER.queueDownload("./img/emu.png");
 ASSET_MANAGER.queueDownload("./img/ghoul.png");
 ASSET_MANAGER.queueDownload("./img/wolfkin.png");
 
+ASSET_MANAGER.queueDownload("./img/dinox.png");
+ASSET_MANAGER.queueDownload("./img/lizardman.png");
+ASSET_MANAGER.queueDownload("./img/tornadolizard.png");
+ASSET_MANAGER.queueDownload("./img/seabird.png");
+ASSET_MANAGER.queueDownload("./img/gillman.png");
+ASSET_MANAGER.queueDownload("./img/hydra.png");
+ASSET_MANAGER.queueDownload("./img/sentinel.png");
+ASSET_MANAGER.queueDownload("./img/siren.png");
+ASSET_MANAGER.queueDownload("./img/flamedragon.png");
+ASSET_MANAGER.queueDownload("./img/bluedragon.png");
+ASSET_MANAGER.queueDownload("./img/seadragon.png");
+ASSET_MANAGER.queueDownload("./img/chimera.png");
+
 ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
 ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
@@ -6502,10 +7786,25 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.running = true;
     gameEngine.battleRunning = false;
     gameEngine.menuRunning = false;
-
+    //Trivial difficulty
     var enemy2 = new Ghoul(gameEngine, -1, 0);
     var enemy1 = new Emu(gameEngine, -1, 0);
     var enemy3 = new Wolfkin(gameEngine, -1, 0);
+    //Easy difficulty
+    var enemy4 = new Dinox(gameEngine, -1, 0);
+    var enemy5 = new LizardMan(gameEngine, -1, 0);
+    var enemy6 = new TornadoLizard(gameEngine, -1, 0);
+    //Medium difficulty
+    var enemy7 = new Seabird(gameEngine, -1, 0);
+    var enemy8 = new Gillman(gameEngine, -1, 0);
+    var enemy9 = new Sentinel(gameEngine, -1, 0);
+    var enemy10 = new Siren(gameEngine, -1, 0);
+    var enemy11 = new Hydra(gameEngine, -1, 0);
+    //Hardest difficulty
+    var enemy12 = new FlameDragon(gameEngine, -1, 0);
+    var enemy13 = new BlueDragon(gameEngine, -1, 0);
+    var enemy14 = new SeaDragon(gameEngine, -1, 0);
+    var enemy15 = new Chimera(gameEngine, -1, 0);
     /*var areas = [];
     
     var start = new TileZero(gameEngine, enemy3, enemy2);

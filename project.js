@@ -419,7 +419,7 @@ function TileZero(game, enemy1, enemy2) {
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
-    this.battlemap = "./img/desert_battle.jpg";
+    this.battlemap = "./img/battle.png";
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
     this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
@@ -6485,6 +6485,7 @@ ASSET_MANAGER.queueDownload("./img/emu.png");
 ASSET_MANAGER.queueDownload("./img/ghoul.png");
 ASSET_MANAGER.queueDownload("./img/wolfkin.png");
 
+ASSET_MANAGER.queueDownload("./img/battle.png");
 ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
 ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMap.png");

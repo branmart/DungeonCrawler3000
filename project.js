@@ -129,6 +129,7 @@ function GameEngine() {
     this.surfaceHeight = null;
     this.running = null;
     this.menuRunning = null;
+    this.startGame = null;
     this.battleRunning = null;
     this.fledSuccessfully = false;
     this.loginRunning = null;
@@ -423,7 +424,7 @@ Circle.prototype.collideWest = function (oth) {
     return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
 }
 //Game Objects
-function TileZero(game, enemy1, enemy2) {
+function TileZero(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
@@ -431,7 +432,9 @@ function TileZero(game, enemy1, enemy2) {
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
     this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
@@ -458,7 +461,7 @@ TileZero.prototype.update = function () {
     this.boundingBoxes.push(this.boundingbox3);
     this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
     this.boundingBoxes.push(this.boundingbox4);
-    this.BattleTime = 5;
+
     /*this.NorthTile = this.game.platforms[1];
     this.EastTile = null;
     this.SouthTile = null;
@@ -472,7 +475,7 @@ TileZero.prototype.update = function () {
 }
 
 TileZero.prototype.draw = function (ctx) {
-
+    if (!this.game.running || this.game.battleRunning) return;
     //ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonStart.png"), this.x, this.y, 760, 760);
     ctx.strokeStyle = "red";
     var i;
@@ -509,11 +512,17 @@ TileZero.prototype.draw = function (ctx) {
 
 }
 
-function TileOne(game, hero) {
+function TileOne(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     
     this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
@@ -544,17 +553,23 @@ TileOne.prototype.update = function () {
 }
 
 TileOne.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
 
 
 }
 
-function TileTwo(game, hero) {
+function TileTwo(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
 
     this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
@@ -585,15 +600,21 @@ TileTwo.prototype.update = function () {
 }
 
 TileTwo.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonRoom.png"), this.x, this.y, 760, 760);
 }
 
-function TileThree(game, hero) {
+function TileThree(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     this.boundingbox1 = new BoundingBox(20, 20, 300, 760);
     this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
@@ -623,15 +644,21 @@ TileThree.prototype.update = function () {
 }
 
 TileThree.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/BossMap.png"), this.x, this.y, 760, 760);
 }
 
-function TileFour(game, hero) {
+function TileFour(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
@@ -650,15 +677,21 @@ TileFour.prototype.update = function () {
 }
 
 TileFour.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
 
-function TileFive(game, hero) {
+function TileFive(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
@@ -677,15 +710,21 @@ TileFive.prototype.update = function () {
 }
 
 TileFive.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
-function TileSix(game, hero) {
+function TileSix(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
@@ -704,15 +743,21 @@ TileSix.prototype.update = function () {
 }
 
 TileSix.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
 }
 
-function TileSeven(game, hero) {
+function TileSeven(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
@@ -731,15 +776,21 @@ TileSeven.prototype.update = function () {
 }
 
 TileSeven.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
 }
 
-function TileEight(game, hero) {
+function TileEight(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
     Entity.call(this, game, 20, 20);
 }
@@ -758,7 +809,7 @@ TileEight.prototype.update = function () {
 }
 
 TileEight.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
+    if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
 
@@ -1364,6 +1415,7 @@ Menu.prototype.draw = function (ctx) {
 function Battle(game, x, y, one) {
     this.battleTime = 0;
     this.heroOne = one;
+    this.start = false;
     this.selectedEnemy = null;
     this.firstEnemy = this.heroOne.currentTile.enemies[0];
     this.secondEnemy = this.heroOne.currentTile.enemies[1];
@@ -1434,7 +1486,19 @@ Battle.prototype.update = function () {
         this.game.fledSuccessfully = false;
     }
     if (this.battleTime > this.heroOne.currentTile.BattleTime) {
-        this.game.battleRunning = true;
+        var enemies = 0;
+        for(var i = 0; i < this.heroOne.currentTile.enemies.length; i++) {
+            if (typeof this.heroOne.currentTile.enemies[i] === 'undefined') {
+                enemies++;
+            } else if (i === 0) {
+                this.firstEnemy = this.heroOne.currentTile.enemies[i];
+            } else if(i === 1){
+                this.secondEnemy = this.heroOne.currentTile.enemies[i];
+            } else if (i === 2) {
+                this.thirdEnemy = this.heroOne.currentTile.enemies[i];
+            }
+        }
+        if (enemies != this.heroOne.currentTile.enemies.length) this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
         if (this.game.click) {
@@ -1473,12 +1537,23 @@ Battle.prototype.update = function () {
                     this.selectedEnemy = this.heroOne.currentTile.enemies[i];
                 } else i++;
             }
-            if (this.game.click.x > this.firstEnemy.x && this.game.click.x < this.firstEnemy.x + 60 && this.game.click.y > this.firstEnemy.y && this.game.click.y < this.firstEnemy.y + 90 && this.firstEnemy.hp >0) {
-                this.selectedEnemy = this.firstEnemy;
+            if (this.firstEnemy != null) {
+                if (this.game.click.x > this.firstEnemy.x && this.game.click.x < this.firstEnemy.x + 60 && this.game.click.y > this.firstEnemy.y && this.game.click.y < this.firstEnemy.y + 90 && this.firstEnemy.hp > 0) {
+                    this.selectedEnemy = this.firstEnemy;
+                }
             }
-            if (this.game.click.x > this.secondEnemy.x && this.game.click.x < this.secondEnemy.x + 60 && this.game.click.y > this.secondEnemy.y && this.game.click.y < this.secondEnemy.y + 90 && this.secondEnemy.hp > 0) {
-                this.selectedEnemy = this.secondEnemy;
+            if (this.secondEnemy != null) {
+                if (this.game.click.x > this.secondEnemy.x && this.game.click.x < this.secondEnemy.x + 60 && this.game.click.y > this.secondEnemy.y && this.game.click.y < this.secondEnemy.y + 90 && this.secondEnemy.hp > 0) {
+                    this.selectedEnemy = this.secondEnemy;
+                }
             }
+            if (this.thirdEnemy != null) {
+                if (this.game.click.x > this.thirdEnemy.x && this.game.click.x < this.thirdEnemy.x + 60 && this.game.click.y > this.thirdEnemy.y && this.game.click.y < this.thirdEnemy.y + 90 && this.thirdEnemy.hp > 0) {
+                    this.selectedEnemy = this.thirdEnemy;
+                }
+            }
+
+ 
             //ability 1
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
@@ -1511,6 +1586,8 @@ Battle.prototype.update = function () {
                         } else {
                             this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
+                    } else {
+                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                     }
                 }
                 if (this.secondEnemy != null) {
@@ -1523,6 +1600,8 @@ Battle.prototype.update = function () {
                         } else {
                             this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
                         }
+                    } else {
+                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                     }
 
                 }
@@ -1536,6 +1615,8 @@ Battle.prototype.update = function () {
                         } else {
                             this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
                         }
+                    } else {
+                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                     }
 
                 }
@@ -1862,7 +1943,12 @@ Battle.prototype.update = function () {
             this.clickY = this.game.click.y;
         }
     }
-    if (!this.game.menuRunning) {
+    var canvas = document.getElementById('StartButton');
+
+    if (this.game.click) {
+        this.start = true;
+    }
+    if (!this.game.menuRunning && this.game.running && this.start) {
         this.battleTime += this.game.clockTick;
         this.actionTime += this.game.clockTick;
 
@@ -1877,21 +1963,33 @@ Battle.prototype.draw = function (ctx) {
     //console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset(this.heroOne.currentTile.battlemap), this.x, this.y, 760, 760);
-        this.firstEnemy.x = 500;
-        this.firstEnemy.y = 20;
-        ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
-        if (this.firstEnemy.hp >= 0) {
-            this.firstEnemy.draw(ctx);
+        if (this.firstEnemy != null) {
+            this.firstEnemy.x = 450;
+            this.firstEnemy.y = 60;
+            //ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
+            if (this.firstEnemy.hp >= 0) {
+                this.firstEnemy.draw(ctx);
+            }
         }
 
-        this.secondEnemy.x = 600;
-        this.secondEnemy.y = 80;
-
-
-        ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
-        if (this.secondEnemy.hp >= 0) {
-            this.secondEnemy.draw(ctx);
+        if (this.secondEnemy != null) {
+            this.secondEnemy.x = 550;
+            this.secondEnemy.y = 120;
+            //ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
+            if (this.secondEnemy.hp >= 0) {
+                this.secondEnemy.draw(ctx);
+            }
         }
+
+        if (this.thirdEnemy != null) {
+            this.thirdEnemy.x = 650;
+            this.thirdEnemy.y = 160;
+            //ctx.strokeRect(this.thirdEnemy.x + 25, this.thirdEnemy.y + 20, 60, 90);
+            if (this.thirdEnemy.hp >= 0) {
+                this.thirdEnemy.draw(ctx);
+            }
+        }
+
 
         this.heroOne.x = 50;
         this.heroOne.y = 500;
@@ -1925,8 +2023,9 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.save();
         ctx.fillStyle = "blue";
-
-        if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+            if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeStyle = "red";
 
         ctx.moveTo(137, 623);
@@ -1960,7 +2059,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(20, 623 + 75, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityTwoDescription, 100, 750);
@@ -1986,7 +2088,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(274, 623, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityThreeDescription, 360, 675);
@@ -2012,7 +2117,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(274, 623 + 75, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFourDescription, 360, 750);
@@ -2038,7 +2146,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(528, 623, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFiveDescription, 600, 675);
@@ -2065,7 +2176,10 @@ Battle.prototype.draw = function (ctx) {
         }
 
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(528, 623 + 75, 251, 75);
         ctx.moveTo(650, 698);
         ctx.lineTo(650, 775);
@@ -2102,14 +2216,25 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.fillStyle = "red";
         if (this.game.mouse) {
-            if (this.game.mouse.x > this.firstEnemy.x && this.game.mouse.x < this.firstEnemy.x + 60 && this.game.mouse.y > this.firstEnemy.y && this.game.mouse.y < this.firstEnemy.y + 90) {
-                ctx.fillText(this.firstEnemy.hp, 50, 50);
+            if (this.firstEnemy != null) {
+                if (this.game.mouse.x > this.firstEnemy.x && this.game.mouse.x < this.firstEnemy.x + 60 && this.game.mouse.y > this.firstEnemy.y && this.game.mouse.y < this.firstEnemy.y + 90) {
+                    ctx.fillText(this.firstEnemy.hp, 50, 50);
 
+                }
             }
-            if (this.game.mouse.x > this.secondEnemy.x && this.game.mouse.x < this.secondEnemy.x + 60 && this.game.mouse.y > this.secondEnemy.y && this.game.mouse.y < this.secondEnemy.y + 90) {
-                ctx.fillText(this.secondEnemy.hp, 50, 50);
+            if (this.secondEnemy != null) {
+                if (this.game.mouse.x > this.secondEnemy.x && this.game.mouse.x < this.secondEnemy.x + 60 && this.game.mouse.y > this.secondEnemy.y && this.game.mouse.y < this.secondEnemy.y + 90) {
+                    ctx.fillText(this.secondEnemy.hp, 50, 50);
 
+                }
             }
+
+            if (this.thirdEnemy != null) {
+                if (this.game.mouse.x > this.thirdEnemy.x && this.game.mouse.x < this.thirdEnemy.x + 60 && this.game.mouse.y > this.thirdEnemy.y && this.game.mouse.y < this.thirdEnemy.y + 90) {
+                    ctx.fillText(this.thirdEnemy.hp, 50, 50);
+                }
+            }
+
         }
 
     }
@@ -7884,10 +8009,13 @@ ASSET_MANAGER.queueDownload("./img/startimg.png")
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
+
     var ctx = canvas.getContext('2d');
     //Game Engine
     var gameEngine = new GameEngine();
     //Components
+    var splash = document.getElementById('SplashScreen');
+    gameEngine.startGame = splash.hidden;
     gameEngine.running = true;
     gameEngine.loginRunning = false;
     gameEngine.battleRunning = false;
@@ -7931,11 +8059,11 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.platforms = areas;*/
 
     var platforms = [];
-    var t0 = new TileZero(gameEngine, enemy3, enemy2);
+    var t0 = new TileZero(gameEngine, enemy3, enemy4);
     
     platforms.push(t0);
     gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine);
+    var t1 = new TileOne(gameEngine, enemy13, enemy14, enemy15);
 
     platforms.push(t1);
     gameEngine.addEntity(t1);
@@ -7993,14 +8121,14 @@ ASSET_MANAGER.downloadAll(function () {
 
     var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
     var menu = new Menu(gameEngine, 25, 25, hero1);
-    var login = new Login(gameEngine, 25, 25);
+    //var login = new Login(gameEngine, 25, 25);
     var battle = new Battle(gameEngine, 20, 20, hero1);
 
     //Adding components to Game Engine
 
     gameEngine.addEntity(hero1);
     gameEngine.addEntity(menu);
-    gameEngine.addEntity(login);
+    //gameEngine.addEntity(login);
     gameEngine.addEntity(battle);
 
     gameEngine.init(ctx);

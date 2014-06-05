@@ -2343,29 +2343,53 @@ Battle.prototype.update = function () {
             //snd.currentTime = 0;
 
             //end battle logic
-            if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp >= 0) {
-                this.game.battleRunning = false;
-                this.game.running = false;
-            } else if (this.firstEnemy.hp <= 0 && this.secondEnemy.hp <=0 && this.heroOne.currentClass.hp >= 0) {
-                this.game.battleRunning = false;
-                this.battleTime = 0;
-                this.heroOne.x = this.heroOne.currentX;
-                this.heroOne.y = this.heroOne.currentY;
-                this.heroOne.currentClass.phystr = this.heroOne.currentClass.phystrMax;
-                this.heroOne.currentClass.phydef = this.heroOne.currentClass.phydefMax;
-                this.heroOne.currentClass.magdef = this.heroOne.currentClass.magdefMax;
-                this.heroOne.currentClass.magstr = this.heroOne.currentClass.magstrMax;
+            var firstIsAlive = true;
+            var secondIsAlive = true;
+            var thirdIsAlive = true;
 
-                this.heroOne.currentClass.exp += this.firstEnemy.exp + this.firstEnemy.exp;
-                this.heroOne.currentClass.ap += this.firstEnemy.ap + this.firstEnemy.exp;
-                this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
-                this.heroOne.currentClass.mp = this.heroOne.currentClass.mp;
-                this.selectedEnemy = null;
-                this.firstEnemy.reset();
-                this.secondEnemy.reset();
-            } else if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp <= 0) {
+            if (this.heroOne.currentClass.hp <= 0) {
                 this.game.battleRunning = false;
                 this.game.running = false;
+            } else if (this.heroOne.currentClass.hp > 0) {
+
+                if (this.firstEnemy != null) {
+                    if (this.firstEnemy.hp <= 0) firstIsAlive = false;
+                } else {
+                    firstIsAlive = false;
+                }
+                if (this.secondEnemy != null) {
+                    if (this.secondEnemy.hp <= 0) secondIsAlive = false;
+                } else {
+                    secondIsAlive = false;
+                }
+                if (this.thirdEnemy != null) {
+                    if (this.thirdEnemy.hp <= 0) thirdIsAlive = false;
+                } else {
+                    thirdIsAlive = false;
+                }
+                if (!firstIsAlive && !secondIsAlive && !thirdIsAlive) {
+                    this.game.battleRunning = false;
+                    this.battleTime = 0;
+                    this.heroOne.x = this.heroOne.currentX;
+                    this.heroOne.y = this.heroOne.currentY;
+                    this.heroOne.currentClass.phystr = this.heroOne.currentClass.phystrMax;
+                    this.heroOne.currentClass.phydef = this.heroOne.currentClass.phydefMax;
+                    this.heroOne.currentClass.magdef = this.heroOne.currentClass.magdefMax;
+                    this.heroOne.currentClass.magstr = this.heroOne.currentClass.magstrMax;
+                    if (this.firstEnemy != null) this.heroOne.currentClass.exp += this.firstEnemy.exp;
+                    if (this.secondEnemy != null) this.heroOne.currentClass.exp += this.secondEnemy.exp;
+                    if (this.thirdEnemy != null) this.heroOne.currentClass.exp += this.thirdEnemy.exp;
+
+                    if (this.firstEnemy != null) this.heroOne.currentClass.ap += this.firstEnemy.ap;
+                    if (this.secondEnemy != null) this.heroOne.currentClass.ap += this.secondEnemy.exp;
+                    if (this.thirdEnemy != null) this.heroOne.currentClass.ap += this.thirdEnemy.ap;
+
+                    this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
+                    this.heroOne.currentClass.mp = this.heroOne.currentClass.mp;
+                    this.selectedEnemy = null;
+                    this.firstEnemy.reset();
+                    this.secondEnemy.reset();
+                }
             }
             this.clickX = this.game.click.x;
             this.clickY = this.game.click.y;

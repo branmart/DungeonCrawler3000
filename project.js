@@ -1634,37 +1634,70 @@ Battle.prototype.resetAbilities = function () {
 
     if (this.heroOne.currentClass.abilityOneAP === this.heroOne.currentClass.abilityOneAPNeeded) {
         this.abilityOne = this.heroOne.currentClass.abilityOne;
+        this.heroOne.abilityOne = this.abilityOne;
+
         this.abilityOneDescription = this.heroOne.currentClass.abilityOneDescription;
+        this.heroOne.abilityOneDescription = this.abilityOneDescription;
+
         this.abilityOneDisplay = this.heroOne.currentClass.abilityOneDisplay;
+        this.heroOne.abilityOne = this.abilityOneDisplay;
+
     }
     if (this.heroOne.currentClass.abilityTwoAP === this.heroOne.currentClass.abilityTwoAPNeeded) {
         this.abilityTwo = this.heroOne.currentClass.abilityTwo;
+        this.heroOne.abilityTwo = this.abilityTwo;
+
         this.abilityTwoDescription = this.heroOne.currentClass.abilityTwoDescription;
+        this.heroOne.abilityTwoDescription = this.abilityTwoDescription;
+
         this.abilityTwoDisplay = this.heroOne.currentClass.abilityTwoDisplay;
+        this.heroOne.abilityTwoDisplay = this.abilityTwoDisplay;
 
 
     }
-    if (this.heroOne.currentClass.abilityThreeAP === this.heroOne.currentClass.abilityThreeAsPNeeded) {
+    if (this.heroOne.currentClass.abilityThreeAP === this.heroOne.currentClass.abilityThreeAPNeeded) {
         this.abilityThree = this.heroOne.currentClass.abilityThree;
+        this.heroOne.abilityThree = this.abilityThree;
+
         this.abilityThreeDescription = this.heroOne.currentClass.abilityThreeDescription;
+        this.heroOne.abilityThreeDescription = this.abilityThreeDescription;
+
         this.abilityThreeDisplay = this.heroOne.currentClass.abilityThreeDisplay;
+        this.heroOne.abilityThreeDisplay = this.abilityThreeDisplay;
 
     }
     if (this.heroOne.currentClass.abilityFourAP === this.heroOne.currentClass.abilityFourAPNeeded) {
         this.abilityFour = this.heroOne.currentClass.abilityFour;
+        this.heroOne.abilityFour = this.abilityFour;
+
         this.abilityFourDescription = this.heroOne.currentClass.abilityFourDescription;
-        this.abilityFour = this.heroOne.currentClass.abilityFour;
+        this.heroOne.abilityFourDescription = this.abilityFourDescription;
+
+        this.abilityFourDisplay = this.heroOne.currentClass.abilityFourDisplay;
+        this.heroOne.abilityFourDisplay = this.abilityFourDisplay;
+
     }
     if (this.heroOne.currentClass.abilityFiveAP === this.heroOne.currentClass.abilityFiveAPNeeded) {
         this.abilityFive = this.heroOne.currentClass.abilityFive;
+        this.heroOne.abilityFive = this.abilityFive;
+
         this.abilityFiveDescription = this.heroOne.currentClass.abilityFiveDescription;
+        this.heroOne.abilityFiveDescription = this.abilityFiveDescription;
+
         this.abilityFiveDisplay = this.heroOne.currentClass.abilityFiveDisplay;
+        this.heroOne.abilityFiveDisplay = this.abilityFiveDisplay;
 
     }
     if (this.heroOne.currentClass.abilitySixAP === this.heroOne.currentClass.abilitySixAPNeeded) {
         this.abilitySix = this.heroOne.currentClass.abilitySix;
+        this.heroOne.abilitySix = this.abilitySix;
+
         this.abilitySixDescription = this.heroOne.currentClass.abilitySixDescription;
+        this.heroOne.abilitySixDescription = this.abilitySixDescription;
+
         this.abilitySixDisplay = this.heroOne.currentClass.abilitySixDisplay;
+        this.heroOne.abilitySixDisplay = this.abilitySixDisplay;
+
     }
 }
 function shuffle(array) {

@@ -1640,7 +1640,7 @@ Battle.prototype.resetAbilities = function () {
         this.heroOne.abilityOneDescription = this.abilityOneDescription;
 
         this.abilityOneDisplay = this.heroOne.currentClass.abilityOneDisplay;
-        this.heroOne.abilityOne = this.abilityOneDisplay;
+        this.heroOne.abilityOneDisplay = this.abilityOneDisplay;
 
     }
     if (this.heroOne.currentClass.abilityTwoAP === this.heroOne.currentClass.abilityTwoAPNeeded) {
@@ -8606,32 +8606,32 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.platforms = platforms;
 
-    var t0 = new TileZero(gameEngine, enemy3, enemy2);
+    var t0 = new TileZero(gameEngine, enemy2, enemy3);
     platforms.push(t0);
     gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine);
+    var t1 = new TileOne(gameEngine, enemy1, enemy2, enemy3);
 
     platforms.push(t1);
     gameEngine.addEntity(t1);
-    var t2 = new TileTwo(gameEngine);
+    var t2 = new TileTwo(gameEngine, enemy6);
     platforms.push(t2);
     gameEngine.addEntity(t2);
-    var t3 = new TileThree(gameEngine);
+    var t3 = new TileThree(gameEngine, enemy4, enemy5, enemy6);
     platforms.push(t3);
     gameEngine.addEntity(t3);
-    var t4 = new TileFour(gameEngine);
+    var t4 = new TileFour(gameEngine, enemy7,enemy9, enemy11);
     platforms.push(t4);
     gameEngine.addEntity(t4);
-    var t5 = new TileFive(gameEngine);
+    var t5 = new TileFive(gameEngine, enemy8, enemy10);
     platforms.push(t5);
     gameEngine.addEntity(t5);
-    var t6 = new TileSix(gameEngine);
+    var t6 = new TileSix(gameEngine, enemy12, enemy13);
     platforms.push(t6);
     gameEngine.addEntity(t6);
-    var t7 = new TileSeven(gameEngine);
+    var t7 = new TileSeven(gameEngine, enemy12, enemy13, enemy14);
     platforms.push(t7);
     gameEngine.addEntity(t7);
-    var t8 = new TileEight(gameEngine);
+    var t8 = new TileEight(gameEngine, enemy12, enemy13, enemy14, enemy15);
     platforms.push(t8);
     gameEngine.addEntity(t8);
     gameEngine.platforms = platforms;

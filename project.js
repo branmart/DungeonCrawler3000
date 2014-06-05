@@ -429,20 +429,22 @@ function TileZero(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Trivial";
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
     this.BattleTime = 5;
+    this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
     this.circle1 = new Circle(100, 120, 50);
-    Entity.call(this, game, 20, 20);
+    Entity.call(this, game, 0, 0);
 }
 
 TileZero.prototype = new Entity();
@@ -451,16 +453,12 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(0, 0, 800, 305);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);
 
     /*this.NorthTile = this.game.platforms[1];
     this.EastTile = null;
@@ -469,20 +467,22 @@ TileZero.prototype.update = function () {
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[1];
-    this.SouthTile = this.game.platforms[3];
+    this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileZero.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonStart.png"), this.x, this.y, 760, 760);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
     ctx.strokeStyle = "red";
     var i;
     for (i = 0; i < this.boundingBoxes.length; i++) {
-        ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
     }
-    var i;
+    /*var i;
     var j;
     //left side
     for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
@@ -503,7 +503,7 @@ TileZero.prototype.draw = function (ctx) {
     for (k = 0; k < 5; k++) {
         for (j = 0; j < 4; j++)
             ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
+    }*/
 
 
     ctx.beginPath();
@@ -517,20 +517,25 @@ function TileOne(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Trivial";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
 
-    Entity.call(this, game, 20, 20);
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+
+    Entity.call(this, game, 0, 0);
 }
 
 TileOne.prototype = new Entity();
@@ -538,23 +543,35 @@ TileOne.prototype.constructor = TileZero;
 
 TileOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 800, 305);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 530, 390, 265);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(550, 530, 250, 265);
+    this.boundingBoxes.push(this.boundingbox3);
+    /*this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
-    this.boundingbox2 = new BoundingBox(400, 20, 350, 200);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(21, 410, 300, 400);
-
-    this.NorthTile = this.game.platforms[3];
-    this.EastTile = null;
-    this.SouthTile = this.game.platforms[0];
-    this.WestTile = this.game.platforms[2];
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[3];
+    this.SouthTile = this.game.platforms[2];
+    this.WestTile = this.game.platforms[0];
     Entity.prototype.update.call(this);
 }
 
 TileOne.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
 
 
 }
@@ -564,20 +581,26 @@ function TileTwo(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Easy";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
 
-    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
 
 
-    Entity.call(this, game, 20, 20);
+    Entity.call(this, game, 0, 0);
 }
 
 TileTwo.prototype = new Entity();
@@ -585,15 +608,20 @@ TileTwo.prototype.constructor = TileZero;
 
 TileTwo.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 390, 260);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 480, 800, 260);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(550, 0, 250, 260);
+    this.boundingBoxes.push(this.boundingbox3);
+    /*this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
-
-
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[1];
+    this.NorthTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[8];
     this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
@@ -601,7 +629,14 @@ TileTwo.prototype.update = function () {
 
 TileTwo.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonRoom.png"), this.x, this.y, 760, 760);
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld - Copy.png"), this.x, this.y, 800, 800);
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
 }
 
 function TileThree(game, enemy1, enemy2, enemy3) {
@@ -609,17 +644,24 @@ function TileThree(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Easy";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 300, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(500, 20, 275, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileThree.prototype = new Entity();
@@ -627,10 +669,13 @@ TileThree.prototype.constructor = TileZero;
 
 TileThree.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3= new BoundingBox(500, 20, 275, 760);
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 800, 305);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
+    this.boundingBoxes.push(this.boundingbox2);
 
 
 
@@ -638,14 +683,21 @@ TileThree.prototype.update = function () {
 
     this.NorthTile = null;
     this.EastTile = null;
-    this.SouthTile = this.game.platforms[1];
-    this.WestTile = null;
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[1];
     Entity.prototype.update.call(this);
 }
 
 TileThree.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/BossMap.png"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
 }
 
 function TileFour(game, enemy1, enemy2, enemy3) {
@@ -653,14 +705,24 @@ function TileFour(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Medium";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileFour.prototype = new Entity();
@@ -668,17 +730,35 @@ TileFour.prototype.constructor = TileZero;
 
 TileFour.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[1];
-    this.EastTile = this.game.platforms[5];
-    this.SouthTile = this.game.platforms[7];
-    this.WestTile = this.game.platforms[3];
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileFour.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
 }
 
 function TileFive(game, enemy1, enemy2, enemy3) {
@@ -686,14 +766,24 @@ function TileFive(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Medium";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileFive.prototype = new Entity();
@@ -701,17 +791,34 @@ TileFive.prototype.constructor = TileZero;
 
 TileFive.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[2];
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
     this.EastTile = null;
-    this.SouthTile = this.game.platforms[8];
-    this.WestTile = this.game.platforms[4];
+    this.SouthTile = null;
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileFive.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
 function TileSix(game, enemy1, enemy2, enemy3) {
@@ -719,14 +826,24 @@ function TileSix(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileSix.prototype = new Entity();
@@ -734,17 +851,34 @@ TileSix.prototype.constructor = TileZero;
 
 TileSix.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[3];
-    this.EastTile = this.game.platforms[7];
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileSix.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
 function TileSeven(game, enemy1, enemy2, enemy3) {
@@ -752,14 +886,24 @@ function TileSeven(game, enemy1, enemy2, enemy3) {
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileSeven.prototype = new Entity();
@@ -767,32 +911,59 @@ TileSeven.prototype.constructor = TileZero;
 
 TileSeven.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[4];
-    this.EastTile = this.game.platforms[8];
-    this.SouthTile = null;
-    this.WestTile = this.game.platforms[6];
-    Entity.prototype.update.call(this);
-}
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
 
-TileSeven.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
-}
-
-function TileEight(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileSeven.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+}
+
+function TileEight(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
     this.enemies.push(enemy3);
     this.battlemap = "./img/battle.png";
-    this.BattleTime = 5;
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileEight.prototype = new Entity();
@@ -800,19 +971,35 @@ TileEight.prototype.constructor = TileEight;
 
 TileEight.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[5];
-    this.EastTile = null
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = null;
     this.SouthTile = null;
-    this.WestTile = this.game.platforms[7];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileEight.prototype.draw = function (ctx) {
-    if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftLava.png"), this.x, this.y, 800, 800);
 }
-
 //trying to create a pause menu; name of function needs replaced
 /*
 
@@ -1480,21 +1667,47 @@ Battle.prototype.resetAbilities = function () {
         this.abilitySixDisplay = this.heroOne.currentClass.abilitySixDisplay;
     }
 }
+function shuffle(array) {
+    var currentIndex = array.length
+      , temporaryValue
+      , randomIndex
+    ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
 Battle.prototype.update = function () {
     if (this.game.fledSuccessfully) {
         this.battleTime = 0;
         this.game.fledSuccessfully = false;
     }
-    if (this.battleTime > this.heroOne.currentTile.BattleTime) {
-        var enemies = 0;
+    var enemies = 0;
+
+    if (this.battleTime > this.heroOne.currentTile.BattleTime && !this.game.battleRunning) {
+        this.firstEnemy = null;
+        this.secondEnemy = null;
+        this.thirdEnemy = null;
+        this.heroOne.currentTile.enemies = shuffle(this.heroOne.currentTile.enemies);
         for(var i = 0; i < this.heroOne.currentTile.enemies.length; i++) {
             if (typeof this.heroOne.currentTile.enemies[i] === 'undefined') {
                 enemies++;
-            } else if (i === 0) {
+            } else if (i-enemies === 0) {
                 this.firstEnemy = this.heroOne.currentTile.enemies[i];
-            } else if(i === 1){
+            } else if (i - enemies === 1) {
                 this.secondEnemy = this.heroOne.currentTile.enemies[i];
-            } else if (i === 2) {
+            } else if (i - enemies === 2) {
                 this.thirdEnemy = this.heroOne.currentTile.enemies[i];
             }
         }
@@ -1533,9 +1746,11 @@ Battle.prototype.update = function () {
                 this.resetAbilities();
             }
             while (this.selectedEnemy === null && i < this.heroOne.currentTile.enemies.length) {
-                if (this.heroOne.currentTile.enemies[i].hp > 0) {
-                    this.selectedEnemy = this.heroOne.currentTile.enemies[i];
-                } else i++;
+                if (typeof this.heroOne.currentTile.enemies[i] != 'undefined') {
+                    if(this.heroOne.currentTile.enemies[i].hp > 0) {
+                        this.selectedEnemy = this.heroOne.currentTile.enemies[i];
+                    } else i++;
+                }else i++;
             }
             if (this.firstEnemy != null) {
                 if (this.game.click.x > this.firstEnemy.x && this.game.click.x < this.firstEnemy.x + 60 && this.game.click.y > this.firstEnemy.y && this.game.click.y < this.firstEnemy.y + 90 && this.firstEnemy.hp > 0) {
@@ -1575,51 +1790,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                if (this.firstEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityOne != null) {
+                    this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
                         } else {
                             this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
-                    } else {
-                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                     }
-                }
-                if (this.secondEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
                         } else {
-                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
-                    } else {
-                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                    }
 
-                }
-                if (this.thirdEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
                         } else {
-                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
-                    } else {
-                        this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                    }
 
+                    }
                 }
+               
 
 
                 if (this.heroOne.isPoisoned) {
@@ -1661,19 +1879,53 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityTwo != null) {
+                    this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
+                    }
+                }                
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
                 }
@@ -1713,18 +1965,52 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityThree != null) {
+                    this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1764,14 +2050,52 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne,this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityFour != null) {
+                    this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+
+                    }
                 }
                 if (this.thirdEnemy != null) {
                     this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
@@ -1815,19 +2139,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityFive != null) {
+                    this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
+              
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
                 }
@@ -1866,18 +2225,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilitySix != null) {
+                    this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
+              
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.firstEnemy.poisonDamage;
                 }
@@ -2004,7 +2399,7 @@ Battle.prototype.draw = function (ctx) {
             this.game.classSystem[i].draw(ctx, 40 + (760 / this.game.classSystem.length * i), 560, 1.75);
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityOneDisplay != null) {
                 this.heroOne.abilityOneDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -2042,7 +2437,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 2
         if (x > 20 && x < 273 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityTwoDisplay != null) {
                 this.heroOne.abilityTwoDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -2071,7 +2466,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityThreeDisplay != null) {
                 this.heroOne.abilityThreeDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -2100,7 +2495,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityFourDisplay != null) {
                 this.heroOne.abilityFourDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -2129,7 +2524,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityFiveDisplay != null) {
                 this.heroOne.abilityFiveDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -2158,7 +2553,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilitySixDisplay != null) {
                 this.heroOne.abilitySixDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -3896,7 +4291,6 @@ Hero.prototype.constructor = Hero;
 Hero.prototype.update = function () {
     if (!this.game.menuRunning && !this.game.battleRunning) {
         this.circle1 = new Circle(this.x+26, this.y+27, 27);
-
         this.boundingbox.x = this.x;
         this.boundingbox.y = this.y;
         this.boundingbox.width = this.animation.frameWidth + 20;
@@ -3921,27 +4315,23 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox1, "up")) {
-                    this.movingNorth = false;
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
                 }
             }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox2, "up")) {
-                    this.movingNorth = false;
-                }
-            }
-
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox3, "up")) {
-                    this.movingNorth = false;
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox4, "up")) {
-                    this.movingNorth = false;
-                }
-            }
+           
             if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
                 if (this.currentTile.NorthTile != null) {
@@ -3969,28 +4359,20 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = true;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox1, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox2, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox3, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox4, "left")) {
-                    this.movingWest = false;
-
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideLeft(this.game.platforms[0].boundingbox)) {
@@ -4020,24 +4402,20 @@ Hero.prototype.update = function () {
             this.movingSouth = true;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox1, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox2, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox3, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox4, "down")) {
-                    this.movingSouth = false;
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
@@ -4067,28 +4445,20 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = true;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox1, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox2, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox3, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox4, "right")) {
-                    this.movingEast = false;
-
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideRight(this.game.platforms[0].boundingbox)) {
@@ -4147,6 +4517,45 @@ Hero.prototype.draw = function (ctx) {
         return;
     }
     this.currentTile.draw(ctx);
+    if (this.currentTile.enemyStrength === "Easy" && this.currentClass.level <= 2) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    }
+    if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 5) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 3) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Turn Back", 20, 20);
+        ctx.restore();
+    }
+    if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 7) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 5) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Turn Back", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 2) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Fly You Fools!!", 20, 20);
+        ctx.restore();
+    }
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
         if (this.boxes) {
@@ -7995,29 +8404,30 @@ ASSET_MANAGER.queueDownload("./img/bluedragon.png");
 ASSET_MANAGER.queueDownload("./img/seadragon.png");
 ASSET_MANAGER.queueDownload("./img/chimera.png");
 
+//Map Files
 ASSET_MANAGER.queueDownload("./img/battle.png");
-
-ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
-ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
-ASSET_MANAGER.queueDownload("./img/BossMap.png");
-
-ASSET_MANAGER.queueDownload("./img/startimg.png")
-
-
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld - Copy.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/RightDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLeft.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/Right.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/DownLava.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
-
     var ctx = canvas.getContext('2d');
     //Game Engine
     var gameEngine = new GameEngine();
     //Components
-    var splash = document.getElementById('SplashScreen');
-    gameEngine.startGame = splash.hidden;
     gameEngine.running = true;
-    gameEngine.loginRunning = false;
     gameEngine.battleRunning = false;
     gameEngine.menuRunning = false;
     //Trivial difficulty
@@ -8059,11 +8469,90 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.platforms = areas;*/
 
     var platforms = [];
-    var t0 = new TileZero(gameEngine, enemy3, enemy4);
-    
+    /*var world_1_0 = new TileZero(gameEngine, enemy3, enemy2);
+    platforms.push(world_1_0);
+    gameEngine.addEntity(world_1_0);
+
+    var world_1_1 = new TileOne(gameEngine);
+    platforms.push(world_1_1);
+    gameEngine.addEntity(world_1_1);
+
+    var world_1_2 = new TileSix(gameEngine);
+    platforms.push(world_1_2);
+    gameEngine.addEntity(world_1_2);
+    var world_1_3 = new TileSeven(gameEngine);
+    platforms.push(world_1_3);
+    gameEngine.addEntity(world_1_3);
+    /*var world_1_4 = new TileThirteen(gameEngine);
+    platforms.push(world_1_4);
+    gameEngine.addEntity(world_1_4);
+    var world_1_5 = new TileFourteen(gameEngine);
+    platforms.push(world_1_5);
+    gameEngine.addEntity(world_1_5);
+
+    var dungeon_1_1 = new TileTwo(gameEngine);
+    platforms.push(dungeon_1_1);
+    gameEngine.addEntity(dungeon_1_1);
+    var dungeon_1_2 = new TileThree(gameEngine);
+    platforms.push(dungeon_1_2);
+    gameEngine.addEntity(dungeon_1_2);
+    var dungeon_1_3 = new TileFour(gameEngine);
+    platforms.push(dungeon_1_3);
+    gameEngine.addEntity(dungeon_1_3);
+    var dungeon_1_4 = new TileFive(gameEngine);
+    platforms.push(dungeon_1_4);
+    gameEngine.addEntity(dungeon_1_4);
+
+    var dungeon_2_1 = new TileEight(gameEngine);
+    platforms.push(dungeon_2_1);
+    gameEngine.addEntity(dungeon_2_1);
+    /*var dungeon_2_2 = new TileNine(gameEngine);
+    platforms.push(dungeon_2_2);
+    gameEngine.addEntity(dungeon_2_2);
+    var dungeon_2_3 = new TileTen(gameEngine);
+    platforms.push(dungeon_2_3);
+    gameEngine.addEntity(dungeon_2_3);
+    var dungeon_2_4 = new TileEleven(gameEngine);
+    platforms.push(dungeon_2_4);
+    gameEngine.addEntity(dungeon_2_4);
+    var dungeon_2_5 = new TileTwelve(gameEngine);
+    platforms.push(dungeon_2_5);
+    gameEngine.addEntity(dungeon_2_5);
+
+    var dungeon_3_1 = new TileFifteen(gameEngine);
+    platforms.push(dungeon_3_1);
+    gameEngine.addEntity(dungeon_3_1);
+    var dungeon_3_2 = new TileSixteen(gameEngine);
+    platforms.push(dungeon_3_2);
+    gameEngine.addEntity(dungeon_3_2);
+    var dungeon_3_3 = new TileSeventeen(gameEngine);
+    platforms.push(dungeon_3_3);
+    gameEngine.addEntity(dungeon_3_3);
+    var dungeon_3_4 = new TileEighteen(gameEngine);
+    platforms.push(dungeon_3_4);
+    gameEngine.addEntity(dungeon_3_4);
+    var dungeon_3_5 = new TileNineteen(gameEngine);
+    platforms.push(dungeon_3_5);
+    gameEngine.addEntity(dungeon_3_5);
+    var dungeon_3_6 = new TileTwenty(gameEngine);
+    platforms.push(dungeon_3_6);
+    gameEngine.addEntity(dungeon_3_6);
+    var dungeon_3_7 = new TileTwentyOne(gameEngine);
+    platforms.push(dungeon_3_7);
+    gameEngine.addEntity(dungeon_3_7);
+    var dungeon_3_8 = new TileTwentyTwo(gameEngine);
+    platforms.push(dungeon_3_8);
+    gameEngine.addEntity(dungeon_3_8);
+    var dungeon_3_9 = new TileTwentyThree(gameEngine);
+    platforms.push(dungeon_3_9);
+    gameEngine.addEntity(dungeon_3_9);*/
+
+    gameEngine.platforms = platforms;
+
+    var t0 = new TileZero(gameEngine, enemy3, enemy2);
     platforms.push(t0);
     gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine, enemy13, enemy14, enemy15);
+    var t1 = new TileOne(gameEngine);
 
     platforms.push(t1);
     gameEngine.addEntity(t1);
@@ -8121,14 +8610,12 @@ ASSET_MANAGER.downloadAll(function () {
 
     var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
     var menu = new Menu(gameEngine, 25, 25, hero1);
-    //var login = new Login(gameEngine, 25, 25);
     var battle = new Battle(gameEngine, 20, 20, hero1);
 
     //Adding components to Game Engine
 
     gameEngine.addEntity(hero1);
     gameEngine.addEntity(menu);
-    //gameEngine.addEntity(login);
     gameEngine.addEntity(battle);
 
     gameEngine.init(ctx);

@@ -131,6 +131,7 @@ function GameEngine() {
     this.menuRunning = null;
     this.battleRunning = null;
     this.fledSuccessfully = false;
+    this.loginRunning = null;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -212,6 +213,16 @@ GameEngine.prototype.startInput = function () {
                 that.menuRunning = !(that.menuRunning);
             }
         }
+
+        //for the pause menu; cant get it to stop gameplay.
+        /*
+        if (String.fromCharCode(e.which) === 'P') {
+            if (!that.battleRunning & !that.menuRunning) {
+                that.running = !that.running;
+                that.loginRunning = !(that.loginRunning);
+            }
+
+        }*/
         e.preventDefault();
     }, false);
 
@@ -263,6 +274,7 @@ GameEngine.prototype.loop = function () {
     this.down = null;
     this.right = null;
     this.menuIsUp = null;
+    this.loginIsUp = null;
 }
 
 function Entity(game, x, y) {
@@ -533,7 +545,7 @@ TileOne.prototype.update = function () {
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
 
 
 }
@@ -749,6 +761,94 @@ TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
 }
+
+//trying to create a pause menu; name of function needs replaced
+/*
+
+function Login(game, x, y) {
+    Entity.call(this, game, x, y);
+
+
+}
+
+Login.prototype = new Entity();
+Login.prototype.constructor = Login;
+
+Login.prototype.reset = function () {
+    this.game.loginRunning = false;
+}
+
+Login.prototype.update = function () {
+    //
+}
+
+Login.prototype.draw = function (ctx) {
+   if (this.game.loginRunning) {
+       ctx.font = "24pt Impact";
+       ctx.fillText("PAUSED", 375, 375);
+
+    }
+} */
+
+
+
+//trying to setup a constructor for the whole game to start after button clicked
+/*
+function PlayGame(game, x, y) {
+    Entity.call(this, game, x, y);
+}
+
+PlayGame.prototype = new Entity();
+
+PlayGame.prototype.constructor = PlayGame;
+
+PlayGame.prototype.reset = function () {
+    this.game.running = false;
+}
+
+PlayGame.prototype.update = function () {
+    if (this.game.click) this.game.running = true;
+}
+
+PlayGame.prototype.draw = function (ctx) {
+    if (!this.game.running) {
+        ctx.font = "24 Impact";
+        ctx.fillStyle = "red";
+        if (this.game.mouse) { ctx.fillStyle = "blue"; }
+        ctx.fillText("Click to Start", this.x, this.y);
+    }
+} */
+
+
+//trying set up a start screen
+/*  
+function startScreen(game, x, y) {
+    Entity.call(this, game, x, y);
+}
+
+startScreen.prototype = new Entity();
+startScreen.prototype.constructor = startScreen;
+
+startScreen.prototype.reset = function () {
+    this.game.running = false;
+}
+
+startScreen.prototype.draw = function (ctx) {
+    if (!this.game.running) {
+        ctx.drawImage(ASSET_MANAGER.getAsset("./img/startimg.jpg"), this.x, this.y, 750, 750);
+
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "white";
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "white";
+
+        ctx.fillText("Press Enter to Start", this.x, this.y);
+
+    }
+
+}*/
+
+
 function Menu(game, x, y, hero) {
     this.abilityOneDescription = hero.currentClass.abilityOneDescription;
     this.abilityTwoDescription = hero.currentClass.abilityTwoDescription;
@@ -7770,20 +7870,16 @@ ASSET_MANAGER.queueDownload("./img/bluedragon.png");
 ASSET_MANAGER.queueDownload("./img/seadragon.png");
 ASSET_MANAGER.queueDownload("./img/chimera.png");
 
-//Map Files
 ASSET_MANAGER.queueDownload("./img/battle.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRightWorld.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightWorld.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftLava.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRight.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLava.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/RightDown.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRight.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLeft.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDown.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/Right.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMaps/DownLava.png");
+
+ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
+ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
+ASSET_MANAGER.queueDownload("./img/BossMap.png");
+
+ASSET_MANAGER.queueDownload("./img/startimg.png")
+
+
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -7793,6 +7889,7 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     //Components
     gameEngine.running = true;
+    gameEngine.loginRunning = false;
     gameEngine.battleRunning = false;
     gameEngine.menuRunning = false;
     //Trivial difficulty
@@ -7836,84 +7933,6 @@ ASSET_MANAGER.downloadAll(function () {
     var platforms = [];
     var t0 = new TileZero(gameEngine, enemy3, enemy2);
     
-
-    var world_1_1 = new TileOne(gameEngine);
-    platforms.push(world_1_1);
-    gameEngine.addEntity(world_1_1);
-    
-    var world_1_2 = new TileSix(gameEngine);
-    platforms.push(world_1_2);
-    gameEngine.addEntity(world_1_2);
-    var world_1_3 = new TileSeven(gameEngine);
-    platforms.push(world_1_3);
-    gameEngine.addEntity(world_1_3);
-    var world_1_4 = new TileThirteen(gameEngine);
-    platforms.push(world_1_4);
-    gameEngine.addEntity(world_1_4);
-    var world_1_5 = new TileFourteen(gameEngine);
-    platforms.push(world_1_5);
-    gameEngine.addEntity(world_1_5);
-   
-    var dungeon_1_1 = new TileTwo(gameEngine);
-    platforms.push(dungeon_1_1);
-    gameEngine.addEntity(dungeon_1_1);
-    var dungeon_1_2 = new TileThree(gameEngine);
-    platforms.push(dungeon_1_2);
-    gameEngine.addEntity(dungeon_1_2);
-    var dungeon_1_3 = new TileFour(gameEngine);
-    platforms.push(dungeon_1_3);
-    gameEngine.addEntity(dungeon_1_3);
-    var dungeon_1_4 = new TileFive(gameEngine);
-    platforms.push(dungeon_1_4);
-    gameEngine.addEntity(dungeon_1_4);
-    
-    var dungeon_2_1 = new TileEight(gameEngine);
-    platforms.push(dungeon_2_1);
-    gameEngine.addEntity(dungeon_2_1);
-    var dungeon_2_2 = new TileNine(gameEngine);
-    platforms.push(dungeon_2_2);
-    gameEngine.addEntity(dungeon_2_2);
-    var dungeon_2_3 = new TileTen(gameEngine);
-    platforms.push(dungeon_2_3);
-    gameEngine.addEntity(dungeon_2_3);
-    var dungeon_2_4 = new TileEleven(gameEngine);
-    platforms.push(dungeon_2_4);
-    gameEngine.addEntity(dungeon_2_4);
-    var dungeon_2_5 = new TileTwelve(gameEngine);
-    platforms.push(dungeon_2_5);
-    gameEngine.addEntity(dungeon_2_5);
-
-    var dungeon_3_1 = new TileFifteen(gameEngine);
-    platforms.push(dungeon_3_1);
-    gameEngine.addEntity(dungeon_3_1);
-    var dungeon_3_2 = new TileSixteen(gameEngine);
-    platforms.push(dungeon_3_2);
-    gameEngine.addEntity(dungeon_3_2);
-    var dungeon_3_3 = new TileSeventeen(gameEngine);
-    platforms.push(dungeon_3_3);
-    gameEngine.addEntity(dungeon_3_3);
-    var dungeon_3_4 = new TileEighteen(gameEngine);
-    platforms.push(dungeon_3_4);
-    gameEngine.addEntity(dungeon_3_4);
-    var dungeon_3_5 = new TileNineteen(gameEngine);
-    platforms.push(dungeon_3_5);
-    gameEngine.addEntity(dungeon_3_5);
-    var dungeon_3_6 = new TileTwenty(gameEngine);
-    platforms.push(dungeon_3_6);
-    gameEngine.addEntity(dungeon_3_6);
-    var dungeon_3_7 = new TileTwentyOne(gameEngine);
-    platforms.push(dungeon_3_7);
-    gameEngine.addEntity(dungeon_3_7);
-    var dungeon_3_8 = new TileTwentyTwo(gameEngine);
-    platforms.push(dungeon_3_8);
-    gameEngine.addEntity(dungeon_3_8);
-    var dungeon_3_9 = new TileTwentyThree(gameEngine);
-    platforms.push(dungeon_3_9);
-    gameEngine.addEntity(dungeon_3_9);
-    
-    gameEngine.platforms = platforms;
-
-    /*
     platforms.push(t0);
     gameEngine.addEntity(t0);
     var t1 = new TileOne(gameEngine);
@@ -7942,7 +7961,7 @@ ASSET_MANAGER.downloadAll(function () {
     platforms.push(t8);
     gameEngine.addEntity(t8);
     gameEngine.platforms = platforms;
-   */
+   
 
     var classes = [];
     var gunner = new Gunner(gameEngine);
@@ -7974,12 +7993,14 @@ ASSET_MANAGER.downloadAll(function () {
 
     var hero1 = new Hero(gameEngine, gameEngine.classSystem[0].cen, gameEngine.classSystem[0].col, gameEngine.classSystem[0], gameEngine.platforms[0]);
     var menu = new Menu(gameEngine, 25, 25, hero1);
+    var login = new Login(gameEngine, 25, 25);
     var battle = new Battle(gameEngine, 20, 20, hero1);
 
     //Adding components to Game Engine
 
     gameEngine.addEntity(hero1);
     gameEngine.addEntity(menu);
+    gameEngine.addEntity(login);
     gameEngine.addEntity(battle);
 
     gameEngine.init(ctx);

@@ -453,7 +453,7 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    /*this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
     this.boundingbox1 = new BoundingBox(0, 0, 800, 305);
     this.boundingBoxes.push(this.boundingbox1);
@@ -465,8 +465,8 @@ TileZero.prototype.update = function () {
     this.SouthTile = null;
     this.WestTile = null;*/
 
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[1];
+    this.NorthTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[5];
     this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
@@ -474,7 +474,7 @@ TileZero.prototype.update = function () {
 
 TileZero.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
     ctx.strokeStyle = "red";
     var i;
     for (i = 0; i < this.boundingBoxes.length; i++) {
@@ -543,7 +543,7 @@ TileOne.prototype.constructor = TileZero;
 
 TileOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingBoxes = [];
+    /*this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
     this.boundingbox1 = new BoundingBox(0, 0, 800, 305);
@@ -555,10 +555,10 @@ TileOne.prototype.update = function () {
     /*this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
     this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[3];
-    this.SouthTile = this.game.platforms[2];
-    this.WestTile = this.game.platforms[0];
+    this.NorthTile = this.game.platforms[2];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[0];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
@@ -566,7 +566,7 @@ TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
@@ -620,10 +620,10 @@ TileTwo.prototype.update = function () {
     /*this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
     this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.NorthTile = this.game.platforms[1];
-    this.EastTile = this.game.platforms[8];
-    this.SouthTile = null;
-    this.WestTile = null;
+    this.NorthTile = this.game.platforms[4];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[1];
+    this.WestTile = this.game.platforms[3];
     Entity.prototype.update.call(this);
 }
 
@@ -631,7 +631,7 @@ TileTwo.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
     var i;
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld - Copy.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
@@ -682,9 +682,9 @@ TileThree.prototype.update = function () {
 
 
     this.NorthTile = null;
-    this.EastTile = null;
+    this.EastTile = this.game.platforms[2];
     this.SouthTile = null;
-    this.WestTile = this.game.platforms[1];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
@@ -692,7 +692,7 @@ TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/Right.png"), this.x, this.y, 800, 800);
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
@@ -744,7 +744,7 @@ TileFour.prototype.update = function () {
 
     this.NorthTile = null;
     this.EastTile = null;
-    this.SouthTile = null;
+    this.SouthTile = this.game.platforms[2];
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
@@ -753,7 +753,7 @@ TileFour.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
@@ -804,9 +804,9 @@ TileFive.prototype.update = function () {
     this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = null;
-    this.EastTile = null;
+    this.EastTile = this.game.platforms[6];
     this.SouthTile = null;
-    this.WestTile = null;
+    this.WestTile = this.game.platforms[0];
     Entity.prototype.update.call(this);
 }
 
@@ -864,9 +864,9 @@ TileSix.prototype.update = function () {
     this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = null;
-    this.EastTile = null;
-    this.SouthTile = null;
-    this.WestTile = null;
+    this.EastTile = this.game.platforms[12];
+    this.SouthTile = this.game.platforms[7];
+    this.WestTile = this.game.platforms[5];
     Entity.prototype.update.call(this);
 }
 
@@ -878,7 +878,7 @@ TileSix.prototype.draw = function (ctx) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
         }
     }
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
 }
 
 function TileSeven(game, enemy1, enemy2, enemy3) {
@@ -923,9 +923,9 @@ TileSeven.prototype.update = function () {
     this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
     this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.NorthTile = null;
+    this.NorthTile = this.game.platforms[6];
     this.EastTile = null;
-    this.SouthTile = null;
+    this.SouthTile = this.game.platforms[8];
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
@@ -938,7 +938,7 @@ TileSeven.prototype.draw = function (ctx) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
         }
     }
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
 function TileEight(game, enemy1, enemy2, enemy3, enemy4) {
@@ -983,9 +983,9 @@ TileEight.prototype.update = function () {
     this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
     this.boundingBoxes.push(this.boundingbox4);*/
 
-    this.NorthTile = null;
+    this.NorthTile = this.game.platforms[7];
     this.EastTile = null;
-    this.SouthTile = null;
+    this.SouthTile = this.game.platforms[9];
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
@@ -998,8 +998,870 @@ TileEight.prototype.draw = function (ctx) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
         }
     }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileNine(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileNine.prototype = new Entity();
+TileNine.prototype.constructor = TileNine;
+
+TileNine.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[8];
+    this.EastTile = null;
+    this.SouthTile = null;//this.game.platforms[];
+    this.WestTile = this.game.platforms[10];
+    Entity.prototype.update.call(this);
+}
+
+TileNine.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileTen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTen.prototype = new Entity();
+TileTen.prototype.constructor = TileTen;
+
+TileTen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[9];
+    this.SouthTile = this.game.platforms[11];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileTen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileEleven(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileEleven.prototype = new Entity();
+TileEleven.prototype.constructor = TileEleven;
+
+TileEleven.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[10];
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileEleven.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLava.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwelve(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwelve.prototype = new Entity();
+TileTwelve.prototype.constructor = TileTwelve;
+
+TileTwelve.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[13];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[6];
+    Entity.prototype.update.call(this);
+}
+
+TileTwelve.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+}
+
+function TileThirteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileThirteen.prototype = new Entity();
+TileThirteen.prototype.constructor = TileThirteen;
+
+TileThirteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[14];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[12];
+    Entity.prototype.update.call(this);
+}
+
+TileThirteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+}
+
+function TileFourteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileFourteen.prototype = new Entity();
+TileFourteen.prototype.constructor = TileFourteen;
+
+TileFourteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[15];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[13];
+    Entity.prototype.update.call(this);
+}
+
+TileFourteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
+}
+
+function TileFifteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileFifteen.prototype = new Entity();
+TileFifteen.prototype.constructor = TileFifteen;
+
+TileFifteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[16];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[18];
+    this.WestTile = this.game.platforms[14];
+    Entity.prototype.update.call(this);
+}
+
+TileFifteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
+}
+
+function TileSixteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileSixteen.prototype = new Entity();
+TileSixteen.prototype.constructor = TileSixteen;
+
+TileSixteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[17];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[15];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileSixteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
+}
+
+function TileSeventeen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileSeventeen.prototype = new Entity();
+TileSeventeen.prototype.constructor = TileSeventeen;
+
+TileSeventeen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[16];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileSeventeen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
+}
+
+function TileEighteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileEighteen.prototype = new Entity();
+TileEighteen.prototype.constructor = TileEighteen;
+
+TileEighteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[15];
+    this.EastTile = this.game.platforms[19];
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileEighteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRight.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileNineteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileNineteen.prototype = new Entity();
+TileNineteen.prototype.constructor = TileNineteen;
+
+TileNineteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[20];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[18];
+    Entity.prototype.update.call(this);
+}
+
+TileNineteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwenty(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwenty.prototype = new Entity();
+TileTwenty.prototype.constructor = TileTwenty;
+
+TileTwenty.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = this.game.platforms[21];
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[19];
+    Entity.prototype.update.call(this);
+}
+
+TileTwenty.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwentyOne(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwentyOne.prototype = new Entity();
+TileTwentyOne.prototype.constructor = TileTwentyOne;
+
+TileTwentyOne.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[22];
+    this.SouthTile = this.game.platforms[20];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileTwentyOne.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwentyTwo(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwentyTwo.prototype = new Entity();
+TileTwentyTwo.prototype.constructor = TileTwentyTwo;
+
+TileTwentyTwo.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingBoxes.push(this.boundingbox3);
+    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.boundingBoxes.push(this.boundingbox4);*/
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[21];
+    Entity.prototype.update.call(this);
+}
+
+TileTwentyTwo.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftLava.png"), this.x, this.y, 800, 800);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //trying to create a pause menu; name of function needs replaced
 /*
 
@@ -8466,6 +9328,7 @@ ASSET_MANAGER.queueDownload("./img/battle.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRightWorld.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightWorld.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDownLeft.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld - Copy.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftLava.png");
 ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRight.png");
@@ -8609,8 +9472,8 @@ ASSET_MANAGER.downloadAll(function () {
     var t0 = new TileZero(gameEngine, enemy2, enemy3);
     platforms.push(t0);
     gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine, enemy1, enemy2, enemy3);
 
+    var t1 = new TileOne(gameEngine, enemy1, enemy2, enemy3);
     platforms.push(t1);
     gameEngine.addEntity(t1);
     var t2 = new TileTwo(gameEngine, enemy6);
@@ -8634,6 +9497,64 @@ ASSET_MANAGER.downloadAll(function () {
     var t8 = new TileEight(gameEngine, enemy12, enemy13, enemy14, enemy15);
     platforms.push(t8);
     gameEngine.addEntity(t8);
+
+    var t9 = new TileNine(gameEngine, enemy2, enemy9);
+    platforms.push(t9);
+    gameEngine.addEntity(t9);
+
+    var t10 = new TileTen(gameEngine, enemy2, enemy9);
+    platforms.push(t10);
+    gameEngine.addEntity(t10);
+
+    var t11 = new TileEleven(gameEngine, enemy2, enemy9);
+    platforms.push(t11);
+    gameEngine.addEntity(t11);
+
+    var t12 = new TileTwelve(gameEngine, enemy2, enemy9);
+    platforms.push(t12);
+    gameEngine.addEntity(t12);
+
+    var t13 = new TileThirteen(gameEngine, enemy2, enemy9);
+    platforms.push(t13);
+    gameEngine.addEntity(t13);
+
+    var t14 = new TileFourteen(gameEngine, enemy2, enemy9);
+    platforms.push(t14);
+    gameEngine.addEntity(t14);
+
+    var t15 = new TileFifteen(gameEngine, enemy2, enemy9);
+    platforms.push(t15);
+    gameEngine.addEntity(t15);
+
+    var t16 = new TileSixteen(gameEngine, enemy2, enemy9);
+    platforms.push(t16);
+    gameEngine.addEntity(t16);
+
+    var t17 = new TileSeventeen(gameEngine, enemy2, enemy9);
+    platforms.push(t17);
+    gameEngine.addEntity(t17);
+
+    var t18 = new TileEighteen(gameEngine, enemy2, enemy9);
+    platforms.push(t18);
+    gameEngine.addEntity(t18);
+
+    var t19 = new TileNineteen(gameEngine, enemy2, enemy9);
+    platforms.push(t19);
+    gameEngine.addEntity(t19);
+
+    var t20 = new TileTwenty(gameEngine, enemy2, enemy9);
+    platforms.push(t20);
+    gameEngine.addEntity(t20);
+
+    var t21 = new TileTwentyOne(gameEngine, enemy2, enemy9);
+    platforms.push(t21);
+    gameEngine.addEntity(t21);
+
+    var t22 = new TileTwentyTwo(gameEngine, enemy2, enemy9);
+    platforms.push(t22);
+    gameEngine.addEntity(t22);
+
+
     gameEngine.platforms = platforms;
    
 

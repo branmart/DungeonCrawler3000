@@ -624,8 +624,6 @@ TileTwo.prototype.update = function () {
     this.boundingBoxes.push(this.boundingbox2);
     this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
     this.boundingBoxes.push(this.boundingbox3);
-    /*this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = this.game.platforms[4];
     this.EastTile = null;
@@ -800,7 +798,7 @@ TileFive.prototype.update = function () {
     this.boundingBoxes.push(this.boundingbox);
     //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
     //this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
+    this.boundingbox2 = new BoundingBox(-100, 520, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
     this.boundingBoxes.push(this.bb3);
@@ -815,6 +813,7 @@ TileFive.prototype.update = function () {
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
+    ctx.setStroke = "red";
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
@@ -854,16 +853,14 @@ TileSix.prototype.constructor = TileZero;
 TileSix.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(565, 530, 400, 800);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-100, 530, 483, 400);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[12];
@@ -1029,16 +1026,14 @@ TileNine.prototype.constructor = TileNine;
 TileNine.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 290);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-110, 525, 1000, 500);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
     this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = this.game.platforms[8];
     this.EastTile = null;
@@ -1090,16 +1085,25 @@ TileTen.prototype.constructor = TileTen;
 TileTen.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-110, 0, 484, 900);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
     this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
+
+    /*
+        this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
+    */
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[9];
@@ -1151,16 +1155,14 @@ TileEleven.prototype.constructor = TileEleven;
 TileEleven.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
+    this.bb3 = new BoundingBox(0, 700, 800, 275);
+    this.boundingBoxes.push(this.bb3);
 
     this.NorthTile = this.game.platforms[10];
     this.EastTile = null;
@@ -1676,16 +1678,14 @@ TileTwenty.prototype.constructor = TileTwenty;
 TileTwenty.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 290);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-110, 525, 1000, 500);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
     this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = this.game.platforms[21];
     this.EastTile = null;
@@ -1736,16 +1736,14 @@ TileTwentyOne.prototype.constructor = TileTwentyOne;
 TileTwentyOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-110, 0, 484, 900);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
+    this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
     this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
 
     this.NorthTile = null;
     this.EastTile = this.game.platforms[22];
@@ -1796,16 +1794,14 @@ TileTwentyTwo.prototype.constructor = TileTwentyTwo;
 TileTwentyTwo.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 800, 800);
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    /*this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(-100, 555, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);*/
+    this.bb3 = new BoundingBox(500, 0, 900, 900);
+    this.boundingBoxes.push(this.bb3);
 
     this.NorthTile = null;
     this.EastTile = null;

@@ -9476,7 +9476,7 @@ ASSET_MANAGER.downloadAll(function () {
     var t1 = new TileOne(gameEngine, enemy1, enemy2, enemy3);
     platforms.push(t1);
     gameEngine.addEntity(t1);
-    var t2 = new TileTwo(gameEngine, enemy6);
+    var t2 = new TileTwo(gameEngine, enemy6, enemy5, enemy4);
     platforms.push(t2);
     gameEngine.addEntity(t2);
     var t3 = new TileThree(gameEngine, enemy4, enemy5, enemy6);

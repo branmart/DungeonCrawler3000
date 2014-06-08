@@ -3991,6 +3991,9 @@ function TornadoLizard(game, cen, col) {
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 1, center, column);
     this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 3, center, column);
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
+
+    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .4, 3, true, false, 64, center, column);
+
     this.movingNorth = false;
     this.movingSouth = true;
     this.movingWest = false;
@@ -3998,7 +4001,7 @@ function TornadoLizard(game, cen, col) {
     this.boxes = true;
     this.x = 700;
     this.y = 50;
-    this.xClick = this.x + 25;
+    this.xClick = this.x + 25; 
     this.yClick = this.y + 20;
     this.widthClick = 60;
     this.heightClick = 90;
@@ -4069,6 +4072,7 @@ TornadoLizard.prototype.draw = function (ctx) {
     this.yClick = this.y + 20;
     //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    
     //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
     //            this.x, this.y, 80, 80);
 }
@@ -9285,11 +9289,11 @@ ASSET_MANAGER.downloadAll(function () {
     platforms.push(t9);
     gameEngine.addEntity(t9);
 
-    var t10 = new TileTen(gameEngine, enemy2, enemy9);
+    var t10 = new TileTen(gameEngine, enemy7, enemy8, enemy11, enemy10);
     platforms.push(t10);
     gameEngine.addEntity(t10);
 
-    var t11 = new TileEleven(gameEngine, enemy12, enemy13);
+    var t11 = new TileEleven(gameEngine, enemy9, enemy14);
     platforms.push(t11);
     gameEngine.addEntity(t11);
 
@@ -9301,39 +9305,39 @@ ASSET_MANAGER.downloadAll(function () {
     platforms.push(t13);
     gameEngine.addEntity(t13);
 
-    var t14 = new TileFourteen(gameEngine, enemy2, enemy9);
+    var t14 = new TileFourteen(gameEngine, enemy12, enemy13, enemy14);
     platforms.push(t14);
     gameEngine.addEntity(t14);
 
-    var t15 = new TileFifteen(gameEngine, enemy2, enemy9);
+    var t15 = new TileFifteen(gameEngine, enemy13, enemy14, enemy12);
     platforms.push(t15);
     gameEngine.addEntity(t15);
 
-    var t16 = new TileSixteen(gameEngine, enemy2, enemy9);
+    var t16 = new TileSixteen(gameEngine, enemy14, enemy12, enemy13);
     platforms.push(t16);
     gameEngine.addEntity(t16);
-
-    var t17 = new TileSeventeen(gameEngine, enemy2, enemy9);
+    
+    var t17 = new TileSeventeen(gameEngine, enemy12, enemy13, enemy14);
     platforms.push(t17);
     gameEngine.addEntity(t17);
 
-    var t18 = new TileEighteen(gameEngine, enemy2, enemy9);
+    var t18 = new TileEighteen(gameEngine, enemy13, enemy14, enemy12);
     platforms.push(t18);
     gameEngine.addEntity(t18);
 
-    var t19 = new TileNineteen(gameEngine, enemy2, enemy9);
+    var t19 = new TileNineteen(gameEngine, enemy14, enemy12, enemy13);
     platforms.push(t19);
     gameEngine.addEntity(t19);
 
-    var t20 = new TileTwenty(gameEngine, enemy2, enemy9);
+    var t20 = new TileTwenty(gameEngine, enemy12, enemy13, enemy14);
     platforms.push(t20);
     gameEngine.addEntity(t20);
 
-    var t21 = new TileTwentyOne(gameEngine, enemy2, enemy9);
+    var t21 = new TileTwentyOne(gameEngine, enemy13, enemy14, enemy12);
     platforms.push(t21);
     gameEngine.addEntity(t21);
 
-    var t22 = new TileTwentyTwo(gameEngine, enemy2, enemy9);
+    var t22 = new TileTwentyTwo(gameEngine, enemy15, enemy11);
     platforms.push(t22);
     gameEngine.addEntity(t22);
 

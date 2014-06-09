@@ -50,6 +50,8 @@
             Movement: USE W-A-S-D
             <br />
             Menu: M TO OPEN/CLOSE
+            <br />
+            
         </center>
     </div>
     <div id="SplashScreen">
@@ -76,7 +78,7 @@
         <canvas id="gameWorld" tabindex="1" width="800" height="800" style="border: 0px solid brown; background: silver"></canvas>
     </center>
     <center>
-        To add abilities: once all AP is gained, click the ability and then an empty slot.
+        View the README for instructions on how to play.
     </center>
 
     <script>
@@ -84,6 +86,7 @@
         $("#StartButton").click(function () {
             $("#SplashScreen").hide();
             $("#Controls").hide();
+
             $("#gameWorld").show();
         });
     </script>

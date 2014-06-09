@@ -2956,6 +2956,7 @@ Battle.prototype.draw = function (ctx) {
         ctx.font = "24pt Impact";
         var x = this.clickX;
         var y = this.clickY;
+
         //ability 1
         for (var i = 0; i < this.game.classSystem.length; i++) {
             ctx.lineWidth = 5;
@@ -3138,7 +3139,7 @@ Battle.prototype.draw = function (ctx) {
 
         //status effects
         if (this.heroOne.isPoisoned) {
-            ctx.fillStyle = "Red";
+            ctx.fillStyle = "red";
             ctx.fillText("-" + this.selectedEnemy.poisonDamage, hero.x - 10, hero.y + 5);
         }
         if (this.firstEnemy.isPoisoned && this.actionTime < 0.75) {
@@ -6786,10 +6787,10 @@ WMage.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, s
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + hero.currentClass.hpRegen, hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + hero.currentClass.hpRegen, hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
-            ctx.fillText("+" + hero.currentClass.mpRegen, hero.x + 50, hero.y + 50);
+            ctx.fillText("+" + hero.currentClass.mpRegen, hero.x + 100, hero.y + 50);
         }
 
     }
@@ -6810,7 +6811,7 @@ WMage.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen*5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -6836,7 +6837,7 @@ WMage.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, 
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -6862,7 +6863,7 @@ WMage.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, 
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 15, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 15, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7129,7 +7130,7 @@ WMage.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 32, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 32, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7275,7 +7276,7 @@ Warrior.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7294,7 +7295,7 @@ Warrior.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnem
     var cost = 1;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("Defense Up", hero.x + 25, hero.y - 5);
+        ctx.fillText("Defense Up", hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7552,7 +7553,7 @@ Samurai.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
@@ -7616,7 +7617,7 @@ Samurai.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy
         if (hero.currentClass.mp >= cost) {
         ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.phystr).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.phystr).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
         }
@@ -7896,7 +7897,7 @@ DKnight.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy,
         }
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -7919,7 +7920,7 @@ DKnight.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
 
         ctx.fillText("-" + hero.currentClass.mp, selectedEnemy.x - 10, selectedEnemy.y - 5);
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
@@ -7945,7 +7946,7 @@ DKnight.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnem
         ctx.fillText("-" + hero.currentClass.phystr * 2, selectedEnemy.x - 10, selectedEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 2, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 2, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -7967,7 +7968,7 @@ DKnight.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy
         ctx.fillText("-" + hero.currentClass.phystr * 5, selectedEnemy.x - 10, selectedEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 5, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -7993,7 +7994,7 @@ DKnight.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy
         ctx.fillText("-" + hero.currentClass.phystr * 10, thirdEnemy.x - 10, thirdEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 10, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 10, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8032,7 +8033,7 @@ DKnight.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy,
         ctx.fillText("-" + hero.currentClass.phystr * damage, thirdEnemy.x - 10, thirdEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * damage, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * damage, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8062,7 +8063,7 @@ DKnight.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnem
         }        
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8088,7 +8089,7 @@ DKnight.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnem
         }
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8233,7 +8234,7 @@ Berserker.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnem
     var cost = 5;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + 13, hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + 13, hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > 0) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -8360,7 +8361,7 @@ Berserker.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEn
 
     if (time < 0.75) {
         ctx.fillStyle = "green";
-        ctx.fillText("Double HP" + hero.x + 25, hero.y - 5);
+        ctx.fillText("Double HP",  hero.x + 40, hero.y - 40);
 
         if (hero.currentClass.mp > 0) {
             ctx.fillStyle = "blue";
@@ -8380,7 +8381,7 @@ Berserker.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEn
 
     if (time < 0.75) {
         ctx.fillStyle = "green";
-        ctx.fillText("Beserk" + hero.x + 25, hero.y - 5);
+        ctx.fillText("Beserk", + hero.x + 25, hero.y - 5);
 
         if (hero.currentClass.mp > 0) {
             ctx.fillStyle = "blue";
@@ -8531,7 +8532,7 @@ Psychic.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp >= cost) {
-            ctx.fillText("+" + hero.currentClass.pastDamage, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.pastDamage, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
         }

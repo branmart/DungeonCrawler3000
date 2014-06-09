@@ -473,13 +473,13 @@ TileZero.prototype.update = function () {
 TileZero.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
-    ctx.strokeStyle = "red";
-    var i;
+    //ctx.strokeStyle = "red";
+    /*var i;
     for (i = 0; i < this.boundingBoxes.length; i++) {
         if (this.boundingBoxes[i] != null) {
             ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
         }
-    }
+    }/*
     /*var i;
     var j;
     //left side
@@ -573,12 +573,7 @@ TileOne.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
-    ctx.setStroke = "red";
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
 
 
 }
@@ -637,11 +632,7 @@ TileTwo.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
 }
 
 function TileThree(game, enemy1, enemy2, enemy3) {
@@ -697,11 +688,7 @@ TileThree.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/Right.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+
 }
 
 function TileFour(game, enemy1, enemy2, enemy3) {
@@ -756,11 +743,7 @@ TileFour.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
 }
 
 function TileFive(game, enemy1, enemy2, enemy3) {
@@ -813,12 +796,7 @@ TileFive.prototype.update = function () {
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
-    ctx.setStroke = "red";
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -871,12 +849,7 @@ TileSix.prototype.update = function () {
 
 TileSix.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -928,12 +901,7 @@ TileSeven.prototype.update = function () {
 
 TileSeven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -985,12 +953,7 @@ TileEight.prototype.update = function () {
 
 TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
+    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -3991,9 +3954,10 @@ function TornadoLizard(game, cen, col) {
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 1, center, column);
     this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 3, center, column);
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .1, 3, false, false, 1, center, column);
+    //Animation()
 
-    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .4, 3, true, false, 64, center, column);
-
+    this.attacking = false;
     this.movingNorth = false;
     this.movingSouth = true;
     this.movingWest = false;
@@ -4014,7 +3978,7 @@ TornadoLizard.prototype = new Entity();
 TornadoLizard.prototype.constructor = TornadoLizard;
 
 TornadoLizard.prototype.update = function () {
-
+    //this.attacking = true;
     Entity.prototype.update.call(this);
 }
 TornadoLizard.prototype.reset = function () {
@@ -4040,11 +4004,15 @@ TornadoLizard.prototype.ability = function (hero, enemy, ally1, ally2) {
         } else {
             if ((enemy.phystr - hero.currentClass.phydef) > 0) {
                 hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                
             }
         }
 
     } else {
-        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+            hero.currentClass.phydef--;
+            
+        }
     }
 
 }
@@ -4052,6 +4020,7 @@ TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, t
     if (time < 0.75) {
         ctx.save();
         ctx.fillStyle = "Red";
+        
         if (this.aggro) {
 
             if ((enemy.phystr - hero.currentClass.phydef) > 0) {
@@ -4059,11 +4028,11 @@ TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, t
 
             } else {
                 ctx.fillText(0, hero.x - 10, hero.y + 5);
-
             }
         } else {
             ctx.fillText("Mini Storm", hero.x - 10, hero.y + 5);
         }
+        this.attacking = true;
         ctx.restore();
     }
 }
@@ -4071,8 +4040,14 @@ TornadoLizard.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
     //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
-    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    
+    //this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6); //1.7);
+    //if (this.attacking) {
+    //    this.AttackAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
+   //     this.attacking = false;
+    //} else {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
+    //}
+    //this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
     //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
     //            this.x, this.y, 80, 80);
 }

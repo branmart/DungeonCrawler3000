@@ -8852,6 +8852,95 @@ Psychic.prototype.draw = function (ctx, x, y, size) {
     this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
+
+
+		//trying to create a pause menu; name of function needs replaced
+		/*
+		
+		function Login(game, x, y) {
+		    Entity.call(this, game, x, y);
+		
+		
+		}
+		
+		Login.prototype = new Entity();
+		Login.prototype.constructor = Login;
+		
+	    Login.prototype.reset = function () {
+	    this.game.loginRunning = false;
+		}
+		
+		Login.prototype.update = function () {
+		    //
+		}
+		
+		Login.prototype.draw = function (ctx) {
+		   if (this.game.loginRunning) {
+		       ctx.font = "24pt Impact";
+		       ctx.fillText("PAUSED", 375, 375);
+		
+		    }
+		} */
+		
+		
+		
+		//trying to setup a constructor for the whole game to start after button clicked
+		/*
+		function PlayGame(game, x, y) {
+		    Entity.call(this, game, x, y);
+		}
+		
+		PlayGame.prototype = new Entity();
+		
+		PlayGame.prototype.constructor = PlayGame;
+		
+		PlayGame.prototype.reset = function () {
+		    this.game.running = false;
+		}
+		
+		PlayGame.prototype.update = function () {
+		    if (this.game.click) this.game.running = true;
+		}
+		
+		PlayGame.prototype.draw = function (ctx) {
+		    if (!this.game.running) {
+		        ctx.font = "24 Impact";
+		        ctx.fillStyle = "red";
+		        if (this.game.mouse) { ctx.fillStyle = "blue"; }
+		        ctx.fillText("Click to Start", this.x, this.y);
+		    }
+		} */
+		
+		
+		//trying set up a start screen
+		/*  
+		function startScreen(game, x, y) {
+		    Entity.call(this, game, x, y);
+		}
+		
+		startScreen.prototype = new Entity();
+		startScreen.prototype.constructor = startScreen;
+		
+		startScreen.prototype.reset = function () {
+	    this.game.running = false;
+	}
+		
+		startScreen.prototype.draw = function (ctx) {
+		    if (!this.game.running) {
+		        ctx.drawImage(ASSET_MANAGER.getAsset("./img/startimg.jpg"), this.x, this.y, 750, 750);
+		
+		        ctx.lineWidth = 10;
+		        ctx.strokeStyle = "white";
+		        ctx.font = "24pt Impact";
+		        ctx.fillStyle = "white";
+		
+		        ctx.fillText("Press Enter to Start", this.x, this.y);
+	
+	    }
+    }*/
+
+
+
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();

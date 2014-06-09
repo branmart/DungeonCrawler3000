@@ -2078,30 +2078,24 @@ Menu.prototype.draw = function (ctx) {
             }
         } 
         this.game.classSystem[0].draw(ctx, 50, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[0].name, 120, 60);
         this.game.classSystem[1].draw(ctx, 150, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[1].name, 230, 60);
         this.game.classSystem[2].draw(ctx, 250, 80, 1.25);
-
-        //ctx.fillText(this.game.classSystem[2].name, 120, 100);
         this.game.classSystem[3].draw(ctx, 350, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[3].name, 230, 100);
-
         this.game.classSystem[4].draw(ctx, 50, 130, 1.25);
-        //ctx.fillText(this.game.classSystem[4].name, 120, 140);
         this.game.classSystem[5].draw(ctx, 150, 130, 1.25);
         this.game.classSystem[6].draw(ctx, 250, 130, 1.25);
         this.game.classSystem[7].draw(ctx, 350, 130, 1.25);
         ctx.restore();
+
         //ability boxes
         ctx.fillStyle = "black";
         ctx.strokeRect(25, 175, 400, 300); //main box 
         ctx.strokeRect(25, 175, 190, 100); // 1
-        ctx.fillText(this.abilityOneDescription, 25, 225);
+        ctx.fillText(this.abilityOneDescription, 45, 225);
         ctx.strokeRect(25, 275, 190, 100); // 3
-        ctx.fillText(this.abilityThreeDescription, 25, 325);
+        ctx.fillText(this.abilityThreeDescription, 45, 325);
         ctx.strokeRect(25, 375, 190, 100); // 5
-        ctx.fillText(this.abilityFiveDescription, 25, 425);
+        ctx.fillText(this.abilityFiveDescription, 45, 425);
         ctx.strokeRect(210, 175, 210, 100); // 2
         ctx.fillText(this.abilityTwoDescription, 225, 225);
         ctx.strokeRect(210, 275, 210, 100); // 4
@@ -2109,20 +2103,19 @@ Menu.prototype.draw = function (ctx) {
         ctx.strokeRect(210, 375, 210, 100); // 6
         ctx.fillText(this.abilitySixDescription, 225, 425);
 
-
         ctx.strokeRect(25, 475, 400, 300); //stats area
 
         ctx.fillText("Level: " + this.playerhero.currentClass.level, 225, 525);
         ctx.fillText("EXP: " + this.playerhero.currentClass.exp + "/" + this.playerhero.currentClass.expMax, 225, 600);
         ctx.fillText("AP: " + this.playerhero.currentClass.ap, 225, 635);
 
-        ctx.fillText("HP: " + this.playerhero.currentClass.hp + "/" + this.playerhero.currentClass.hpMax, 25, 525);
-        ctx.fillText("MP: " + this.playerhero.currentClass.mp + "/" + this.playerhero.currentClass.mpMax, 25, 560);
+        ctx.fillText("HP: " + this.playerhero.currentClass.hp + "/" + this.playerhero.currentClass.hpMax, 45, 525);
+        ctx.fillText("MP: " + this.playerhero.currentClass.mp + "/" + this.playerhero.currentClass.mpMax, 45, 560);
 
-        ctx.fillText("Strength: " + this.playerhero.currentClass.phystr, 25, 600);
-        ctx.fillText("Defense: " + this.playerhero.currentClass.phydef, 25, 635);
-        ctx.fillText("Magic: " + this.playerhero.currentClass.magstr, 25, 670);
-        ctx.fillText("Magic Defense: " + this.playerhero.currentClass.magdef, 25, 705);
+        ctx.fillText("Strength: " + this.playerhero.currentClass.phystr, 45, 600);
+        ctx.fillText("Defense: " + this.playerhero.currentClass.phydef, 45, 635);
+        ctx.fillText("Magic: " + this.playerhero.currentClass.magstr, 45, 670);
+        ctx.fillText("Magic Defense: " + this.playerhero.currentClass.magdef, 45, 705);
 
         
     }
@@ -5112,84 +5105,63 @@ Hero.prototype.draw = function (ctx) {
     if (this.currentTile.enemyStrength === "Easy" && this.currentClass.level <= 2) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Be Cautious", 20, 40);
         ctx.restore();
     }
     if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 5) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Be Cautious", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 3) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Turn Back", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     }
     if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 7) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 5) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Turn Back", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 2) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Fly You Fools!!", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Fly You Fools!!", 20, 40);
         ctx.restore();
     }
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Danimation;
     } else if (this.movingNorth && this.game.up) {
         this.game.up = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Uanimation;
     } else if (this.movingWest && this.game.left) {
         this.game.left = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Lanimation;
     } else if (this.movingEast && this.game.right) {
         this.game.left = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Ranimation;
 
     } else {
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
     }
     ctx.beginPath();
-    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
     ctx.stroke();
 }
 function Gunner(game) {

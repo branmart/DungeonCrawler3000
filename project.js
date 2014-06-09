@@ -2958,7 +2958,9 @@ Battle.prototype.draw = function (ctx) {
         var y = this.clickY;
         //ability 1
         for (var i = 0; i < this.game.classSystem.length; i++) {
-            ctx.strokeRect(20 + (760 / this.game.classSystem.length * i), 560, 760 / this.game.classSystem.length, 65);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(20 + (760 / this.game.classSystem.length * i), 560, 760 / this.game.classSystem.length, 65); //draws boxes around the heroes to select from
             this.game.classSystem[i].draw(ctx, 40 + (760 / this.game.classSystem.length * i), 560, 1.75);
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
@@ -2987,7 +2989,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeStyle = "red";
 
         ctx.moveTo(137, 623);
-        ctx.lineTo(137, 698);
         ctx.stroke();
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityOneDescription, 137, 675);
@@ -3128,7 +3129,6 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.strokeRect(528, 623 + 75, 251, 75);
         ctx.moveTo(650, 698);
-        ctx.lineTo(650, 775);
         ctx.stroke();
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilitySixDescription, 650, 750);

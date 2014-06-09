@@ -1,5 +1,12 @@
-// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+/**
+ * This is a dungeon crawler based game with a turn based battle system.  
+ * It was a group project for our Computational Worlds course at the University of Washington.
+ *
+ * @author: Brandon M Martin, Jesse Kitterman, Caleb DelVillar-Fox, and David Swanson
+ * @version: TCSS 491 - Spring 2014
+ **/
 
+// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -47,7 +54,7 @@ AssetManager.prototype.downloadAll = function (callback) {
 }
 
 AssetManager.prototype.getAsset = function (path) {
-    //console.log(path.toString());
+    console.log(path.toString());
     return this.cache[path];
 }
 
@@ -310,8 +317,6 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     offscreenCtx.translate(0, 0);
     offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
     offscreenCtx.restore();
-    //offscreenCtx.strokeStyle = "red";
-    //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
 }
 function BoundingBox(x, y, width, height) {
@@ -2410,7 +2415,6 @@ Battle.prototype.update = function () {
                 }
                 var snd = new Audio("sound/soundeffect6.mp3");
                 snd.play();
-                //snd.currentTime = 0;
 
                 this.actionTime = 0;
                 
@@ -2497,12 +2501,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect7.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
 
             }
-            //ability 3 //temp run ability
+            //ability 3
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2583,11 +2585,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect12.mp3");
                 snd.play();
-                //snd.currentTime = 0;
 
                 this.actionTime = 0;
             }
-            //ability 4 //temp heal enemy
+            //ability 4
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2672,11 +2673,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect9.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
-                this.actionTime = 0;
+               this.actionTime = 0;
             }
-            //ability 5 //temp black magic poison
+
+            //ability 5
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2758,8 +2758,6 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect8.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
             }
             //ability 6
@@ -2844,8 +2842,6 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect11.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
             }
 
@@ -2855,18 +2851,7 @@ Battle.prototype.update = function () {
 
                 this.selectedEnemy = null;
             }
-            //this.firstEnemy.abilityOne(this.heroOne, this.firstEnemy);
-            //this.secondEnemy.abilityOne(this.heroOne, this.firstEnemy);
-
-            //this.thirdEnemy.abilityOne(this.heroOne, this.firstEnemy);
-
-
-            //enemy sound effect
-            //var snd = new Audio("sound/soundeffect1.mp3");
-            //snd.play();
-            //snd.currentTime = 0;
-
-            //end battle logic
+          
             var firstIsAlive = true;
             var secondIsAlive = true;
             var thirdIsAlive = true;
@@ -2936,13 +2921,12 @@ Battle.prototype.update = function () {
 Battle.prototype.draw = function (ctx) {
 
 
-    //console.log(this.heroOne.currentClass);
+    console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset(this.heroOne.currentTile.battlemap), this.x, this.y, 760, 760);
         if (this.firstEnemy != null) {
             this.firstEnemy.x = 450;
             this.firstEnemy.y = 60;
-            //ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
             if (this.firstEnemy.hp >= 0) {
                 this.firstEnemy.draw(ctx);
             }
@@ -2951,7 +2935,6 @@ Battle.prototype.draw = function (ctx) {
         if (this.secondEnemy != null) {
             this.secondEnemy.x = 550;
             this.secondEnemy.y = 120;
-            //ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
             if (this.secondEnemy.hp >= 0) {
                 this.secondEnemy.draw(ctx);
             }
@@ -2960,7 +2943,6 @@ Battle.prototype.draw = function (ctx) {
         if (this.thirdEnemy != null) {
             this.thirdEnemy.x = 650;
             this.thirdEnemy.y = 160;
-            //ctx.strokeRect(this.thirdEnemy.x + 25, this.thirdEnemy.y + 20, 60, 90);
             if (this.thirdEnemy.hp >= 0) {
                 this.thirdEnemy.draw(ctx);
             }
@@ -3011,10 +2993,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.fillText(this.heroOne.abilityOneDescription, 137, 675);
         ctx.restore();
         ctx.strokeRect(20, 623, 251, 75);
-        //TODO fix sound effect 1
-        //var snd = new Audio("sounds/soundeffects1.mp3");
-        //snd.play();
-        //snd.currentTime = 0;
 
         //ability 2
         if (x > 20 && x < 273 && y > 698 && y < 775) {
@@ -3043,8 +3021,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityTwoDescription, 100, 750);
 
-        //TODO fix sound effect 2
-
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
             if (this.selectedEnemy != null && this.heroOne.abilityThreeDisplay != null) {
@@ -3071,8 +3047,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeRect(274, 623, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityThreeDescription, 360, 675);
-
-        //TODO fix sound effect 3
 
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
@@ -3101,8 +3075,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFourDescription, 360, 750);
 
-        //TODO fix sound effect 4
-
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
             if (this.selectedEnemy != null && this.heroOne.abilityFiveDisplay != null) {
@@ -3129,8 +3101,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeRect(528, 623, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFiveDescription, 600, 675);
-
-        //TODO fix sound effect 5
 
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
@@ -3166,8 +3136,6 @@ Battle.prototype.draw = function (ctx) {
 
         ctx.fillStyle = "purple";
 
-        //TODO fix sound effect 6
-
         //status effects
         if (this.heroOne.isPoisoned) {
             ctx.fillStyle = "Red";
@@ -3187,8 +3155,13 @@ Battle.prototype.draw = function (ctx) {
                 }
             }
         } else {
-
+            ctx.fillStyle = "white";
+            ctx.font = "32pt Impact";
             ctx.fillText("Game Over Man!", 380, 380);
+            ctx.font = "24pt Impact";
+            ctx.fillText("Refresh your browser to play again.", 380, 412);
+
+            gameEngine.running = false;
         }
         ctx.fillStyle = "red";
         if (this.game.mouse) {
@@ -3316,10 +3289,7 @@ Ghoul.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Ghoul.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/ghoul.png"),
-      //            this.x, this.y, 80, 80);
 }
 
 function Emu(game, cen, col) {
@@ -3417,29 +3387,13 @@ Emu.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) 
                 ctx.fillText(0, hero.x - 10, hero.y + 5);
 
             }
-        } /*else {
-            if (ally1.phystr < ally1.phydef) {
-                ctx.fillText("Attack Up", ally1.x - 10, ally1.y + 5);
-            } else if (ally1.phystr > ally1.phydef) {
-                ctx.fillText("Defense Up", ally1.x - 10, ally1.y + 5);
-
-            }
-            if (ally2.phystr < ally2.phydef) {
-                ctx.fillText("Attack Up", ally2.x - 10, ally2.y + 5);
-            } else if (ally1.phystr > ally1.phydef) {
-                ctx.fillText("Defense Up", ally2.x - 10, ally2.y + 5);
-            }
-        }*/
+        } 
         
         ctx.restore();
     }
 }
 Emu.prototype.draw = function (ctx) {
-    //ctx.strokeRect(this.x + 25, this.y + 20, 60, 90);
-
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/emu.png"),
-    //            this.x, this.y, 80, 80);
 }
 
 function Wolfkin(game, cen, col) {
@@ -3503,7 +3457,6 @@ Wolfkin.prototype.reset = function () {
 Wolfkin.prototype.ability = function (hero, enemy) {
     if (this.aggro) {
         if (hero.currentClass.name === "Psychic") {
-
             if (!hero.currentClass.physGuard) {
                 if ((enemy.phystr - hero.currentClass.phydef) > 0) {
                     hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
@@ -3515,10 +3468,7 @@ Wolfkin.prototype.ability = function (hero, enemy) {
                 hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
             }
         }
-    } else {
-
     }
-
 }
 Wolfkin.prototype.ability1Display = function (hero, enemy, time, ctx) {
     if (time < 0.75) {
@@ -3538,11 +3488,9 @@ Wolfkin.prototype.ability1Display = function (hero, enemy, time, ctx) {
     }
 }
 Wolfkin.prototype.draw = function (ctx) {
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
 
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Wolfkin.png"),
-    //            this.x, this.y, 80, 80);
+    this.x, this.y, 80, 80;
 }
 function Dinox(game, cen, col) {
     var center = cen;
@@ -3645,10 +3593,7 @@ Dinox.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Dinox.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/dinox.png"),
-    //            this.x, this.y, 80, 80);
 }
 function LizardMan(game, cen, col) {
     var center = cen;
@@ -3751,10 +3696,7 @@ LizardMan.prototype.ability1Display = function (hero, enemy, ally1, ally2, time,
 LizardMan.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/LizardMan.png"),
-    //            this.x, this.y, 80, 80);
 }
 function TornadoLizard(game, cen, col) {
     var center = cen;
@@ -3860,11 +3802,7 @@ TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, t
 TornadoLizard.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Seabird(game, cen, col) {
     var center = cen;
@@ -3967,10 +3905,7 @@ Seabird.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Seabird.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Seabird.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Gillman(game, cen, col) {
     var center = cen;
@@ -4073,10 +4008,7 @@ Gillman.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Gillman.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Gillman.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Sentinel(game, cen, col) {
     var center = cen;
@@ -4178,10 +4110,7 @@ Sentinel.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, 
 Sentinel.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Sentinel.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Siren(game, cen, col) {
     var center = cen;
@@ -4285,10 +4214,7 @@ Siren.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Siren.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Siren.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Hydra(game, cen, col) {
     var center = cen;
@@ -4391,10 +4317,7 @@ Hydra.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Hydra.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Hydra.png"),
-    //            this.x, this.y, 80, 80);
 }
 function BlueDragon(game, cen, col) {
     var center = cen;
@@ -4498,10 +4421,7 @@ BlueDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time
 BlueDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/BlueDragon.png"),
-    //            this.x, this.y, 80, 80);
 }
 function FlameDragon(game, cen, col) {
     var center = cen;
@@ -4603,10 +4523,7 @@ FlameDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, tim
 FlameDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/FlameDragon.png"),
-      //            this.x, this.y, 80, 80);
 }
 function SeaDragon(game, cen, col) {
     var center = cen;
@@ -4708,10 +4625,7 @@ SeaDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time,
 SeaDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/SeaDragon.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Chimera(game, cen, col) {
     var center = cen;
@@ -4814,10 +4728,7 @@ Chimera.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Chimera.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Chimera.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Hero(game, cen, col, job, tile) {
     this.cen = cen;

@@ -473,41 +473,6 @@ TileZero.prototype.update = function () {
 TileZero.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
-    ctx.strokeStyle = "red";
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
-    /*var i;
-    var j;
-    //left side
-    for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
-        for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
-    }
-    var k;
-    //bottom first portion
-    for (k = 0; k < 4; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 120+k*60, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
-    //second portion
-    for (k = 0; k < 5; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
-
-    //right corner
-    for (k = 0; k < 5; k++) {
-        for (j = 0; j < 4; j++)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }*/
-
-
-    ctx.beginPath();
-    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
-    ctx.stroke();
-
 }
 
 function TileOne(game, enemy1, enemy2, enemy3) {
@@ -549,18 +514,6 @@ TileOne.prototype.update = function () {
     this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
     this.boundingBoxes.push(this.boundingbox2);
 
-    /*
-        this.boundingbox = new BoundingBox(0, 0, 800, 800);
-    this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
-    this.boundingBoxes.push(this.boundingbox2);
-    this.bb3 = new BoundingBox(565, 0, 400, 300);
-    this.boundingBoxes.push(this.bb3);
-    */
-
-
     this.NorthTile = this.game.platforms[2];
     this.EastTile = null;
     this.SouthTile = this.game.platforms[0];
@@ -570,16 +523,7 @@ TileOne.prototype.update = function () {
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
-    ctx.setStroke = "red";
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
-
 
 }
 
@@ -634,14 +578,8 @@ TileTwo.prototype.update = function () {
 
 TileTwo.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
-    var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
 }
 
 function TileThree(game, enemy1, enemy2, enemy3) {
@@ -695,13 +633,7 @@ TileThree.prototype.update = function () {
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
-
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/Right.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
 }
 
 function TileFour(game, enemy1, enemy2, enemy3) {
@@ -756,11 +688,6 @@ TileFour.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
 }
 
 function TileFive(game, enemy1, enemy2, enemy3) {
@@ -796,8 +723,6 @@ TileFive.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 520, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -812,13 +737,6 @@ TileFive.prototype.update = function () {
 
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    ctx.setStroke = "red";
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -871,12 +789,6 @@ TileSix.prototype.update = function () {
 
 TileSix.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -928,12 +840,6 @@ TileSeven.prototype.update = function () {
 
 TileSeven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -985,12 +891,6 @@ TileEight.prototype.update = function () {
 
 TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1037,19 +937,13 @@ TileNine.prototype.update = function () {
 
     this.NorthTile = this.game.platforms[8];
     this.EastTile = null;
-    this.SouthTile = null;//this.game.platforms[];
+    this.SouthTile = null;
     this.WestTile = this.game.platforms[10];
     Entity.prototype.update.call(this);
 }
 
 TileNine.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1094,17 +988,6 @@ TileTen.prototype.update = function () {
     this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
     this.boundingBoxes.push(this.boundingbox3);
 
-    /*
-        this.boundingbox = new BoundingBox(0, 0, 800, 800);
-    this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
-    this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
-    this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
-    this.boundingBoxes.push(this.boundingbox3);
-    */
-
     this.NorthTile = null;
     this.EastTile = this.game.platforms[9];
     this.SouthTile = this.game.platforms[11];
@@ -1114,12 +997,6 @@ TileTen.prototype.update = function () {
 
 TileTen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1173,12 +1050,6 @@ TileEleven.prototype.update = function () {
 
 TileEleven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLava.png"), this.x, this.y, 800, 800);
 }
 
@@ -1215,8 +1086,6 @@ TileTwelve.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1231,12 +1100,6 @@ TileTwelve.prototype.update = function () {
 
 TileTwelve.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -1273,8 +1136,6 @@ TileThirteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1289,12 +1150,6 @@ TileThirteen.prototype.update = function () {
 
 TileThirteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -1331,8 +1186,6 @@ TileFourteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1347,12 +1200,6 @@ TileFourteen.prototype.update = function () {
 
 TileFourteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1406,12 +1253,6 @@ TileFifteen.prototype.update = function () {
 
 TileFifteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1462,12 +1303,6 @@ TileSixteen.prototype.update = function () {
 
 TileSixteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1520,12 +1355,6 @@ TileSeventeen.prototype.update = function () {
 
 TileSeventeen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
 }
 
@@ -1579,12 +1408,6 @@ TileEighteen.prototype.update = function () {
 
 TileEighteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1622,8 +1445,6 @@ TileNineteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1638,12 +1459,6 @@ TileNineteen.prototype.update = function () {
 
 TileNineteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1696,12 +1511,6 @@ TileTwenty.prototype.update = function () {
 
 TileTwenty.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1754,12 +1563,6 @@ TileTwentyOne.prototype.update = function () {
 
 TileTwentyOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1812,12 +1615,6 @@ TileTwentyTwo.prototype.update = function () {
 
 TileTwentyTwo.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftLava.png"), this.x, this.y, 800, 800);
 }
 

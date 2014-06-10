@@ -1,5 +1,12 @@
-// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+/**
+ * This is a dungeon crawler based game with a turn based battle system.  
+ * It was a group project for our Computational Worlds course at the University of Washington.
+ *
+ * @author: Brandon M Martin, Jesse Kitterman, Caleb DelVillar-Fox, and David Swanson
+ * @version: TCSS 491 - Spring 2014
+ **/
 
+// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -47,7 +54,7 @@ AssetManager.prototype.downloadAll = function (callback) {
 }
 
 AssetManager.prototype.getAsset = function (path) {
-    //console.log(path.toString());
+    console.log(path.toString());
     return this.cache[path];
 }
 
@@ -310,8 +317,6 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     offscreenCtx.translate(0, 0);
     offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
     offscreenCtx.restore();
-    //offscreenCtx.strokeStyle = "red";
-    //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
 }
 function BoundingBox(x, y, width, height) {
@@ -473,41 +478,6 @@ TileZero.prototype.update = function () {
 TileZero.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
-    //ctx.strokeStyle = "red";
-    /*var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }/*
-    /*var i;
-    var j;
-    //left side
-    for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
-        for(j = this.boundingbox1.y; j < this.boundingbox1.height; j +=  this.boundingbox1.height/10)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"),i, j, this.boundingbox1.width/2, this.boundingbox1.height/10);
-    }
-    var k;
-    //bottom first portion
-    for (k = 0; k < 4; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 120+k*60, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
-    //second portion
-    for (k = 0; k < 5; k++) {
-        ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 705, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
-
-    //right corner
-    for (k = 0; k < 5; k++) {
-        for (j = 0; j < 4; j++)
-            ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }*/
-
-
-    ctx.beginPath();
-    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
-    ctx.stroke();
-
 }
 
 function TileOne(game, enemy1, enemy2, enemy3) {
@@ -549,18 +519,6 @@ TileOne.prototype.update = function () {
     this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
     this.boundingBoxes.push(this.boundingbox2);
 
-    /*
-        this.boundingbox = new BoundingBox(0, 0, 800, 800);
-    this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
-    this.boundingBoxes.push(this.boundingbox2);
-    this.bb3 = new BoundingBox(565, 0, 400, 300);
-    this.boundingBoxes.push(this.bb3);
-    */
-
-
     this.NorthTile = this.game.platforms[2];
     this.EastTile = null;
     this.SouthTile = this.game.platforms[0];
@@ -570,11 +528,7 @@ TileOne.prototype.update = function () {
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
-    
-
 
 }
 
@@ -629,10 +583,8 @@ TileTwo.prototype.update = function () {
 
 TileTwo.prototype.draw = function (ctx) {
     if (!this.game.running || this.game.battleRunning) return;
-    var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
-    
 }
 
 function TileThree(game, enemy1, enemy2, enemy3) {
@@ -686,9 +638,7 @@ TileThree.prototype.update = function () {
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
     var i;
-
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/Right.png"), this.x, this.y, 800, 800);
-
 }
 
 function TileFour(game, enemy1, enemy2, enemy3) {
@@ -743,7 +693,6 @@ TileFour.prototype.draw = function (ctx) {
     var i;
 
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
-    
 }
 
 function TileFive(game, enemy1, enemy2, enemy3) {
@@ -779,8 +728,6 @@ TileFive.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 520, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -795,8 +742,6 @@ TileFive.prototype.update = function () {
 
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -849,7 +794,6 @@ TileSix.prototype.update = function () {
 
 TileSix.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -901,7 +845,6 @@ TileSeven.prototype.update = function () {
 
 TileSeven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -953,7 +896,6 @@ TileEight.prototype.update = function () {
 
 TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1000,19 +942,13 @@ TileNine.prototype.update = function () {
 
     this.NorthTile = this.game.platforms[8];
     this.EastTile = null;
-    this.SouthTile = null;//this.game.platforms[];
+    this.SouthTile = null;
     this.WestTile = this.game.platforms[10];
     Entity.prototype.update.call(this);
 }
 
 TileNine.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1057,17 +993,6 @@ TileTen.prototype.update = function () {
     this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
     this.boundingBoxes.push(this.boundingbox3);
 
-    /*
-        this.boundingbox = new BoundingBox(0, 0, 800, 800);
-    this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
-    this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
-    this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
-    this.boundingBoxes.push(this.boundingbox3);
-    */
-
     this.NorthTile = null;
     this.EastTile = this.game.platforms[9];
     this.SouthTile = this.game.platforms[11];
@@ -1077,12 +1002,6 @@ TileTen.prototype.update = function () {
 
 TileTen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1136,12 +1055,6 @@ TileEleven.prototype.update = function () {
 
 TileEleven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLava.png"), this.x, this.y, 800, 800);
 }
 
@@ -1178,8 +1091,6 @@ TileTwelve.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1194,12 +1105,6 @@ TileTwelve.prototype.update = function () {
 
 TileTwelve.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -1236,8 +1141,6 @@ TileThirteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1252,12 +1155,6 @@ TileThirteen.prototype.update = function () {
 
 TileThirteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
@@ -1294,8 +1191,6 @@ TileFourteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1310,12 +1205,6 @@ TileFourteen.prototype.update = function () {
 
 TileFourteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1369,12 +1258,6 @@ TileFifteen.prototype.update = function () {
 
 TileFifteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1425,12 +1308,6 @@ TileSixteen.prototype.update = function () {
 
 TileSixteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1483,12 +1360,6 @@ TileSeventeen.prototype.update = function () {
 
 TileSeventeen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
 }
 
@@ -1542,12 +1413,6 @@ TileEighteen.prototype.update = function () {
 
 TileEighteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1585,8 +1450,6 @@ TileNineteen.prototype.update = function () {
     this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
-    //this.boundingBoxes.push(this.boundingbox1);
     this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
     this.boundingBoxes.push(this.boundingbox2);
     this.bb3 = new BoundingBox(-100, 0, 1000, 285);
@@ -1601,12 +1464,6 @@ TileNineteen.prototype.update = function () {
 
 TileNineteen.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
 }
 
@@ -1659,12 +1516,6 @@ TileTwenty.prototype.update = function () {
 
 TileTwenty.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
 }
 
@@ -1717,12 +1568,6 @@ TileTwentyOne.prototype.update = function () {
 
 TileTwentyOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
 }
 
@@ -1775,12 +1620,6 @@ TileTwentyTwo.prototype.update = function () {
 
 TileTwentyTwo.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    var i;
-    for (i = 0; i < this.boundingBoxes.length; i++) {
-        if (this.boundingBoxes[i] != null) {
-            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-        }
-    }
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftLava.png"), this.x, this.y, 800, 800);
 }
 
@@ -2244,30 +2083,24 @@ Menu.prototype.draw = function (ctx) {
             }
         } 
         this.game.classSystem[0].draw(ctx, 50, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[0].name, 120, 60);
         this.game.classSystem[1].draw(ctx, 150, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[1].name, 230, 60);
         this.game.classSystem[2].draw(ctx, 250, 80, 1.25);
-
-        //ctx.fillText(this.game.classSystem[2].name, 120, 100);
         this.game.classSystem[3].draw(ctx, 350, 80, 1.25);
-        //ctx.fillText(this.game.classSystem[3].name, 230, 100);
-
         this.game.classSystem[4].draw(ctx, 50, 130, 1.25);
-        //ctx.fillText(this.game.classSystem[4].name, 120, 140);
         this.game.classSystem[5].draw(ctx, 150, 130, 1.25);
         this.game.classSystem[6].draw(ctx, 250, 130, 1.25);
         this.game.classSystem[7].draw(ctx, 350, 130, 1.25);
         ctx.restore();
+
         //ability boxes
         ctx.fillStyle = "black";
         ctx.strokeRect(25, 175, 400, 300); //main box 
         ctx.strokeRect(25, 175, 190, 100); // 1
-        ctx.fillText(this.abilityOneDescription, 25, 225);
+        ctx.fillText(this.abilityOneDescription, 45, 225);
         ctx.strokeRect(25, 275, 190, 100); // 3
-        ctx.fillText(this.abilityThreeDescription, 25, 325);
+        ctx.fillText(this.abilityThreeDescription, 45, 325);
         ctx.strokeRect(25, 375, 190, 100); // 5
-        ctx.fillText(this.abilityFiveDescription, 25, 425);
+        ctx.fillText(this.abilityFiveDescription, 45, 425);
         ctx.strokeRect(210, 175, 210, 100); // 2
         ctx.fillText(this.abilityTwoDescription, 225, 225);
         ctx.strokeRect(210, 275, 210, 100); // 4
@@ -2275,20 +2108,19 @@ Menu.prototype.draw = function (ctx) {
         ctx.strokeRect(210, 375, 210, 100); // 6
         ctx.fillText(this.abilitySixDescription, 225, 425);
 
-
         ctx.strokeRect(25, 475, 400, 300); //stats area
 
         ctx.fillText("Level: " + this.playerhero.currentClass.level, 225, 525);
         ctx.fillText("EXP: " + this.playerhero.currentClass.exp + "/" + this.playerhero.currentClass.expMax, 225, 600);
         ctx.fillText("AP: " + this.playerhero.currentClass.ap, 225, 635);
 
-        ctx.fillText("HP: " + this.playerhero.currentClass.hp + "/" + this.playerhero.currentClass.hpMax, 25, 525);
-        ctx.fillText("MP: " + this.playerhero.currentClass.mp + "/" + this.playerhero.currentClass.mpMax, 25, 560);
+        ctx.fillText("HP: " + this.playerhero.currentClass.hp + "/" + this.playerhero.currentClass.hpMax, 45, 525);
+        ctx.fillText("MP: " + this.playerhero.currentClass.mp + "/" + this.playerhero.currentClass.mpMax, 45, 560);
 
-        ctx.fillText("Strength: " + this.playerhero.currentClass.phystr, 25, 600);
-        ctx.fillText("Defense: " + this.playerhero.currentClass.phydef, 25, 635);
-        ctx.fillText("Magic: " + this.playerhero.currentClass.magstr, 25, 670);
-        ctx.fillText("Magic Defense: " + this.playerhero.currentClass.magdef, 25, 705);
+        ctx.fillText("Strength: " + this.playerhero.currentClass.phystr, 45, 600);
+        ctx.fillText("Defense: " + this.playerhero.currentClass.phydef, 45, 635);
+        ctx.fillText("Magic: " + this.playerhero.currentClass.magstr, 45, 670);
+        ctx.fillText("Magic Defense: " + this.playerhero.currentClass.magdef, 45, 705);
 
         
     }
@@ -2583,7 +2415,6 @@ Battle.prototype.update = function () {
                 }
                 var snd = new Audio("sound/soundeffect6.mp3");
                 snd.play();
-                //snd.currentTime = 0;
 
                 this.actionTime = 0;
                 
@@ -2670,12 +2501,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect7.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
 
             }
-            //ability 3 //temp run ability
+            //ability 3
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2756,11 +2585,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect12.mp3");
                 snd.play();
-                //snd.currentTime = 0;
 
                 this.actionTime = 0;
             }
-            //ability 4 //temp heal enemy
+            //ability 4
             if (this.game.click.x > 274 && this.game.click.x < 527 && this.game.click.y > 698 && this.game.click.y < 775 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2845,11 +2673,10 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect9.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
-                this.actionTime = 0;
+               this.actionTime = 0;
             }
-            //ability 5 //temp black magic poison
+
+            //ability 5
             if (this.game.click.x > 528 && this.game.click.x < 780 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
                     this.heroOne.currentClass.abilityNine(this.heroOne.currentClass);
@@ -2931,8 +2758,6 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect8.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
             }
             //ability 6
@@ -3017,8 +2842,6 @@ Battle.prototype.update = function () {
 
                 var snd = new Audio("sound/soundeffect11.mp3");
                 snd.play();
-                //snd.currentTime = 0;
-
                 this.actionTime = 0;
             }
 
@@ -3028,18 +2851,7 @@ Battle.prototype.update = function () {
 
                 this.selectedEnemy = null;
             }
-            //this.firstEnemy.abilityOne(this.heroOne, this.firstEnemy);
-            //this.secondEnemy.abilityOne(this.heroOne, this.firstEnemy);
-
-            //this.thirdEnemy.abilityOne(this.heroOne, this.firstEnemy);
-
-
-            //enemy sound effect
-            //var snd = new Audio("sound/soundeffect1.mp3");
-            //snd.play();
-            //snd.currentTime = 0;
-
-            //end battle logic
+          
             var firstIsAlive = true;
             var secondIsAlive = true;
             var thirdIsAlive = true;
@@ -3109,13 +2921,12 @@ Battle.prototype.update = function () {
 Battle.prototype.draw = function (ctx) {
 
 
-    //console.log(this.heroOne.currentClass);
+    console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset(this.heroOne.currentTile.battlemap), this.x, this.y, 760, 760);
         if (this.firstEnemy != null) {
             this.firstEnemy.x = 450;
             this.firstEnemy.y = 60;
-            //ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
             if (this.firstEnemy.hp >= 0) {
                 this.firstEnemy.draw(ctx);
             }
@@ -3124,7 +2935,6 @@ Battle.prototype.draw = function (ctx) {
         if (this.secondEnemy != null) {
             this.secondEnemy.x = 550;
             this.secondEnemy.y = 120;
-            //ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
             if (this.secondEnemy.hp >= 0) {
                 this.secondEnemy.draw(ctx);
             }
@@ -3133,7 +2943,6 @@ Battle.prototype.draw = function (ctx) {
         if (this.thirdEnemy != null) {
             this.thirdEnemy.x = 650;
             this.thirdEnemy.y = 160;
-            //ctx.strokeRect(this.thirdEnemy.x + 25, this.thirdEnemy.y + 20, 60, 90);
             if (this.thirdEnemy.hp >= 0) {
                 this.thirdEnemy.draw(ctx);
             }
@@ -3147,9 +2956,12 @@ Battle.prototype.draw = function (ctx) {
         ctx.font = "24pt Impact";
         var x = this.clickX;
         var y = this.clickY;
+
         //ability 1
         for (var i = 0; i < this.game.classSystem.length; i++) {
-            ctx.strokeRect(20 + (760 / this.game.classSystem.length * i), 560, 760 / this.game.classSystem.length, 65);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(20 + (760 / this.game.classSystem.length * i), 560, 760 / this.game.classSystem.length, 65); //draws boxes around the heroes to select from
             this.game.classSystem[i].draw(ctx, 40 + (760 / this.game.classSystem.length * i), 560, 1.75);
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
@@ -3178,16 +2990,11 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeStyle = "red";
 
         ctx.moveTo(137, 623);
-        ctx.lineTo(137, 698);
         ctx.stroke();
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityOneDescription, 137, 675);
         ctx.restore();
         ctx.strokeRect(20, 623, 251, 75);
-        //TODO fix sound effect 1
-        //var snd = new Audio("sounds/soundeffects1.mp3");
-        //snd.play();
-        //snd.currentTime = 0;
 
         //ability 2
         if (x > 20 && x < 273 && y > 698 && y < 775) {
@@ -3216,8 +3023,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityTwoDescription, 100, 750);
 
-        //TODO fix sound effect 2
-
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
             if (this.selectedEnemy != null && this.heroOne.abilityThreeDisplay != null) {
@@ -3244,8 +3049,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.strokeRect(274, 623, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityThreeDescription, 360, 675);
-
-        //TODO fix sound effect 3
 
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
@@ -3274,8 +3077,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFourDescription, 360, 750);
 
-        //TODO fix sound effect 4
-
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
             if (this.selectedEnemy != null && this.heroOne.abilityFiveDisplay != null) {
@@ -3303,8 +3104,6 @@ Battle.prototype.draw = function (ctx) {
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFiveDescription, 600, 675);
 
-        //TODO fix sound effect 5
-
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
             if (this.selectedEnemy != null && this.heroOne.abilitySixDisplay != null) {
@@ -3331,7 +3130,6 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.strokeRect(528, 623 + 75, 251, 75);
         ctx.moveTo(650, 698);
-        ctx.lineTo(650, 775);
         ctx.stroke();
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilitySixDescription, 650, 750);
@@ -3339,11 +3137,9 @@ Battle.prototype.draw = function (ctx) {
 
         ctx.fillStyle = "purple";
 
-        //TODO fix sound effect 6
-
         //status effects
         if (this.heroOne.isPoisoned) {
-            ctx.fillStyle = "Red";
+            ctx.fillStyle = "red";
             ctx.fillText("-" + this.selectedEnemy.poisonDamage, hero.x - 10, hero.y + 5);
         }
         if (this.firstEnemy.isPoisoned && this.actionTime < 0.75) {
@@ -3360,8 +3156,13 @@ Battle.prototype.draw = function (ctx) {
                 }
             }
         } else {
-
+            ctx.fillStyle = "white";
+            ctx.font = "32pt Impact";
             ctx.fillText("Game Over Man!", 380, 380);
+            ctx.font = "24pt Impact";
+            ctx.fillText("Refresh your browser to play again.", 380, 412);
+
+            gameEngine.running = false;
         }
         ctx.fillStyle = "red";
         if (this.game.mouse) {
@@ -3489,10 +3290,7 @@ Ghoul.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Ghoul.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/ghoul.png"),
-      //            this.x, this.y, 80, 80);
 }
 
 function Emu(game, cen, col) {
@@ -3590,29 +3388,13 @@ Emu.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) 
                 ctx.fillText(0, hero.x - 10, hero.y + 5);
 
             }
-        } /*else {
-            if (ally1.phystr < ally1.phydef) {
-                ctx.fillText("Attack Up", ally1.x - 10, ally1.y + 5);
-            } else if (ally1.phystr > ally1.phydef) {
-                ctx.fillText("Defense Up", ally1.x - 10, ally1.y + 5);
-
-            }
-            if (ally2.phystr < ally2.phydef) {
-                ctx.fillText("Attack Up", ally2.x - 10, ally2.y + 5);
-            } else if (ally1.phystr > ally1.phydef) {
-                ctx.fillText("Defense Up", ally2.x - 10, ally2.y + 5);
-            }
-        }*/
+        } 
         
         ctx.restore();
     }
 }
 Emu.prototype.draw = function (ctx) {
-    //ctx.strokeRect(this.x + 25, this.y + 20, 60, 90);
-
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/emu.png"),
-    //            this.x, this.y, 80, 80);
 }
 
 function Wolfkin(game, cen, col) {
@@ -3676,7 +3458,6 @@ Wolfkin.prototype.reset = function () {
 Wolfkin.prototype.ability = function (hero, enemy) {
     if (this.aggro) {
         if (hero.currentClass.name === "Psychic") {
-
             if (!hero.currentClass.physGuard) {
                 if ((enemy.phystr - hero.currentClass.phydef) > 0) {
                     hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
@@ -3688,10 +3469,7 @@ Wolfkin.prototype.ability = function (hero, enemy) {
                 hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
             }
         }
-    } else {
-
     }
-
 }
 Wolfkin.prototype.ability1Display = function (hero, enemy, time, ctx) {
     if (time < 0.75) {
@@ -3711,11 +3489,9 @@ Wolfkin.prototype.ability1Display = function (hero, enemy, time, ctx) {
     }
 }
 Wolfkin.prototype.draw = function (ctx) {
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
 
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Wolfkin.png"),
-    //            this.x, this.y, 80, 80);
+    this.x, this.y, 80, 80;
 }
 function Dinox(game, cen, col) {
     var center = cen;
@@ -3818,10 +3594,7 @@ Dinox.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Dinox.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/dinox.png"),
-    //            this.x, this.y, 80, 80);
 }
 function LizardMan(game, cen, col) {
     var center = cen;
@@ -3924,10 +3697,7 @@ LizardMan.prototype.ability1Display = function (hero, enemy, ally1, ally2, time,
 LizardMan.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/LizardMan.png"),
-    //            this.x, this.y, 80, 80);
 }
 function TornadoLizard(game, cen, col) {
     var center = cen;
@@ -3954,10 +3724,9 @@ function TornadoLizard(game, cen, col) {
     this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 1, center, column);
     this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 3, center, column);
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
-    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .1, 3, false, false, 1, center, column);
-    //Animation()
 
-    this.attacking = false;
+    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .4, 3, true, false, 64, center, column);
+
     this.movingNorth = false;
     this.movingSouth = true;
     this.movingWest = false;
@@ -3978,7 +3747,7 @@ TornadoLizard.prototype = new Entity();
 TornadoLizard.prototype.constructor = TornadoLizard;
 
 TornadoLizard.prototype.update = function () {
-    //this.attacking = true;
+
     Entity.prototype.update.call(this);
 }
 TornadoLizard.prototype.reset = function () {
@@ -4004,15 +3773,11 @@ TornadoLizard.prototype.ability = function (hero, enemy, ally1, ally2) {
         } else {
             if ((enemy.phystr - hero.currentClass.phydef) > 0) {
                 hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
-                
             }
         }
 
     } else {
-        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
-            hero.currentClass.phydef--;
-            
-        }
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
     }
 
 }
@@ -4020,7 +3785,6 @@ TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, t
     if (time < 0.75) {
         ctx.save();
         ctx.fillStyle = "Red";
-        
         if (this.aggro) {
 
             if ((enemy.phystr - hero.currentClass.phydef) > 0) {
@@ -4028,28 +3792,18 @@ TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, t
 
             } else {
                 ctx.fillText(0, hero.x - 10, hero.y + 5);
+
             }
         } else {
             ctx.fillText("Mini Storm", hero.x - 10, hero.y + 5);
         }
-        this.attacking = true;
         ctx.restore();
     }
 }
 TornadoLizard.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
-    //this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6); //1.7);
-    //if (this.attacking) {
-    //    this.AttackAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
-   //     this.attacking = false;
-    //} else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
-    //}
-    //this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
-    //            this.x, this.y, 80, 80);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
 }
 function Seabird(game, cen, col) {
     var center = cen;
@@ -4152,10 +3906,7 @@ Seabird.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Seabird.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Seabird.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Gillman(game, cen, col) {
     var center = cen;
@@ -4258,10 +4009,7 @@ Gillman.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Gillman.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Gillman.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Sentinel(game, cen, col) {
     var center = cen;
@@ -4363,10 +4111,7 @@ Sentinel.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, 
 Sentinel.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Sentinel.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Siren(game, cen, col) {
     var center = cen;
@@ -4470,10 +4215,7 @@ Siren.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Siren.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Siren.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Hydra(game, cen, col) {
     var center = cen;
@@ -4576,10 +4318,7 @@ Hydra.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx
 Hydra.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Hydra.png"),
-    //            this.x, this.y, 80, 80);
 }
 function BlueDragon(game, cen, col) {
     var center = cen;
@@ -4683,10 +4422,7 @@ BlueDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time
 BlueDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/BlueDragon.png"),
-    //            this.x, this.y, 80, 80);
 }
 function FlameDragon(game, cen, col) {
     var center = cen;
@@ -4788,10 +4524,7 @@ FlameDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, tim
 FlameDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/FlameDragon.png"),
-      //            this.x, this.y, 80, 80);
 }
 function SeaDragon(game, cen, col) {
     var center = cen;
@@ -4893,10 +4626,7 @@ SeaDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time,
 SeaDragon.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/SeaDragon.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Chimera(game, cen, col) {
     var center = cen;
@@ -4999,10 +4729,7 @@ Chimera.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, c
 Chimera.prototype.draw = function (ctx) {
     this.xClick = this.x + 25;
     this.yClick = this.y + 20;
-    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Chimera.png"),
-    //            this.x, this.y, 80, 80);
 }
 function Hero(game, cen, col, job, tile) {
     this.cen = cen;
@@ -5290,84 +5017,63 @@ Hero.prototype.draw = function (ctx) {
     if (this.currentTile.enemyStrength === "Easy" && this.currentClass.level <= 2) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Be Cautious", 20, 40);
         ctx.restore();
     }
     if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 5) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Be Cautious", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 3) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Turn Back", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     }
     if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 7) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Be cautious", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 5) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Turn Back", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Turn Back", 20, 40);
         ctx.restore();
     } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 2) {
         ctx.save();
         ctx.font = "24pt Impact";
-        ctx.fillStyle = "purple";
-        ctx.fillText("Fly You Fools!!", 20, 20);
+        ctx.fillStyle = "white";
+        ctx.fillText("Difficulty: Fly You Fools!!", 20, 40);
         ctx.restore();
     }
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Danimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Danimation;
     } else if (this.movingNorth && this.game.up) {
         this.game.up = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Uanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Uanimation;
     } else if (this.movingWest && this.game.left) {
         this.game.left = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Lanimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Lanimation;
     } else if (this.movingEast && this.game.right) {
         this.game.left = false;
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.Ranimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
         this.animation = this.Ranimation;
 
     } else {
-        if (this.boxes) {
-            //ctx.strokeStyle = "blue";
-            //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        }
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
     }
     ctx.beginPath();
-    //ctx.arc(this.circle1.x, this.circle1.y, this.circle1.radius, 0 * Math.PI, 2 * Math.PI);
     ctx.stroke();
 }
 function Gunner(game) {
@@ -7081,10 +6787,10 @@ WMage.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy, s
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + hero.currentClass.hpRegen, hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + hero.currentClass.hpRegen, hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
-            ctx.fillText("+" + hero.currentClass.mpRegen, hero.x + 50, hero.y + 50);
+            ctx.fillText("+" + hero.currentClass.mpRegen, hero.x + 100, hero.y + 50);
         }
 
     }
@@ -7105,7 +6811,7 @@ WMage.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen*5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7131,7 +6837,7 @@ WMage.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy, 
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 5, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7157,7 +6863,7 @@ WMage.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy, 
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 15, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 15, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7424,7 +7130,7 @@ WMage.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp > cost) {
-            ctx.fillText("+" + hero.currentClass.hpRegen * 32, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.hpRegen * 32, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
 
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7570,7 +7276,7 @@ Warrior.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7589,7 +7295,7 @@ Warrior.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnem
     var cost = 1;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("Defense Up", hero.x + 25, hero.y - 5);
+        ctx.fillText("Defense Up", hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -7847,7 +7553,7 @@ Samurai.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     var cost = 3;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
@@ -7911,7 +7617,7 @@ Samurai.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy
         if (hero.currentClass.mp >= cost) {
         ctx.fillText("-" + hero.currentClass.phystr, selectedEnemy.x - 10, selectedEnemy.y - 5);
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.phystr).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.phystr).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
         }
@@ -8191,7 +7897,7 @@ DKnight.prototype.abilityOneDisplay = function (hero, selectedEnemy, firstEnemy,
         }
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8214,7 +7920,7 @@ DKnight.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
 
         ctx.fillText("-" + hero.currentClass.mp, selectedEnemy.x - 10, selectedEnemy.y - 5);
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > hero.currentClass.mpMax) {
             ctx.fillText("+" + cost, hero.x + 50, hero.y + 50);
@@ -8240,7 +7946,7 @@ DKnight.prototype.abilityThreeDisplay = function (hero, selectedEnemy, firstEnem
         ctx.fillText("-" + hero.currentClass.phystr * 2, selectedEnemy.x - 10, selectedEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 2, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 2, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8262,7 +7968,7 @@ DKnight.prototype.abilityFourDisplay = function (hero, selectedEnemy, firstEnemy
         ctx.fillText("-" + hero.currentClass.phystr * 5, selectedEnemy.x - 10, selectedEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 5, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 5, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8288,7 +7994,7 @@ DKnight.prototype.abilityFiveDisplay = function (hero, selectedEnemy, firstEnemy
         ctx.fillText("-" + hero.currentClass.phystr * 10, thirdEnemy.x - 10, thirdEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * 10, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * 10, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8327,7 +8033,7 @@ DKnight.prototype.abilitySixDisplay = function (hero, selectedEnemy, firstEnemy,
         ctx.fillText("-" + hero.currentClass.phystr * damage, thirdEnemy.x - 10, thirdEnemy.y - 5);
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + hero.currentClass.phystr * damage, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.phystr * damage, hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8357,7 +8063,7 @@ DKnight.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEnem
         }        
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8383,7 +8089,7 @@ DKnight.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEnem
         }
         if (hero.tentacles) {
             ctx.fillStyle = "Green"
-            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + (hero.currentClass.mp).toFixed(2), hero.x + 40, hero.y - 40);
         }
     }
 }
@@ -8528,7 +8234,7 @@ Berserker.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnem
     var cost = 5;
     if (time < 0.75) {
         ctx.fillStyle = "Green"
-        ctx.fillText("+" + 13, hero.x + 25, hero.y - 5);
+        ctx.fillText("+" + 13, hero.x + 40, hero.y - 40);
         ctx.fillStyle = "Blue";
         if (hero.currentClass.mp > 0) {
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
@@ -8655,7 +8361,7 @@ Berserker.prototype.abilitySevenDisplay = function (hero, selectedEnemy, firstEn
 
     if (time < 0.75) {
         ctx.fillStyle = "green";
-        ctx.fillText("Double HP" + hero.x + 25, hero.y - 5);
+        ctx.fillText("Double HP",  hero.x + 40, hero.y - 40);
 
         if (hero.currentClass.mp > 0) {
             ctx.fillStyle = "blue";
@@ -8675,7 +8381,7 @@ Berserker.prototype.abilityEightDisplay = function (hero, selectedEnemy, firstEn
 
     if (time < 0.75) {
         ctx.fillStyle = "green";
-        ctx.fillText("Beserk" + hero.x + 25, hero.y - 5);
+        ctx.fillText("Beserk", + hero.x + 25, hero.y - 5);
 
         if (hero.currentClass.mp > 0) {
             ctx.fillStyle = "blue";
@@ -8826,7 +8532,7 @@ Psychic.prototype.abilityTwoDisplay = function (hero, selectedEnemy, firstEnemy,
     if (time < 0.75) {
         ctx.fillStyle = "Green"
         if (hero.currentClass.mp >= cost) {
-            ctx.fillText("+" + hero.currentClass.pastDamage, hero.x + 25, hero.y - 5);
+            ctx.fillText("+" + hero.currentClass.pastDamage, hero.x + 40, hero.y - 40);
             ctx.fillStyle = "Blue";
             ctx.fillText("-" + cost, hero.x + 50, hero.y + 50);
         }
@@ -9146,6 +8852,95 @@ Psychic.prototype.draw = function (ctx, x, y, size) {
     this.Danimation.drawFrame(this.game.clockTick, ctx, x, y, size);
 
 }
+
+
+		//trying to create a pause menu; name of function needs replaced
+		/*
+		
+		function Login(game, x, y) {
+		    Entity.call(this, game, x, y);
+		
+		
+		}
+		
+		Login.prototype = new Entity();
+		Login.prototype.constructor = Login;
+		
+	    Login.prototype.reset = function () {
+	    this.game.loginRunning = false;
+		}
+		
+		Login.prototype.update = function () {
+		    //
+		}
+		
+		Login.prototype.draw = function (ctx) {
+		   if (this.game.loginRunning) {
+		       ctx.font = "24pt Impact";
+		       ctx.fillText("PAUSED", 375, 375);
+		
+		    }
+		} */
+		
+		
+		
+		//trying to setup a constructor for the whole game to start after button clicked
+		/*
+		function PlayGame(game, x, y) {
+		    Entity.call(this, game, x, y);
+		}
+		
+		PlayGame.prototype = new Entity();
+		
+		PlayGame.prototype.constructor = PlayGame;
+		
+		PlayGame.prototype.reset = function () {
+		    this.game.running = false;
+		}
+		
+		PlayGame.prototype.update = function () {
+		    if (this.game.click) this.game.running = true;
+		}
+		
+		PlayGame.prototype.draw = function (ctx) {
+		    if (!this.game.running) {
+		        ctx.font = "24 Impact";
+		        ctx.fillStyle = "red";
+		        if (this.game.mouse) { ctx.fillStyle = "blue"; }
+		        ctx.fillText("Click to Start", this.x, this.y);
+		    }
+		} */
+		
+		
+		//trying set up a start screen
+		/*  
+		function startScreen(game, x, y) {
+		    Entity.call(this, game, x, y);
+		}
+		
+		startScreen.prototype = new Entity();
+		startScreen.prototype.constructor = startScreen;
+		
+		startScreen.prototype.reset = function () {
+	    this.game.running = false;
+	}
+		
+		startScreen.prototype.draw = function (ctx) {
+		    if (!this.game.running) {
+		        ctx.drawImage(ASSET_MANAGER.getAsset("./img/startimg.jpg"), this.x, this.y, 750, 750);
+		
+		        ctx.lineWidth = 10;
+		        ctx.strokeStyle = "white";
+		        ctx.font = "24pt Impact";
+		        ctx.fillStyle = "white";
+		
+		        ctx.fillText("Press Enter to Start", this.x, this.y);
+	
+	    }
+    }*/
+
+
+
 // the "main" code begins here
 
 var ASSET_MANAGER = new AssetManager();

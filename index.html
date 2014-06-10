@@ -4,22 +4,84 @@
 <head>
  
     <meta charset="utf-8">
-    <title>Game Project Shell</title>
+    <title>Dungeon Crawler 3000</title>
     <script src="jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="./project.js"></script>
+
+    <style type="text/css">
+        input.groovybutton {
+            font-size: 25px;
+            font-family: Arial Narrow,sans-serif;
+            font-weight: bold;
+            font-style: italic;
+            color: #000000;
+            width: 250px;
+            height: 100px;
+            background-color: #FFFFFF;
+            border-style: window-inset;
+            border-color: #FF0000;
+        }
+        body {
+            background-color: silver;
+        }
+    </style>
+
+    <script language="javascript">
+
+        function goLite(FRM, BTN) {
+            window.document.forms[FRM].elements[BTN].style.color = "#FFFFFF";
+            window.document.forms[FRM].elements[BTN].style.backgroundColor = "#000000";
+        }
+
+        function goDim(FRM, BTN) {
+            window.document.forms[FRM].elements[BTN].style.color = "#000000";
+            window.document.forms[FRM].elements[BTN].style.backgroundColor = "#FFFFFF";
+        }
+
+    </script>
+
 </head>
 <body>
-    <b>Controls: </b>
-    <br />
-    Movement: USE W-A-S-D
-    <br />
-    Menu: M TO OPEN/CLOSE
+    
+    <div id="Controls">
+        <center>
+            <b>Controls: </b>
+            <br />
+            Movement: USE W-A-S-D
+            <br />
+            Menu: M TO OPEN/CLOSE
+        </center>
+    </div>
+    <div id="SplashScreen">
+        <center>
+            <img src="./img/startimg.png" alt="start img" />
+            <form name="groovyform">
+                <input type="button"
+                       name="groovybtn1"
+                       class="groovybutton"
+                       value="Click Here to Play!"
+                       id="StartButton"
+                       onmouseover="goLite(this.form.name,this.name)"
+                       onmouseout="goDim(this.form.name,this.name)">
+            </form>
+        </center>
+    </div>
 
     <audio class="backgroundsound" autoplay loop>
         <source src="sound/backgroundsoundbattle.mp3" type="audio/mp3">
         <source src="sound/backgroundsoundbattle.ogg" type="audio/ogg">
     </audio>
+    <center>
+        <canvas id="gameWorld" tabindex="1" width="800" height="800" style="border: 0px solid brown; background: silver"></canvas>
+    </center>
 
-    <canvas id="gameWorld" tabindex="1" width="800" height="800" style="border: 0px solid brown; background: silver"></canvas>
+    <script>
+        $("#gameWorld").hide();
+        $("#StartButton").click(function () {
+            $("#SplashScreen").hide();
+            $("#Controls").hide();
+            $("#gameWorld").show();
+        });
+    </script>
 </body>
 </html>

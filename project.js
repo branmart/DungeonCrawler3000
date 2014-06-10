@@ -129,8 +129,10 @@ function GameEngine() {
     this.surfaceHeight = null;
     this.running = null;
     this.menuRunning = null;
+    this.startGame = null;
     this.battleRunning = null;
     this.fledSuccessfully = false;
+    this.loginRunning = null;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -212,6 +214,16 @@ GameEngine.prototype.startInput = function () {
                 that.menuRunning = !(that.menuRunning);
             }
         }
+
+        //for the pause menu; cant get it to stop gameplay.
+        /*
+        if (String.fromCharCode(e.which) === 'P') {
+            if (!that.battleRunning & !that.menuRunning) {
+                that.running = !that.running;
+                that.loginRunning = !(that.loginRunning);
+            }
+
+        }*/
         e.preventDefault();
     }, false);
 
@@ -263,6 +275,7 @@ GameEngine.prototype.loop = function () {
     this.down = null;
     this.right = null;
     this.menuIsUp = null;
+    this.loginIsUp = null;
 }
 
 function Entity(game, x, y) {
@@ -411,23 +424,27 @@ Circle.prototype.collideWest = function (oth) {
     return squaredist <= (this.radius + oth.radius) * (this.radius + oth.radius);
 }
 //Game Objects
-function TileZero(game, enemy1, enemy2) {
+function TileZero(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Trivial";
     this.enemies = [];
     this.enemies.push(enemy1);
     this.enemies.push(enemy2);
-    this.battlemap = "./img/desert_battle.jpg";
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 5;
+    this.boundingBoxes = [];
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 360, 50);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
     this.circle1 = new Circle(100, 120, 50);
-    Entity.call(this, game, 20, 20);
+    Entity.call(this, game, 0, 0);
 }
 
 TileZero.prototype = new Entity();
@@ -436,38 +453,34 @@ TileZero.prototype.constructor = TileZero;
 TileZero.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
     this.boundingBoxes = [];
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
     this.boundingBoxes.push(this.boundingbox);
-    this.boundingbox1 = new BoundingBox(20, 20, 100, 760);
+    this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
     this.boundingBoxes.push(this.boundingbox1);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
+    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
     this.boundingBoxes.push(this.boundingbox2);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingBoxes.push(this.boundingbox3);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
-    this.boundingBoxes.push(this.boundingbox4);
-    this.BattleTime = 5;
-    /*this.NorthTile = this.game.platforms[1];
-    this.EastTile = null;
-    this.SouthTile = null;
-    this.WestTile = null;*/
+    this.bb3 = new BoundingBox(565, 0, 400, 284);
+    this.boundingBoxes.push(this.bb3);
 
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[1];
-    this.SouthTile = this.game.platforms[3];
+    this.NorthTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[5];
+    this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileZero.prototype.draw = function (ctx) {
-
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonStart.png"), this.x, this.y, 760, 760);
-    ctx.strokeStyle = "red";
-    var i;
+    if (!this.game.running || this.game.battleRunning) return;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRightWorld.png"), this.x, this.y, 800, 800);
+    //ctx.strokeStyle = "red";
+    /*var i;
     for (i = 0; i < this.boundingBoxes.length; i++) {
-        ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
-    }
-    var i;
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }/*
+    /*var i;
     var j;
     //left side
     for (i = this.boundingbox1.x; i < this.boundingbox1.width; i += this.boundingbox1.width/2) {
@@ -488,7 +501,7 @@ TileZero.prototype.draw = function (ctx) {
     for (k = 0; k < 5; k++) {
         for (j = 0; j < 4; j++)
             ctx.drawImage(ASSET_MANAGER.getAsset("./img/tree.png"), 500 + k * 55, 20+j*65, this.boundingbox1.width / 2, this.boundingbox1.height / 10);
-    }
+    }*/
 
 
     ctx.beginPath();
@@ -497,19 +510,30 @@ TileZero.prototype.draw = function (ctx) {
 
 }
 
-function TileOne(game, hero) {
+function TileOne(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
-    this.boundingbox2 = new BoundingBox(550, 20, 300, 50);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(415, 625, 100, 100);
+    this.enemyStrength = "Easy";
 
-    Entity.call(this, game, 20, 20);
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+
+    Entity.call(this, game, 0, 0);
 }
 
 TileOne.prototype = new Entity();
@@ -517,40 +541,68 @@ TileOne.prototype.constructor = TileZero;
 
 TileOne.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
 
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 300);
-    this.boundingbox2 = new BoundingBox(400, 20, 350, 200);
-    this.boundingbox3 = new BoundingBox(705, 110, 45, 60);
-    this.boundingbox4 = new BoundingBox(21, 410, 300, 400);
+    /*
+        this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(565, 0, 400, 300);
+    this.boundingBoxes.push(this.bb3);
+    */
 
-    this.NorthTile = this.game.platforms[3];
+
+    this.NorthTile = this.game.platforms[2];
     this.EastTile = null;
     this.SouthTile = this.game.platforms[0];
-    this.WestTile = this.game.platforms[2];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileOne.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMap.png"), this.x, this.y, 760, 760);
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
+    
 
 
 }
 
-function TileTwo(game, hero) {
+function TileTwo(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Easy";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
 
-    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
 
 
-    Entity.call(this, game, 20, 20);
+    Entity.call(this, game, 0, 0);
 }
 
 TileTwo.prototype = new Entity();
@@ -558,35 +610,54 @@ TileTwo.prototype.constructor = TileZero;
 
 TileTwo.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
 
-    this.boundingbox1 = new BoundingBox(20, 20, 200, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(20, 500, 760, 300);
-
-
-    this.NorthTile = null;
-    this.EastTile = this.game.platforms[1];
-    this.SouthTile = null;
-    this.WestTile = null;
+    this.NorthTile = this.game.platforms[4];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[1];
+    this.WestTile = this.game.platforms[3];
     Entity.prototype.update.call(this);
 }
 
 TileTwo.prototype.draw = function (ctx) {
-    if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonRoom.png"), this.x, this.y, 760, 760);
+    if (!this.game.running || this.game.battleRunning) return;
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
+    
 }
 
-function TileThree(game, hero) {
+function TileThree(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Easy";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 300, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3 = new BoundingBox(500, 20, 275, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileThree.prototype = new Entity();
@@ -594,34 +665,55 @@ TileThree.prototype.constructor = TileZero;
 
 TileThree.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.boundingbox1 = new BoundingBox(20, 20, 275, 760);
-    this.boundingbox2 = new BoundingBox(20, 20, 760, 275);
-    this.boundingbox3= new BoundingBox(500, 20, 275, 760);
+    this.boundingBoxes = [];
 
-
-
-
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 200, 800);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 555, 900, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(0, 0, 900, 305);
+    this.boundingBoxes.push(this.bb3);
 
     this.NorthTile = null;
-    this.EastTile = null;
-    this.SouthTile = this.game.platforms[1];
+    this.EastTile = this.game.platforms[2];
+    this.SouthTile = null;
     this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileThree.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/BossMap.png"), this.x, this.y, 760, 760);
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/Right.png"), this.x, this.y, 800, 800);
+
 }
 
-function TileFour(game, hero) {
+function TileFour(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Medium";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileFour.prototype = new Entity();
@@ -629,26 +721,54 @@ TileFour.prototype.constructor = TileZero;
 
 TileFour.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[1];
-    this.EastTile = this.game.platforms[5];
-    this.SouthTile = this.game.platforms[7];
-    this.WestTile = this.game.platforms[3];
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(0, 0 , 800, 275);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[2];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileFour.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    var i;
+
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
+    
 }
 
-function TileFive(game, hero) {
+function TileFive(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Trivial";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileFive.prototype = new Entity();
@@ -656,26 +776,53 @@ TileFive.prototype.constructor = TileZero;
 
 TileFive.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[2];
-    this.EastTile = null;
-    this.SouthTile = this.game.platforms[8];
-    this.WestTile = this.game.platforms[4];
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    //this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 520, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[6];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[0];
     Entity.prototype.update.call(this);
 }
 
 TileFive.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    var i;
+    
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
 }
 
-function TileSix(game, hero) {
+function TileSix(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Trivial";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileSix.prototype = new Entity();
@@ -683,26 +830,52 @@ TileSix.prototype.constructor = TileZero;
 
 TileSix.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[3];
-    this.EastTile = this.game.platforms[7];
-    this.SouthTile = null;
-    this.WestTile = null;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(565, 530, 400, 800);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 530, 483, 400);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[12];
+    this.SouthTile = this.game.platforms[7];
+    this.WestTile = this.game.platforms[5];
     Entity.prototype.update.call(this);
 }
 
 TileSix.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/snow.jpg"), this.x, this.y, 760, 760);
+    
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightDownWorld.png"), this.x, this.y, 800, 800);
 }
 
-function TileSeven(game, hero) {
+function TileSeven(game, enemy1, enemy2, enemy3) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Medium";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileSeven.prototype = new Entity();
@@ -710,26 +883,51 @@ TileSeven.prototype.constructor = TileZero;
 
 TileSeven.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[4];
-    this.EastTile = this.game.platforms[8];
-    this.SouthTile = null;
-    this.WestTile = this.game.platforms[6];
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+
+    this.NorthTile = this.game.platforms[6];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[8];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileSeven.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/desert.jpg"), this.x, this.y, 760, 760);
+    
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
 
-function TileEight(game, hero) {
+function TileEight(game, enemy1, enemy2, enemy3, enemy4) {
     this.NorthTile = null;
     this.EastTile = null;
     this.SouthTile = null;
     this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
     this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    Entity.call(this, game, 20, 20);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
 }
 
 TileEight.prototype = new Entity();
@@ -737,18 +935,855 @@ TileEight.prototype.constructor = TileEight;
 
 TileEight.prototype.update = function () {
     if (!this.game.running || this.game.battleRunning) return;
-    this.boundingbox = new BoundingBox(20, 20, 760, 760);
-    this.NorthTile = this.game.platforms[5];
-    this.EastTile = null
-    this.SouthTile = null;
-    this.WestTile = this.game.platforms[7];
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+
+    this.NorthTile = this.game.platforms[7];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[9];
+    this.WestTile = null;
     Entity.prototype.update.call(this);
 }
 
 TileEight.prototype.draw = function (ctx) {
     if (this.game.menu) return;
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/grassland.jpg"), this.x, this.y, 760, 760);
+    
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
 }
+
+
+function TileNine(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileNine.prototype = new Entity();
+TileNine.prototype.constructor = TileNine;
+
+TileNine.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 290);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 525, 1000, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
+
+    this.NorthTile = this.game.platforms[8];
+    this.EastTile = null;
+    this.SouthTile = null;//this.game.platforms[];
+    this.WestTile = this.game.platforms[10];
+    Entity.prototype.update.call(this);
+}
+
+TileNine.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileTen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTen.prototype = new Entity();
+TileTen.prototype.constructor = TileTen;
+
+TileTen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 0, 484, 900);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
+    this.boundingBoxes.push(this.boundingbox3);
+
+    /*
+        this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
+    */
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[9];
+    this.SouthTile = this.game.platforms[11];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileTen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileEleven(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileEleven.prototype = new Entity();
+TileEleven.prototype.constructor = TileEleven;
+
+TileEleven.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(0, 700, 800, 275);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = this.game.platforms[10];
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileEleven.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLava.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwelve(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Trivial";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwelve.prototype = new Entity();
+TileTwelve.prototype.constructor = TileTwelve;
+
+TileTwelve.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    //this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[13];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[6];
+    Entity.prototype.update.call(this);
+}
+
+TileTwelve.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+}
+
+function TileThirteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Trivial";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileThirteen.prototype = new Entity();
+TileThirteen.prototype.constructor = TileThirteen;
+
+TileThirteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    //this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[14];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[12];
+    Entity.prototype.update.call(this);
+}
+
+TileThirteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRightWorld.png"), this.x, this.y, 800, 800);
+}
+
+function TileFourteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileFourteen.prototype = new Entity();
+TileFourteen.prototype.constructor = TileFourteen;
+
+TileFourteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    //this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[15];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[13];
+    Entity.prototype.update.call(this);
+}
+
+TileFourteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
+}
+
+function TileFifteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileFifteen.prototype = new Entity();
+TileFifteen.prototype.constructor = TileFifteen;
+
+TileFifteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 280);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 555, 480, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
+
+    this.NorthTile = this.game.platforms[16];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[18];
+    this.WestTile = this.game.platforms[14];
+    Entity.prototype.update.call(this);
+}
+
+TileFifteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDownLeft.png"), this.x, this.y, 800, 800);
+}
+
+function TileSixteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileSixteen.prototype = new Entity();
+TileSixteen.prototype.constructor = TileSixteen;
+
+TileSixteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+
+    this.NorthTile = this.game.platforms[17];
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[15];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileSixteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpDown.png"), this.x, this.y, 800, 800);
+}
+
+function TileSeventeen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileSeventeen.prototype = new Entity();
+TileSeventeen.prototype.constructor = TileSeventeen;
+
+TileSeventeen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, -100, 383, 1000);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(565, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(0, 0, 800, 275);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = this.game.platforms[16];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileSeventeen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/DownLava.png"), this.x, this.y, 800, 800);
+}
+
+function TileEighteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileEighteen.prototype = new Entity();
+TileEighteen.prototype.constructor = TileEighteen;
+
+TileEighteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(0, 530, 800, 265);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(565, 0, 400, 284);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = this.game.platforms[15];
+    this.EastTile = this.game.platforms[19];
+    this.SouthTile = null;
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileEighteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpRight.png"), this.x, this.y, 800, 800);
+}
+
+
+function TileNineteen(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileNineteen.prototype = new Entity();
+TileNineteen.prototype.constructor = TileNineteen;
+
+TileNineteen.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    //this.boundingbox1 = new BoundingBox(0, 0, 400, 800);
+    //this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 530, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(-100, 0, 1000, 285);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[20];
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[18];
+    Entity.prototype.update.call(this);
+}
+
+TileNineteen.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftRight.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwenty(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwenty.prototype = new Entity();
+TileTwenty.prototype.constructor = TileTwenty;
+
+TileTwenty.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 483, 290);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 525, 1000, 500);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, -100, 400, 1000);
+    this.boundingBoxes.push(this.boundingbox3);
+
+    this.NorthTile = this.game.platforms[21];
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[19];
+    Entity.prototype.update.call(this);
+}
+
+TileTwenty.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/UpLeft.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwentyOne(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwentyOne.prototype = new Entity();
+TileTwentyOne.prototype.constructor = TileTwentyOne;
+
+TileTwentyOne.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-110, 0, 484, 900);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.boundingbox3 = new BoundingBox(565, 525, 400, 400);
+    this.boundingBoxes.push(this.boundingbox3);
+
+    this.NorthTile = null;
+    this.EastTile = this.game.platforms[22];
+    this.SouthTile = this.game.platforms[20];
+    this.WestTile = null;
+    Entity.prototype.update.call(this);
+}
+
+TileTwentyOne.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/RightDown.png"), this.x, this.y, 800, 800);
+}
+
+function TileTwentyTwo(game, enemy1, enemy2, enemy3, enemy4) {
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = null;
+    this.enemyStrength = "Hardest";
+
+    this.enemies = [];
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    this.enemies.push(enemy3);
+    this.battlemap = "./img/battle.png";
+    this.BattleTime = 30;
+    this.boundingBoxes = [];
+
+    this.boundingbox = new BoundingBox(20, 20, 760, 760);
+
+    this.boundingbox1 = null;
+    this.boundingbox2 = null;
+    this.boundingbox3 = null;
+    this.boundingbox4 = null;
+    this.boundingbox5 = null;
+    Entity.call(this, game, 0, 0);
+}
+
+TileTwentyTwo.prototype = new Entity();
+TileTwentyTwo.prototype.constructor = TileTwentyTwo;
+
+TileTwentyTwo.prototype.update = function () {
+    if (!this.game.running || this.game.battleRunning) return;
+    this.boundingBoxes = [];
+    this.boundingbox = new BoundingBox(0, 0, 800, 800);
+    this.boundingBoxes.push(this.boundingbox);
+    this.boundingbox1 = new BoundingBox(-100, 0, 1000, 290);
+    this.boundingBoxes.push(this.boundingbox1);
+    this.boundingbox2 = new BoundingBox(-100, 555, 1000, 300);
+    this.boundingBoxes.push(this.boundingbox2);
+    this.bb3 = new BoundingBox(500, 0, 900, 900);
+    this.boundingBoxes.push(this.bb3);
+
+    this.NorthTile = null;
+    this.EastTile = null;
+    this.SouthTile = null;
+    this.WestTile = this.game.platforms[21];
+    Entity.prototype.update.call(this);
+}
+
+TileTwentyTwo.prototype.draw = function (ctx) {
+    if (this.game.menu) return;
+    var i;
+    for (i = 0; i < this.boundingBoxes.length; i++) {
+        if (this.boundingBoxes[i] != null) {
+            ctx.strokeRect(this.boundingBoxes[i].x, this.boundingBoxes[i].y, this.boundingBoxes[i].width, this.boundingBoxes[i].height);
+        }
+    }
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/DungeonMaps/LeftLava.png"), this.x, this.y, 800, 800);
+}
+
 function Menu(game, x, y, hero) {
     this.abilityOneDescription = hero.currentClass.abilityOneDescription;
     this.abilityTwoDescription = hero.currentClass.abilityTwoDescription;
@@ -1264,6 +2299,7 @@ Menu.prototype.draw = function (ctx) {
 function Battle(game, x, y, one) {
     this.battleTime = 0;
     this.heroOne = one;
+    this.start = false;
     this.selectedEnemy = null;
     this.firstEnemy = this.heroOne.currentTile.enemies[0];
     this.secondEnemy = this.heroOne.currentTile.enemies[1];
@@ -1295,46 +2331,117 @@ Battle.prototype.resetAbilities = function () {
 
     if (this.heroOne.currentClass.abilityOneAP === this.heroOne.currentClass.abilityOneAPNeeded) {
         this.abilityOne = this.heroOne.currentClass.abilityOne;
+        this.heroOne.abilityOne = this.abilityOne;
+
         this.abilityOneDescription = this.heroOne.currentClass.abilityOneDescription;
+        this.heroOne.abilityOneDescription = this.abilityOneDescription;
+
         this.abilityOneDisplay = this.heroOne.currentClass.abilityOneDisplay;
+        this.heroOne.abilityOneDisplay = this.abilityOneDisplay;
+
     }
     if (this.heroOne.currentClass.abilityTwoAP === this.heroOne.currentClass.abilityTwoAPNeeded) {
         this.abilityTwo = this.heroOne.currentClass.abilityTwo;
+        this.heroOne.abilityTwo = this.abilityTwo;
+
         this.abilityTwoDescription = this.heroOne.currentClass.abilityTwoDescription;
+        this.heroOne.abilityTwoDescription = this.abilityTwoDescription;
+
         this.abilityTwoDisplay = this.heroOne.currentClass.abilityTwoDisplay;
+        this.heroOne.abilityTwoDisplay = this.abilityTwoDisplay;
 
 
     }
-    if (this.heroOne.currentClass.abilityThreeAP === this.heroOne.currentClass.abilityThreeAsPNeeded) {
+    if (this.heroOne.currentClass.abilityThreeAP === this.heroOne.currentClass.abilityThreeAPNeeded) {
         this.abilityThree = this.heroOne.currentClass.abilityThree;
+        this.heroOne.abilityThree = this.abilityThree;
+
         this.abilityThreeDescription = this.heroOne.currentClass.abilityThreeDescription;
+        this.heroOne.abilityThreeDescription = this.abilityThreeDescription;
+
         this.abilityThreeDisplay = this.heroOne.currentClass.abilityThreeDisplay;
+        this.heroOne.abilityThreeDisplay = this.abilityThreeDisplay;
 
     }
     if (this.heroOne.currentClass.abilityFourAP === this.heroOne.currentClass.abilityFourAPNeeded) {
         this.abilityFour = this.heroOne.currentClass.abilityFour;
+        this.heroOne.abilityFour = this.abilityFour;
+
         this.abilityFourDescription = this.heroOne.currentClass.abilityFourDescription;
-        this.abilityFour = this.heroOne.currentClass.abilityFour;
+        this.heroOne.abilityFourDescription = this.abilityFourDescription;
+
+        this.abilityFourDisplay = this.heroOne.currentClass.abilityFourDisplay;
+        this.heroOne.abilityFourDisplay = this.abilityFourDisplay;
+
     }
     if (this.heroOne.currentClass.abilityFiveAP === this.heroOne.currentClass.abilityFiveAPNeeded) {
         this.abilityFive = this.heroOne.currentClass.abilityFive;
+        this.heroOne.abilityFive = this.abilityFive;
+
         this.abilityFiveDescription = this.heroOne.currentClass.abilityFiveDescription;
+        this.heroOne.abilityFiveDescription = this.abilityFiveDescription;
+
         this.abilityFiveDisplay = this.heroOne.currentClass.abilityFiveDisplay;
+        this.heroOne.abilityFiveDisplay = this.abilityFiveDisplay;
 
     }
     if (this.heroOne.currentClass.abilitySixAP === this.heroOne.currentClass.abilitySixAPNeeded) {
         this.abilitySix = this.heroOne.currentClass.abilitySix;
+        this.heroOne.abilitySix = this.abilitySix;
+
         this.abilitySixDescription = this.heroOne.currentClass.abilitySixDescription;
+        this.heroOne.abilitySixDescription = this.abilitySixDescription;
+
         this.abilitySixDisplay = this.heroOne.currentClass.abilitySixDisplay;
+        this.heroOne.abilitySixDisplay = this.abilitySixDisplay;
+
     }
+}
+function shuffle(array) {
+    var currentIndex = array.length
+      , temporaryValue
+      , randomIndex
+    ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
 Battle.prototype.update = function () {
     if (this.game.fledSuccessfully) {
         this.battleTime = 0;
         this.game.fledSuccessfully = false;
     }
-    if (this.battleTime > this.heroOne.currentTile.BattleTime) {
-        this.game.battleRunning = true;
+    var enemies = 0;
+
+    if (this.battleTime > this.heroOne.currentTile.BattleTime && !this.game.battleRunning) {
+        this.firstEnemy = null;
+        this.secondEnemy = null;
+        this.thirdEnemy = null;
+        this.heroOne.currentTile.enemies = shuffle(this.heroOne.currentTile.enemies);
+        for(var i = 0; i < this.heroOne.currentTile.enemies.length; i++) {
+            if (typeof this.heroOne.currentTile.enemies[i] === 'undefined') {
+                enemies++;
+            } else if (i-enemies === 0) {
+                this.firstEnemy = this.heroOne.currentTile.enemies[i];
+            } else if (i - enemies === 1) {
+                this.secondEnemy = this.heroOne.currentTile.enemies[i];
+            } else if (i - enemies === 2) {
+                this.thirdEnemy = this.heroOne.currentTile.enemies[i];
+            }
+        }
+        if (enemies != this.heroOne.currentTile.enemies.length) this.game.battleRunning = true;
     }
     if (this.game.battleRunning) {
         if (this.game.click) {
@@ -1369,16 +2476,29 @@ Battle.prototype.update = function () {
                 this.resetAbilities();
             }
             while (this.selectedEnemy === null && i < this.heroOne.currentTile.enemies.length) {
-                if (this.heroOne.currentTile.enemies[i].hp > 0) {
-                    this.selectedEnemy = this.heroOne.currentTile.enemies[i];
-                } else i++;
+                if (typeof this.heroOne.currentTile.enemies[i] != 'undefined') {
+                    if(this.heroOne.currentTile.enemies[i].hp > 0) {
+                        this.selectedEnemy = this.heroOne.currentTile.enemies[i];
+                    } else i++;
+                }else i++;
             }
-            if (this.game.click.x > this.firstEnemy.x && this.game.click.x < this.firstEnemy.x + 60 && this.game.click.y > this.firstEnemy.y && this.game.click.y < this.firstEnemy.y + 90 && this.firstEnemy.hp >0) {
-                this.selectedEnemy = this.firstEnemy;
+            if (this.firstEnemy != null) {
+                if (this.game.click.x > this.firstEnemy.x && this.game.click.x < this.firstEnemy.x + 60 && this.game.click.y > this.firstEnemy.y && this.game.click.y < this.firstEnemy.y + 90 && this.firstEnemy.hp > 0) {
+                    this.selectedEnemy = this.firstEnemy;
+                }
             }
-            if (this.game.click.x > this.secondEnemy.x && this.game.click.x < this.secondEnemy.x + 60 && this.game.click.y > this.secondEnemy.y && this.game.click.y < this.secondEnemy.y + 90 && this.secondEnemy.hp > 0) {
-                this.selectedEnemy = this.secondEnemy;
+            if (this.secondEnemy != null) {
+                if (this.game.click.x > this.secondEnemy.x && this.game.click.x < this.secondEnemy.x + 60 && this.game.click.y > this.secondEnemy.y && this.game.click.y < this.secondEnemy.y + 90 && this.secondEnemy.hp > 0) {
+                    this.selectedEnemy = this.secondEnemy;
+                }
             }
+            if (this.thirdEnemy != null) {
+                if (this.game.click.x > this.thirdEnemy.x && this.game.click.x < this.thirdEnemy.x + 60 && this.game.click.y > this.thirdEnemy.y && this.game.click.y < this.thirdEnemy.y + 90 && this.thirdEnemy.hp > 0) {
+                    this.selectedEnemy = this.thirdEnemy;
+                }
+            }
+
+ 
             //ability 1
             if (this.game.click.x > 23 && this.game.click.x < 273 && this.game.click.y > 623 && this.game.click.y < 697 && this.selectedEnemy != null) {
                 if (this.heroOne.currentClass.abilityNineAP === this.heroOne.currentClass.abilityNineAPNeeded) {
@@ -1400,45 +2520,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                if (this.firstEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityOne != null) {
+                    this.heroOne.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
                         } else {
                             this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
                     }
-                }
-                if (this.secondEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
                         } else {
-                            this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
-                    }
 
-                }
-                if (this.thirdEnemy != null) {
-                    if (this.heroOne.currentClass.name === "Berserker") {
-                        if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
-                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                        } else if (this.heroOne.currentClass.evade) {
-                            this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
                         } else {
-                            this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
                         }
-                    }
 
+                    }
                 }
+               
 
 
                 if (this.heroOne.isPoisoned) {
@@ -1480,19 +2609,53 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityTwo != null) {
+                    this.heroOne.abilityTwo(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
+                    }
+                }                
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
                 }
@@ -1532,18 +2695,52 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityThree != null) {
+                    this.heroOne.abilityThree(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
@@ -1583,14 +2780,52 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne,this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityFour != null) {
+                    this.heroOne.abilityFour(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+
+                    }
                 }
                 if (this.thirdEnemy != null) {
                     this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
@@ -1634,19 +2869,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                var l = 0;
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilityFive != null) {
+                    this.heroOne.abilityFive(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
+              
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.selectedEnemy.poisonDamage;
                 }
@@ -1685,18 +2955,54 @@ Battle.prototype.update = function () {
                 if (this.heroOne.currentClass.name === "Samurai") {
                     if (this.heroOne.currentClass.innerPeace) this.selectedEnemy.aggro = false;
                 }
-                this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                if (this.firstEnemy != null) {
-                    this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
-                }
-                if (this.secondEnemy != null) {
-                    this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                if (this.heroOne.abilitySix != null) {
+                    this.heroOne.abilitySix(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                    if (this.firstEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
+                    }
+                    if (this.secondEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.secondEnemy.ability(this.heroOne, this.secondEnemy, this.firstEnemy, this.thirdEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
-                }
-                if (this.thirdEnemy != null) {
-                    this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                    }
+                    if (this.thirdEnemy != null) {
+                        if (this.heroOne.currentClass.name === "Berserker") {
+                            if (this.heroOne.currentClass.counter && !this.heroOne.currentClass.evade) {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else if (this.heroOne.currentClass.evade) {
+                                this.heroOne.currentClass.abilityOne(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                            } else {
+                                this.thirdEnemy.ability(this.heroOne, this.thirdEnemy, this.firstEnemy, this.secondEnemy);
+                            }
+                        } else {
+                            this.firstEnemy.ability(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy);
+                        }
 
+                    }
                 }
+              
                 if (this.heroOne.isPoisoned) {
                     this.heroOne.currentClass.hp -= this.firstEnemy.poisonDamage;
                 }
@@ -1734,35 +3040,64 @@ Battle.prototype.update = function () {
             //snd.currentTime = 0;
 
             //end battle logic
-            if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp >= 0) {
-                this.game.battleRunning = false;
-                this.game.running = false;
-            } else if (this.firstEnemy.hp <= 0 && this.secondEnemy.hp <=0 && this.heroOne.currentClass.hp >= 0) {
-                this.game.battleRunning = false;
-                this.battleTime = 0;
-                this.heroOne.x = this.heroOne.currentX;
-                this.heroOne.y = this.heroOne.currentY;
-                this.heroOne.currentClass.phystr = this.heroOne.currentClass.phystrMax;
-                this.heroOne.currentClass.phydef = this.heroOne.currentClass.phydefMax;
-                this.heroOne.currentClass.magdef = this.heroOne.currentClass.magdefMax;
-                this.heroOne.currentClass.magstr = this.heroOne.currentClass.magstrMax;
+            var firstIsAlive = true;
+            var secondIsAlive = true;
+            var thirdIsAlive = true;
 
-                this.heroOne.currentClass.exp += this.firstEnemy.exp + this.firstEnemy.exp;
-                this.heroOne.currentClass.ap += this.firstEnemy.ap + this.firstEnemy.exp;
-                this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
-                this.heroOne.currentClass.mp = this.heroOne.currentClass.mp;
-                this.selectedEnemy = null;
-                this.firstEnemy.reset();
-                this.secondEnemy.reset();
-            } else if (this.heroOne.currentClass.hp <= 0 && this.firstEnemy.hp <= 0) {
+            if (this.heroOne.currentClass.hp <= 0) {
                 this.game.battleRunning = false;
                 this.game.running = false;
+            } else if (this.heroOne.currentClass.hp > 0) {
+
+                if (this.firstEnemy != null) {
+                    if (this.firstEnemy.hp <= 0) firstIsAlive = false;
+                } else {
+                    firstIsAlive = false;
+                }
+                if (this.secondEnemy != null) {
+                    if (this.secondEnemy.hp <= 0) secondIsAlive = false;
+                } else {
+                    secondIsAlive = false;
+                }
+                if (this.thirdEnemy != null) {
+                    if (this.thirdEnemy.hp <= 0) thirdIsAlive = false;
+                } else {
+                    thirdIsAlive = false;
+                }
+                if (!firstIsAlive && !secondIsAlive && !thirdIsAlive) {
+                    this.game.battleRunning = false;
+                    this.battleTime = 0;
+                    this.heroOne.x = this.heroOne.currentX;
+                    this.heroOne.y = this.heroOne.currentY;
+                    this.heroOne.currentClass.phystr = this.heroOne.currentClass.phystrMax;
+                    this.heroOne.currentClass.phydef = this.heroOne.currentClass.phydefMax;
+                    this.heroOne.currentClass.magdef = this.heroOne.currentClass.magdefMax;
+                    this.heroOne.currentClass.magstr = this.heroOne.currentClass.magstrMax;
+                    if (this.firstEnemy != null) this.heroOne.currentClass.exp += this.firstEnemy.exp;
+                    if (this.secondEnemy != null) this.heroOne.currentClass.exp += this.secondEnemy.exp;
+                    if (this.thirdEnemy != null) this.heroOne.currentClass.exp += this.thirdEnemy.exp;
+
+                    if (this.firstEnemy != null) this.heroOne.currentClass.ap += this.firstEnemy.ap;
+                    if (this.secondEnemy != null) this.heroOne.currentClass.ap += this.secondEnemy.exp;
+                    if (this.thirdEnemy != null) this.heroOne.currentClass.ap += this.thirdEnemy.ap;
+
+                    this.heroOne.currentClass.hp = this.heroOne.currentClass.hp;
+                    this.heroOne.currentClass.mp = this.heroOne.currentClass.mp;
+                    this.selectedEnemy = null;
+                    this.firstEnemy.reset();
+                    this.secondEnemy.reset();
+                }
             }
             this.clickX = this.game.click.x;
             this.clickY = this.game.click.y;
         }
     }
-    if (!this.game.menuRunning) {
+    var canvas = document.getElementById('StartButton');
+
+    if (this.game.click) {
+        this.start = true;
+    }
+    if (!this.game.menuRunning && this.game.running && this.start) {
         this.battleTime += this.game.clockTick;
         this.actionTime += this.game.clockTick;
 
@@ -1777,21 +3112,33 @@ Battle.prototype.draw = function (ctx) {
     //console.log(this.heroOne.currentClass);
     if (this.game.battleRunning) {
         ctx.drawImage(ASSET_MANAGER.getAsset(this.heroOne.currentTile.battlemap), this.x, this.y, 760, 760);
-        this.firstEnemy.x = 500;
-        this.firstEnemy.y = 20;
-        ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
-        if (this.firstEnemy.hp >= 0) {
-            this.firstEnemy.draw(ctx);
+        if (this.firstEnemy != null) {
+            this.firstEnemy.x = 450;
+            this.firstEnemy.y = 60;
+            //ctx.strokeRect(this.firstEnemy.x + 25, this.firstEnemy.y + 20, 60, 90);
+            if (this.firstEnemy.hp >= 0) {
+                this.firstEnemy.draw(ctx);
+            }
         }
 
-        this.secondEnemy.x = 600;
-        this.secondEnemy.y = 80;
-
-
-        ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
-        if (this.secondEnemy.hp >= 0) {
-            this.secondEnemy.draw(ctx);
+        if (this.secondEnemy != null) {
+            this.secondEnemy.x = 550;
+            this.secondEnemy.y = 120;
+            //ctx.strokeRect(this.secondEnemy.x + 25, this.secondEnemy.y + 20, 60, 90);
+            if (this.secondEnemy.hp >= 0) {
+                this.secondEnemy.draw(ctx);
+            }
         }
+
+        if (this.thirdEnemy != null) {
+            this.thirdEnemy.x = 650;
+            this.thirdEnemy.y = 160;
+            //ctx.strokeRect(this.thirdEnemy.x + 25, this.thirdEnemy.y + 20, 60, 90);
+            if (this.thirdEnemy.hp >= 0) {
+                this.thirdEnemy.draw(ctx);
+            }
+        }
+
 
         this.heroOne.x = 50;
         this.heroOne.y = 500;
@@ -1806,7 +3153,7 @@ Battle.prototype.draw = function (ctx) {
             this.game.classSystem[i].draw(ctx, 40 + (760 / this.game.classSystem.length * i), 560, 1.75);
         }
         if (x > 20 && x < 273 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityOneDisplay != null) {
                 this.heroOne.abilityOneDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1825,8 +3172,9 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.save();
         ctx.fillStyle = "blue";
-
-        if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+            if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeStyle = "red";
 
         ctx.moveTo(137, 623);
@@ -1843,7 +3191,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 2
         if (x > 20 && x < 273 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityTwoDisplay != null) {
                 this.heroOne.abilityTwoDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1860,7 +3208,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 20 && this.game.mouse.x < 273 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(20, 623 + 75, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityTwoDescription, 100, 750);
@@ -1869,7 +3220,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 3
         if (x > 274 && x < 527 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityThreeDisplay != null) {
                 this.heroOne.abilityThreeDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1886,7 +3237,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(274, 623, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityThreeDescription, 360, 675);
@@ -1895,7 +3249,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 4
         if (x > 274 && x < 527 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityFourDisplay != null) {
                 this.heroOne.abilityFourDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1912,7 +3266,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 274 && this.game.mouse.x < 527 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(274, 623 + 75, 252, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFourDescription, 360, 750);
@@ -1921,7 +3278,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 5
         if (x > 528 && x < 780 && y > 623 && y < 697) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilityFiveDisplay != null) {
                 this.heroOne.abilityFiveDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1938,7 +3295,10 @@ Battle.prototype.draw = function (ctx) {
             }
         }
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 623 && this.game.mouse.y < 697) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(528, 623, 251, 75);
         ctx.textAlign = "center";
         ctx.fillText(this.heroOne.abilityFiveDescription, 600, 675);
@@ -1947,7 +3307,7 @@ Battle.prototype.draw = function (ctx) {
 
         //ability 6
         if (x > 528 && x < 780 && y > 698 && y < 775) {
-            if (this.selectedEnemy != null) {
+            if (this.selectedEnemy != null && this.heroOne.abilitySixDisplay != null) {
                 this.heroOne.abilitySixDisplay(this.heroOne, this.selectedEnemy, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
                 if (this.firstEnemy != null) {
                     this.firstEnemy.ability1Display(this.heroOne, this.firstEnemy, this.secondEnemy, this.thirdEnemy, this.actionTime, ctx);
@@ -1965,7 +3325,10 @@ Battle.prototype.draw = function (ctx) {
         }
 
         ctx.fillStyle = "blue";
-        if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        if (this.game.mouse) {
+
+            if (this.game.mouse.x > 528 && this.game.mouse.x < 780 && this.game.mouse.y > 698 && this.game.mouse.y < 775) { ctx.fillStyle = "red"; }
+        }
         ctx.strokeRect(528, 623 + 75, 251, 75);
         ctx.moveTo(650, 698);
         ctx.lineTo(650, 775);
@@ -2002,14 +3365,25 @@ Battle.prototype.draw = function (ctx) {
         }
         ctx.fillStyle = "red";
         if (this.game.mouse) {
-            if (this.game.mouse.x > this.firstEnemy.x && this.game.mouse.x < this.firstEnemy.x + 60 && this.game.mouse.y > this.firstEnemy.y && this.game.mouse.y < this.firstEnemy.y + 90) {
-                ctx.fillText(this.firstEnemy.hp, 50, 50);
+            if (this.firstEnemy != null) {
+                if (this.game.mouse.x > this.firstEnemy.x && this.game.mouse.x < this.firstEnemy.x + 60 && this.game.mouse.y > this.firstEnemy.y && this.game.mouse.y < this.firstEnemy.y + 90) {
+                    ctx.fillText(this.firstEnemy.hp, 50, 50);
 
+                }
             }
-            if (this.game.mouse.x > this.secondEnemy.x && this.game.mouse.x < this.secondEnemy.x + 60 && this.game.mouse.y > this.secondEnemy.y && this.game.mouse.y < this.secondEnemy.y + 90) {
-                ctx.fillText(this.secondEnemy.hp, 50, 50);
+            if (this.secondEnemy != null) {
+                if (this.game.mouse.x > this.secondEnemy.x && this.game.mouse.x < this.secondEnemy.x + 60 && this.game.mouse.y > this.secondEnemy.y && this.game.mouse.y < this.secondEnemy.y + 90) {
+                    ctx.fillText(this.secondEnemy.hp, 50, 50);
 
+                }
             }
+
+            if (this.thirdEnemy != null) {
+                if (this.game.mouse.x > this.thirdEnemy.x && this.game.mouse.x < this.thirdEnemy.x + 60 && this.game.mouse.y > this.thirdEnemy.y && this.game.mouse.y < this.thirdEnemy.y + 90) {
+                    ctx.fillText(this.thirdEnemy.hp, 50, 50);
+                }
+            }
+
         }
 
     }
@@ -2216,7 +3590,7 @@ Emu.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) 
                 ctx.fillText(0, hero.x - 10, hero.y + 5);
 
             }
-        } else {
+        } /*else {
             if (ally1.phystr < ally1.phydef) {
                 ctx.fillText("Attack Up", ally1.x - 10, ally1.y + 5);
             } else if (ally1.phystr > ally1.phydef) {
@@ -2228,7 +3602,7 @@ Emu.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) 
             } else if (ally1.phystr > ally1.phydef) {
                 ctx.fillText("Defense Up", ally2.x - 10, ally2.y + 5);
             }
-        }
+        }*/
         
         ctx.restore();
     }
@@ -2343,6 +3717,1293 @@ Wolfkin.prototype.draw = function (ctx) {
     //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Wolfkin.png"),
     //            this.x, this.y, 80, 80);
 }
+function Dinox(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 60;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 12;
+    this.phydef = 7;
+    this.magstr = 2;
+    this.magdef = 1;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 2;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/dinox.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Dinox.prototype = new Entity();
+Dinox.prototype.constructor = Dinox;
+
+Dinox.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Dinox.prototype.reset = function () {
+    this.hp = 60;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Dinox.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Dinox.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Claw Slash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Dinox.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/dinox.png"),
+    //            this.x, this.y, 80, 80);
+}
+function LizardMan(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 65;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 14;
+    this.phydef = 10;
+    this.magstr = 2;
+    this.magdef = 2;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 2;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lizardman.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+LizardMan.prototype = new Entity();
+LizardMan.prototype.constructor = LizardMan;
+
+LizardMan.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+LizardMan.prototype.reset = function () {
+    this.hp = 65;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+LizardMan.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+LizardMan.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Cleaver Hack", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+LizardMan.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/LizardMan.png"),
+    //            this.x, this.y, 80, 80);
+}
+function TornadoLizard(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 65;
+    this.mp = 15;
+    this.aggro = false;
+    this.phystr = 4;
+    this.phydef = 4;
+    this.magstr = 15;
+    this.magdef = 12;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Shadow");
+    this.exp = 5;
+    this.ap = 8;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.AttackAnimation = new Animation(ASSET_MANAGER.getAsset("/.img/tornadolizard.png"), 64, 64, .1, 3, false, false, 1, center, column);
+    //Animation()
+
+    this.attacking = false;
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25; 
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+TornadoLizard.prototype = new Entity();
+TornadoLizard.prototype.constructor = TornadoLizard;
+
+TornadoLizard.prototype.update = function () {
+    //this.attacking = true;
+    Entity.prototype.update.call(this);
+}
+TornadoLizard.prototype.reset = function () {
+    this.hp = 65;
+    this.mp = 15;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+TornadoLizard.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+            hero.currentClass.phydef--;
+            
+        }
+    }
+
+}
+TornadoLizard.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+            }
+        } else {
+            ctx.fillText("Mini Storm", hero.x - 10, hero.y + 5);
+        }
+        this.attacking = true;
+        ctx.restore();
+    }
+}
+TornadoLizard.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    //this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6); //1.7);
+    //if (this.attacking) {
+    //    this.AttackAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
+   //     this.attacking = false;
+    //} else {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.6);
+    //}
+    //this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tornadolizard.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/TornadoLizard.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Seabird(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 30;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 10;
+    this.phydef = 4;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Gravity");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 3;
+    this.ap = 2;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/seabird.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Seabird.prototype = new Entity();
+Seabird.prototype.constructor = Seabird;
+
+Seabird.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Seabird.prototype.reset = function () {
+    this.hp = 30;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Seabird.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Seabird.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Gull Slash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Seabird.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Seabird.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Gillman(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 70;
+    this.mp = 5;
+    this.aggro = false;
+    this.phystr = 18;
+    this.phydef = 12;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 7;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gillman.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Gillman.prototype = new Entity();
+Gillman.prototype.constructor = Gillman;
+
+Gillman.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Gillman.prototype.reset = function () {
+    this.hp = 70;
+    this.mp = 5;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Gillman.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Gillman.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Trident Stab", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Gillman.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Gillman.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Sentinel(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 75;
+    this.mp = 10;
+    this.aggro = false;
+    this.phystr = 18;
+    this.phydef = 12;
+    this.magstr = 0;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 8;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/sentinel.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Sentinel.prototype = new Entity();
+Sentinel.prototype.constructor = Sentinel;
+
+Sentinel.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Sentinel.prototype.reset = function () {
+    this.hp = 75;
+    this.mp = 10;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Sentinel.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Sentinel.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Sword Hack", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Sentinel.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Sentinel.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Siren(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 85;
+    this.mp = 15;
+    this.aggro = false;
+    this.phystr = 8;
+    this.phydef = 10;
+    this.magstr = 18;
+    this.magdef = 20;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Dark");
+    this.exp = 10;
+    this.ap = 7;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/siren.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Siren.prototype = new Entity();
+Siren.prototype.constructor = Siren;
+
+Siren.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Siren.prototype.reset = function () {
+    this.hp = 85;
+    this.mp = 15;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Siren.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Siren.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Seductive Tune", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Siren.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Siren.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Hydra(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 85;
+    this.mp = 12;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 15;
+    this.magstr = 2;
+    this.magdef = 7;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Flame");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 8;
+    this.ap = 5;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/hydra.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Hydra.prototype = new Entity();
+Hydra.prototype.constructor = Hydra;
+
+Hydra.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Hydra.prototype.reset = function () {
+    this.hp = 85;
+    this.mp = 12;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Hydra.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Hydra.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Recursive Strike", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Hydra.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Hydra.png"),
+    //            this.x, this.y, 80, 80);
+}
+function BlueDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 95;
+    this.mp = 20;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 20;
+    this.magstr = 0;
+    this.magdef = 10;
+    this.weakness = [];
+    this.weakness.push("Light");
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Dark");
+    this.exp = 10;
+    this.ap = 7;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bluedragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Warrior";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+BlueDragon.prototype = new Entity();
+BlueDragon.prototype.constructor = BlueDragon;
+
+BlueDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+BlueDragon.prototype.reset = function () {
+    this.hp = 95;
+    this.mp = 20;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+BlueDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+BlueDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Tail Thrash", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+BlueDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/BlueDragon.png"),
+    //            this.x, this.y, 80, 80);
+}
+function FlameDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 100;
+    this.mp = 22;
+    this.aggro = false;
+    this.phystr = 12;
+    this.phydef = 18;
+    this.magstr = 20;
+    this.magdef = 15;
+    this.weakness = [];
+	this.weakness.push("Water");
+    this.strength = [];
+    this.strength.push("Fire");
+    this.exp = 15;
+    this.ap = 9;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/flamedragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "BMage";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+FlameDragon.prototype = new Entity();
+FlameDragon.prototype.constructor = FlameDragon;
+
+FlameDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+FlameDragon.prototype.reset = function () {
+    this.hp = 100;
+    this.mp = 22;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+FlameDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            } 
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+FlameDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Fireball", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+FlameDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/FlameDragon.png"),
+      //            this.x, this.y, 80, 80);
+}
+function SeaDragon(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 100;
+    this.mp = 22;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 20;
+    this.magstr = 10;
+    this.magdef = 5;
+    this.weakness = [];
+    this.weakness.push("Fire");
+    this.strength = [];
+    this.strength.push("Water");
+    this.exp = 17;
+    this.ap = 11;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/seadragon.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "DKnight";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+SeaDragon.prototype = new Entity();
+SeaDragon.prototype.constructor = SeaDragon;
+
+SeaDragon.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+SeaDragon.prototype.reset = function () {
+    this.hp = 100;
+    this.mp = 22;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+SeaDragon.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+SeaDragon.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Vortex", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+SeaDragon.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/SeaDragon.png"),
+    //            this.x, this.y, 80, 80);
+}
+function Chimera(game, cen, col) {
+    var center = cen;
+    var column = col;
+    this.hp = 120;
+    this.mp = 24;
+    this.aggro = false;
+    this.phystr = 22;
+    this.phydef = 14;
+    this.magstr = 16;
+    this.magdef = 10;
+    this.weakness = [];
+    this.weakness.push("Gravity");
+    this.strength = [];
+    this.strength.push("Water");
+    this.strength.push("Fire");
+    this.exp = 20;
+    this.ap = 14;
+    this.isPoisoned = false;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 2, center, column);
+    this.Danimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 0, center, column);
+    this.Lanimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 1, center, column);
+    this.Uanimation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .4, 2, true, false, 3, center, column);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/chimera.png"), 64, 64, .1, 3, true, false, 0, center, column);
+    this.movingNorth = false;
+    this.movingSouth = true;
+    this.movingWest = false;
+    this.movingEast = false;
+    this.boxes = true;
+    this.x = 700;
+    this.y = 50;
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    this.widthClick = 60;
+    this.heightClick = 90;
+    this.currentClass = "Berserker";
+
+    Entity.call(this, game, this.x, this.y);
+
+}
+Chimera.prototype = new Entity();
+Chimera.prototype.constructor = Chimera;
+
+Chimera.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+}
+Chimera.prototype.reset = function () {
+    this.hp = 120;
+    this.mp = 24;
+    this.poisonTime = 3;
+    this.poisonTimeStart = 3;
+    this.isPoisoned = false;
+    this.aggro = false;
+
+    Entity.prototype.update.call(this);
+}
+Chimera.prototype.ability = function (hero, enemy, ally1, ally2) {
+    if (this.aggro) {
+        if (hero.currentClass.name === "Psychic") {
+
+            if (!hero.currentClass.physGuard) {
+                if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                    hero.currentClass.pastDamage = (enemy.phystr - hero.currentClass.phydef);
+                    hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+                }
+            }
+        } else {
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                hero.currentClass.hp = hero.currentClass.hp - (enemy.phystr - hero.currentClass.phydef);
+            }
+        }
+
+    } else {
+        if ((enemy.phystr - hero.currentClass.phydef) > 0) hero.currentClass.phydef--;
+    }
+
+}
+Chimera.prototype.ability1Display = function (hero, enemy, ally1, ally2, time, ctx) {
+    if (time < 0.75) {
+        ctx.save();
+        ctx.fillStyle = "Red";
+        if (this.aggro) {
+
+            if ((enemy.phystr - hero.currentClass.phydef) > 0) {
+                ctx.fillText("-" + (enemy.phystr - hero.currentClass.phydef), hero.x - 10, hero.y + 5);
+
+            } else {
+                ctx.fillText(0, hero.x - 10, hero.y + 5);
+
+            }
+        } else {
+            ctx.fillText("Amalgo-flame", hero.x - 10, hero.y + 5);
+        }
+        ctx.restore();
+    }
+}
+Chimera.prototype.draw = function (ctx) {
+    this.xClick = this.x + 25;
+    this.yClick = this.y + 20;
+    //ctx.strokeRect(this.xClick, this.yClick, this.widthClick, this.heightClick);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.7);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Chimera.png"),
+    //            this.x, this.y, 80, 80);
+}
 function Hero(game, cen, col, job, tile) {
     this.cen = cen;
     this.col = col;
@@ -2400,7 +5061,6 @@ Hero.prototype.constructor = Hero;
 Hero.prototype.update = function () {
     if (!this.game.menuRunning && !this.game.battleRunning) {
         this.circle1 = new Circle(this.x+26, this.y+27, 27);
-
         this.boundingbox.x = this.x;
         this.boundingbox.y = this.y;
         this.boundingbox.width = this.animation.frameWidth + 20;
@@ -2425,27 +5085,23 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox1, "up")) {
-                    this.movingNorth = false;
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
+                    if (this.boundingbox.collideBottomObject(this.currentTile.boundingBoxes[i], "up")) {
+                        this.movingNorth = false;
+                    }
                 }
             }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox2, "up")) {
-                    this.movingNorth = false;
-                }
-            }
-
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox3, "up")) {
-                    this.movingNorth = false;
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideBottomObject(this.currentTile.boundingbox4, "up")) {
-                    this.movingNorth = false;
-                }
-            }
+           
             if (!this.boundingbox.collideTop(this.currentTile.boundingbox)) {
                 this.movingNorth = false;
                 if (this.currentTile.NorthTile != null) {
@@ -2473,28 +5129,20 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = true;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox1, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox2, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox3, "left")) {
-                    this.movingWest = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideRightObject(this.currentTile.boundingbox4, "left")) {
-                    this.movingWest = false;
-
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
+                    if (this.boundingbox.collideRightObject(this.currentTile.boundingBoxes[i], "left")) {
+                        this.movingWest = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideLeft(this.game.platforms[0].boundingbox)) {
@@ -2524,24 +5172,20 @@ Hero.prototype.update = function () {
             this.movingSouth = true;
             this.movingWest = false;
             this.movingEast = false;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox1, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox2, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox3, "down")) {
-                    this.movingSouth = false;
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideTopObject(this.currentTile.boundingbox4, "down")) {
-                    this.movingSouth = false;
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
+                    if (this.boundingbox.collideTopObject(this.currentTile.boundingBoxes[i], "down")) {
+                        this.movingSouth = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideBottom(this.game.platforms[0].boundingbox)) {
@@ -2571,28 +5215,20 @@ Hero.prototype.update = function () {
             this.movingSouth = false;
             this.movingWest = false;
             this.movingEast = true;
-            if (this.currentTile.boundingbox1 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox1, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox2 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox2, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox3 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox3, "right")) {
-                    this.movingEast = false;
-
-                }
-            }
-            if (this.currentTile.boundingbox4 != null) {
-                if (this.boundingbox.collideLeftObject(this.currentTile.boundingbox4, "right")) {
-                    this.movingEast = false;
-
+            for (var i = 1; i < this.currentTile.boundingBoxes.length; i++) {
+                if (this.currentTile.boundingBoxes[i] != null) {
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
+                    if (this.boundingbox.collideLeftObject(this.currentTile.boundingBoxes[i], "right")) {
+                        this.movingEast = false;
+                    }
                 }
             }
             if (!this.boundingbox.collideRight(this.game.platforms[0].boundingbox)) {
@@ -2651,6 +5287,45 @@ Hero.prototype.draw = function (ctx) {
         return;
     }
     this.currentTile.draw(ctx);
+    if (this.currentTile.enemyStrength === "Easy" && this.currentClass.level <= 2) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    }
+    if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 5) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Medium" && this.currentClass.level <= 3) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Turn Back", 20, 20);
+        ctx.restore();
+    }
+    if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 7) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Be cautious", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 5) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Turn Back", 20, 20);
+        ctx.restore();
+    } else if (this.currentTile.enemyStrength === "Hardest" && this.currentClass.level <= 2) {
+        ctx.save();
+        ctx.font = "24pt Impact";
+        ctx.fillStyle = "purple";
+        ctx.fillText("Fly You Fools!!", 20, 20);
+        ctx.restore();
+    }
     if (this.movingSouth && this.game.down) {
         this.game.down = false;
         if (this.boxes) {
@@ -6485,12 +9160,36 @@ ASSET_MANAGER.queueDownload("./img/emu.png");
 ASSET_MANAGER.queueDownload("./img/ghoul.png");
 ASSET_MANAGER.queueDownload("./img/wolfkin.png");
 
-ASSET_MANAGER.queueDownload("./img/DungeonStart.png");
-ASSET_MANAGER.queueDownload("./img/DungeonRoom.png");
-ASSET_MANAGER.queueDownload("./img/DungeonMap.png");
-ASSET_MANAGER.queueDownload("./img/BossMap.png");
 
+ASSET_MANAGER.queueDownload("./img/dinox.png");
+ASSET_MANAGER.queueDownload("./img/lizardman.png");
+ASSET_MANAGER.queueDownload("./img/tornadolizard.png");
+ASSET_MANAGER.queueDownload("./img/seabird.png");
+ASSET_MANAGER.queueDownload("./img/gillman.png");
+ASSET_MANAGER.queueDownload("./img/hydra.png");
+ASSET_MANAGER.queueDownload("./img/sentinel.png");
+ASSET_MANAGER.queueDownload("./img/siren.png");
+ASSET_MANAGER.queueDownload("./img/flamedragon.png");
+ASSET_MANAGER.queueDownload("./img/bluedragon.png");
+ASSET_MANAGER.queueDownload("./img/seadragon.png");
+ASSET_MANAGER.queueDownload("./img/chimera.png");
 
+//Map Files
+ASSET_MANAGER.queueDownload("./img/battle.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDownLeft.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRightDownWorld - Copy.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/LeftRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLava.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/RightDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpRight.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpLeft.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/UpDown.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/Right.png");
+ASSET_MANAGER.queueDownload("./img/DungeonMaps/DownLava.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -6502,61 +9201,122 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.running = true;
     gameEngine.battleRunning = false;
     gameEngine.menuRunning = false;
-
-    var enemy2 = new Ghoul(gameEngine, -1, 0);
+    //Trivial difficulty
     var enemy1 = new Emu(gameEngine, -1, 0);
+    var enemy2 = new Ghoul(gameEngine, -1, 0);
     var enemy3 = new Wolfkin(gameEngine, -1, 0);
-    /*var areas = [];
+    //Easy difficulty
+    var enemy4 = new Dinox(gameEngine, -1, 0);
+    var enemy5 = new LizardMan(gameEngine, -1, 0);
+    var enemy6 = new TornadoLizard(gameEngine, -1, 0);
+    //Medium difficulty
+    var enemy7 = new Seabird(gameEngine, -1, 0);
+    var enemy8 = new Gillman(gameEngine, -1, 0);
+    var enemy9 = new Sentinel(gameEngine, -1, 0);
+    var enemy10 = new Siren(gameEngine, -1, 0);
+    var enemy11 = new Hydra(gameEngine, -1, 0);
+    //Hardest difficulty
+    var enemy12 = new FlameDragon(gameEngine, -1, 0);
+    var enemy13 = new BlueDragon(gameEngine, -1, 0);
+    var enemy14 = new SeaDragon(gameEngine, -1, 0);
+    var enemy15 = new Chimera(gameEngine, -1, 0);
     
-    var start = new TileZero(gameEngine, enemy3, enemy2);
-    var map = new TileOne(gameEngine);
-    var room = new TileTwo(gameEngine);
-    var boss = new TileThree(gameEngine);
-    areas.push(start);
-    gameEngine.addEntity(start);
-    areas.push(map);
-    gameEngine.addEntity(map);
-    areas.push(room);
-    gameEngine.addEntity(room);
-    areas.push(boss);
-    
-    
-    
-    gameEngine.addEntity(boss);
-    gameEngine.platforms = areas;*/
-
     var platforms = [];
-    var t0 = new TileZero(gameEngine, enemy3, enemy2);
-    
+    gameEngine.platforms = platforms;
+
+    var t0 = new TileZero(gameEngine, enemy1, enemy2, enemy3);
     platforms.push(t0);
     gameEngine.addEntity(t0);
-    var t1 = new TileOne(gameEngine);
 
+    var t1 = new TileOne(gameEngine, enemy4, enemy5, enemy6);
     platforms.push(t1);
     gameEngine.addEntity(t1);
-    var t2 = new TileTwo(gameEngine);
+
+    var t2 = new TileTwo(gameEngine, enemy5, enemy6, enemy4);
     platforms.push(t2);
     gameEngine.addEntity(t2);
-    var t3 = new TileThree(gameEngine);
+
+    var t3 = new TileThree(gameEngine, enemy6, enemy4, enemy5);
     platforms.push(t3);
     gameEngine.addEntity(t3);
-    var t4 = new TileFour(gameEngine);
+
+    var t4 = new TileFour(gameEngine, enemy10, enemy2);
     platforms.push(t4);
     gameEngine.addEntity(t4);
-    var t5 = new TileFive(gameEngine);
+
+    var t5 = new TileFive(gameEngine, enemy1, enemy2, enemy3);
     platforms.push(t5);
     gameEngine.addEntity(t5);
-    var t6 = new TileSix(gameEngine);
+
+    var t6 = new TileSix(gameEngine, enemy1, enemy2, enemy3);
     platforms.push(t6);
     gameEngine.addEntity(t6);
-    var t7 = new TileSeven(gameEngine);
+
+    var t7 = new TileSeven(gameEngine, enemy7, enemy8, enemy9);
     platforms.push(t7);
     gameEngine.addEntity(t7);
-    var t8 = new TileEight(gameEngine);
+
+    var t8 = new TileEight(gameEngine, enemy8, enemy9, enemy10, enemy11);
     platforms.push(t8);
     gameEngine.addEntity(t8);
-    gameEngine.platforms = platforms;
-   
+
+    var t9 = new TileNine(gameEngine, enemy9, enemy10, enemy11, enemy12);
+    platforms.push(t9);
+    gameEngine.addEntity(t9);
+
+    var t10 = new TileTen(gameEngine, enemy7, enemy8, enemy11, enemy10);
+    platforms.push(t10);
+    gameEngine.addEntity(t10);
+
+    var t11 = new TileEleven(gameEngine, enemy9, enemy14);
+    platforms.push(t11);
+    gameEngine.addEntity(t11);
+
+    var t12 = new TileTwelve(gameEngine, enemy1, enemy2, enemy3);
+    platforms.push(t12);
+    gameEngine.addEntity(t12);
+
+    var t13 = new TileThirteen(gameEngine, enemy1, enemy2, enemy3);
+    platforms.push(t13);
+    gameEngine.addEntity(t13);
+
+    var t14 = new TileFourteen(gameEngine, enemy12, enemy13, enemy14);
+    platforms.push(t14);
+    gameEngine.addEntity(t14);
+
+    var t15 = new TileFifteen(gameEngine, enemy13, enemy14, enemy12);
+    platforms.push(t15);
+    gameEngine.addEntity(t15);
+
+    var t16 = new TileSixteen(gameEngine, enemy14, enemy12, enemy13);
+    platforms.push(t16);
+    gameEngine.addEntity(t16);
+    
+    var t17 = new TileSeventeen(gameEngine, enemy12, enemy13, enemy14);
+    platforms.push(t17);
+    gameEngine.addEntity(t17);
+
+    var t18 = new TileEighteen(gameEngine, enemy13, enemy14, enemy12);
+    platforms.push(t18);
+    gameEngine.addEntity(t18);
+
+    var t19 = new TileNineteen(gameEngine, enemy14, enemy12, enemy13);
+    platforms.push(t19);
+    gameEngine.addEntity(t19);
+
+    var t20 = new TileTwenty(gameEngine, enemy12, enemy13, enemy14);
+    platforms.push(t20);
+    gameEngine.addEntity(t20);
+
+    var t21 = new TileTwentyOne(gameEngine, enemy13, enemy14, enemy12);
+    platforms.push(t21);
+    gameEngine.addEntity(t21);
+
+    var t22 = new TileTwentyTwo(gameEngine, enemy15, enemy11);
+    platforms.push(t22);
+    gameEngine.addEntity(t22);
+
+    gameEngine.platforms = platforms;   
 
     var classes = [];
     var gunner = new Gunner(gameEngine);
